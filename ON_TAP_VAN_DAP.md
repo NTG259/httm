@@ -155,7 +155,7 @@ Bệnh nhân nói *"Tôi 52 tuổi, nặng 78 kg cao 1m65, HbA1c 7,1%"*.
 6. **Đối chiếu luật KB (T-03):** HbA1c 7,1 ≥ 6,5 nên đạt tiêu chuẩn ĐTĐ. Nếu mô hình nói "thấp" mà luật nói "đạt", hệ bật cờ `dl_conflict`.
 7. **AG-07** đưa `risk_dl` vào lời giải thích, **AG-08 Safety** kiểm tra, rồi hiển thị trên web.
 
-**📂 Chỉ cho giám khảo:** web demo, gõ câu trên rồi mở panel "log tool" để thấy dòng `T-15`. Hoặc chạy trực tiếp: `python -m diabetes_mas.agents.prediction`.
+**📂 Chỉ cho giám khảo:** web demo, gõ câu trên. Ô **"Nguy cơ ước tính"** trên giao diện **chính là đầu ra của mô hình DL** (`risk_dl` của AG-13). Nhấp **"Diabetes MAS"** để mở bảng tool và chỉ dòng `T-15`. Hoặc chạy trực tiếp: `python -m diabetes_mas.agents.prediction`.
 
 **⚠ Lưu ý:** *câu hỏi phụ "Nếu bệnh nhân không biết HbA1c thì sao?"* Hệ dùng `no_labs`, ghi rõ độ tin cậy thấp và liệt kê `missing_features`.
 
