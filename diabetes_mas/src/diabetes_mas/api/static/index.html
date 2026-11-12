@@ -483,8 +483,10 @@ function renderSlots(slots) {
     return;
   }
   $("slots").className = "slot-list";
+  // Bản trình diễn: ô "Bệnh tự miễn khác" chỉ hiện ở chế độ chi tiết (nhấp "Diabetes MAS")
+  const detailSlots = new Set(["benh_tu_mien"]);
   $("slots").innerHTML = entries.map(([key,slot]) =>
-    '<div class="slot-item"><dt>' + esc(SLOT_NAMES[key] || key.replaceAll("_"," ")) +
+    '<div class="slot-item' + (detailSlots.has(key) ? " detail-only" : "") + '"><dt>' + esc(SLOT_NAMES[key] || key.replaceAll("_"," ")) +
     '</dt><dd>' + esc(formatSlotValue(key,slot)) + '</dd></div>'
   ).join("");
 }

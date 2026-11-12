@@ -8,7 +8,7 @@
 >
 > **Giao diện trình diễn (22:30, theo yêu cầu người dùng):**
 > - Mặc định chỉ hiện: khung chat, xác suất 5 lớp, **Nguy cơ DL** và **Thông tin đã ghi nhận**. LLM luôn bật.
-> - Bị ẩn: ô "Dùng LLM", chỉ số **Lượt hỏi / Entropy / Policy**, khung **Nguồn trích dẫn** và khung "Phân tích lượt vừa rồi" (luồng agent + bảng tool call). Cập nhật 22:50: ẩn thêm nguồn và ba chỉ số này.
+> - Bị ẩn: ô "Dùng LLM", chỉ số **Lượt hỏi / Entropy / Policy**, khung **Nguồn trích dẫn**, ô slot "Bệnh tự miễn khác" và khung "Phân tích lượt vừa rồi" (luồng agent + bảng tool call). Cập nhật 22:50: ẩn thêm nguồn và ba chỉ số này. Cập nhật 23:00: ẩn thêm ô "Bệnh tự miễn khác", vì ô này đôi khi hiện giá trị thô "unknown".
 > - **Nhấp vào tên "Diabetes MAS"** ở góc trái trên để hiện lại tất cả; nhấp lần nữa để ẩn.
 > - Nhãn giao diện và lời chat hiển thị "Đái tháo đường Loại 2" thay cho "ĐTĐ típ 2". Panel nguồn giữ **nguyên văn** nguồn, nên vẫn ghi "típ".
 > - Backend, API và log không đổi.
