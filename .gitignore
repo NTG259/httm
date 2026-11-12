@@ -10,3 +10,9 @@ diabetes_mas/neo4j_data/
 kg_rag_diabetes/data/
 Assignment2-AI/
 backups/
+# File tạm của Codex / kiểm tra giao diện
+.codex/
+.browser-profile-ui/
+diabetes_mas/.ui_check.py
+diabetes_mas/.ui-*.png
+diabetes_mas/.pytest-ui-*/
