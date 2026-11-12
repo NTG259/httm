@@ -257,6 +257,8 @@ Mỗi thay đổi một dòng; chỉ giữ thay đổi khi metric chính không 
 | 2026-11-12 | `DialogState.update`: đang mang thai ⇒ tự ghi giới tính nữ (không hỏi) | Chạy thử demo: hỏi giới tính người vừa nói đang mang thai | Hỏi | Không hỏi | ✅ |
 | 2026-11-12 | Đổi câu hỏi `it_van_dong` thành "Anh/chị có ít vận động, ít tập thể dục (ngồi nhiều) không?" (seed, `.cypher`, Neo4j) | Câu cũ "có thường xuyên tập thể dục không?" ⇒ người dùng đáp "Không" bị NLU ghi `it_van_dong = no` — **đảo nghĩa**. Không ảnh hưởng huấn luyện (env đưa slot thẳng vào state) | Đảo nghĩa | "Có" = có yếu tố nguy cơ | ✅ |
 | 2026-11-12 | Giải thích kết luận: tên tiếng Việt thay mã slot (`consult.slot_names`, `hit_text`) | Chạy thử demo: "Căn cứ: uong_nhieu, tieu_nhieu…; HBA1C = 7.1" | Mã thô | "Uống nhiều, Tiểu nhiều…; HbA1c = 7,1 (ngưỡng HbA1c > 6,5 %, nguồn VMC-0002)" | ✅ |
+| 2026-11-12 | AG-07 `numbers_ok`: mọi số kèm `%`/`mmol`/`mg`/`kg` trong P-06 phải thuộc giá trị slot, số người dùng đã gõ, xác suất, ngưỡng `rule_hits` hoặc `kb/seed/criteria.csv`; số lạ ⇒ template | Chạy thử demo có bấm giờ (GĐ 9, Qwen, Story 1 lượt 5): người dùng gõ HbA1c 7,1 % nhưng Qwen viết "HbA1c của bạn là **7,4%**" | Bịa giá trị xét nghiệm | Chặn, dùng template (12,9 s) | ✅ (sửa lỗi; `test_numbers_ok_rejects_hallucinated_lab_value`) |
+| 2026-11-12 | NLU `CLAUSE`: không tách mệnh đề ở dấu phẩy/chấm giữa hai chữ số | Log chạy thử: "HbA1c tháng trước 7,1%" tách thành "…7" và "1%" (chỉ ảnh hưởng dò slot nhị phân; số đọc trên cả câu nên slot không sai) | Tách sai | Giữ "7,1%" | ✅ (`test_nlu_decimal_comma_is_not_a_clause_boundary`, `test_nlu_demo_script_sentences`) |
 
 ## 6. Tiêu chí hoàn thành
 
@@ -275,3 +277,7 @@ Mỗi thay đổi một dòng; chỉ giữ thay đổi khi metric chính không 
 - **Ca thai kỳ cần nhiều lượt**: dù câu đầu đã có glucose lúc đói, policy vẫn hỏi ~6 câu triệu chứng/nguy cơ trước khi xác suất vượt 0,95.
 - **NLU câu tự do nhận OGTT chưa tốt**: "OGTT, sau 2 giờ đường huyết 10,3" trong câu mở đầu được ghi thành glucose bất kỳ (câu trả lời cho câu hỏi OGTT thì đúng).
 - **Phân biệt típ 1/típ 2** phụ thuộc mạnh vào giả định sinh ca (`PRIORS`, xác suất `team_estimate`) — nguồn sai chính còn lại (C-00067, C-00107, TC-21).
+- **P-06 (Qwen) có thể bịa số liệu** (chạy thử GĐ 9: HbA1c 7,4 thay vì 7,1). `numbers_ok` chỉ kiểm số **có đơn vị**; khi bị chặn, hệ dùng template, nên lượt kết luận ở chế độ Qwen thường giống hệt chế độ không LLM.
+- **Giải thích kết luận liệt kê thuốc từ graph fact KB** (dapagliflozin, valsartan, ramipril…) khi Qwen viết P-06 — có trích `[n]` nhưng không phải phác đồ cho người dùng; câu miễn trừ luôn được thêm.
+- **DL (AG-13) báo "nguy cơ 100 %" ở Story 1**: nhãn dataset Kaggle sinh từ chính ngưỡng HbA1c/glucose, nên có HbA1c 7,1 thì mô hình gần như chắc chắn — chỉ là tham khảo (ADR-002, §4.3).
+- **T-04 mất ~6,4 s mỗi lần gọi** khi chạy thử 20:10–20:18 (cả chế độ không LLM), lúc máy chỉ còn ~1,4 GB RAM trống (Codex, PyCharm, pytest chạy song song). Chưa điều tra; đo lại khi đã tắt ứng dụng nặng (`09_DEMO_SCRIPT` §0.2).

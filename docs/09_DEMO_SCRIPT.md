@@ -4,7 +4,7 @@
 > **Giai đoạn:** 9 · **Cập nhật:** 2026-11-12 (v2: chạy thử trên máy demo, Windows 11 / 16 GB RAM / chỉ CPU)
 > Tổng thời lượng dự kiến: 15 phút.
 
-> **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ⏳ Còn phải chạy thử toàn bộ có bấm giờ và quay video dự phòng.
+> **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ✅ Đã chạy thử có bấm giờ qua API cả hai chế độ (§2.6). ⏳ Còn chạy thử trên giao diện web mới và quay video dự phòng.
 
 ---
 
@@ -75,13 +75,13 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 > Nếu ai hỏi "sao không hỏi tiền sử gia đình?": khi đã có HbA1c đạt tiêu chuẩn và classifier đủ chắc, policy học được rằng hỏi thêm không đổi kết luận (reward −1/lượt). Kết luận vẫn khuyên đi khám xác định.
 
-### 2.2 Tư vấn (mỗi câu < 1 s không LLM; với Qwen ~5–12 s)
+### 2.2 Tư vấn (đo 20:10–20:18: ~6,4 s không LLM — toàn bộ là T-04; với Qwen 14–21 s — xem §2.6)
 
 | TC | Người dùng gõ | Kỳ vọng (đã chạy thử) |
 |---|---|---|
 | TC-20 | "Tiêu chuẩn chẩn đoán tiểu đường là gì?" | Liệt kê glucose đói ≥ 7 mmol/L, OGTT 2h ≥ 11,1, glucose bất kỳ ≥ 11,1, HbA1c > 6,5 % — mỗi ý có `[n]` (Bộ Y tế QĐ 3280 / Vinmec) |
 | TC-22 | "Metformin có tác dụng phụ gì?" | Graph fact "Metformin được dùng điều trị ĐTĐ típ 2" + đoạn QĐ 3280 về Metformin, có `[n]` |
-| TC-23 | "Cách chữa ung thư phổi?" | **Từ chối**: "Tôi chưa có đủ thông tin đáng tin cậy để trả lời câu hỏi này." (không liên kết được thực thể KB, cosine < 0,825) |
+| TC-23 | "Cách chữa ung thư phổi?" | **Từ chối phạm vi** ngay ở Router (luật, cả hai chế độ): "Xin lỗi, tôi chỉ hỗ trợ các câu hỏi liên quan đến bệnh đái tháo đường (tiểu đường)…" — đường đi `nlu → router → out_of_scope`, **không** qua RAG. Câu từ chối "Tôi chưa có đủ thông tin đáng tin cậy…" (cosine < 0,825) chỉ xảy ra với câu *trong phạm vi* nhưng KB không có căn cứ (`08` §4.2) |
 
 ### 2.3 Cấp cứu (1 lượt)
 
@@ -104,11 +104,31 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 ![Story 1](assets/demo_story1.png)
 
+### 2.6 Biên bản chạy thử có bấm giờ (2026-11-12, `scripts/rehearse_demo.py`, gọi API như web demo)
+
+Điều kiện: máy demo, Neo4j + uvicorn + Ollama `qwen2.5:3b` (`keep_alive` 30 phút), **còn ~1,4 GB RAM trống** (Codex, PyCharm, pytest chạy song song) — số đo là trường hợp xấu; đo lại sáng hôm demo sau khi tắt ứng dụng nặng. Đã làm nóng trước (câu tư vấn đầu 25,8 s; lần sau 6–10 s).
+
+| Bước | Câu | Qwen (20:16, s) | Không LLM (20:12, s) | Kết quả |
+|---|---|---|---|---|
+| Story 1 · 1 | "Dạo này tôi khát nước suốt…" | 16,1 | 0,0 | ✅ hỏi tuổi; uống nhiều, tiểu nhiều, sụt cân |
+| Story 1 · 2 | "Tôi 52 tuổi." | 2,6 | 0,0 | ✅ hỏi chiều cao/cân nặng |
+| Story 1 · 3 | "Tôi cao 1m65, nặng 78 kg." | 2,4 | 0,0 | ✅ BMI 28,7; hỏi giới tính |
+| Story 1 · 4 | "Tôi là nam." | 2,6 | 0,0 | ✅ hỏi HbA1c (W2) |
+| Story 1 · 5 | "HbA1c tháng trước 7,1%." | 12,9 | 6,4 | ✅ ĐTĐ típ 2 63 %, HbA1c = 7,1 (VMC-0002) — xem lưu ý dưới |
+| TC-20 | "Tiêu chuẩn chẩn đoán tiểu đường là gì?" | 20,9 | 6,4 | ✅ có `[n]` |
+| TC-22 | "Metformin có tác dụng phụ gì?" | 14,5 | 6,4 | ✅ có `[n]` |
+| TC-23 | "Cách chữa ung thư phổi?" | 4,6 | 0,0 | ✅ từ chối phạm vi (Router) |
+| TC-34 | "Tôi đường huyết 25 mmol/L, đang buồn nôn, thở dốc" | 3,0 | 0,0 | ✅ cảnh báo cấp cứu, gọi 115 |
+| **Tổng** | | **79,6** | **19,2** | 9/9 |
+
+**Lưu ý Story 1 · 5 (lỗi `07` §6 #15):** lần chạy 20:10 Qwen viết "HbA1c của bạn là **7,4%**" (người dùng gõ 7,1). Đã thêm `consult.numbers_ok` ⇒ câu có số lạ bị loại, dùng template; lần chạy 20:16 lượt này ra đúng template như chế độ không LLM.
+
 ## 3. Phương án dự phòng
 
 | Sự cố | Dấu hiệu | Xử lý |
 |---|---|---|
 | **Qwen chậm / thiếu RAM** | Một lượt > 30 s, máy giật | **Chuyển chế độ không LLM**: trong web demo **bỏ chọn ô "Dùng LLM (Qwen)"** (gửi `use_llm: false`; `api/static/index.html`); hoặc gọi API trực tiếp: `curl -X POST localhost:8000/v1/sessions/<id>/messages -H "Content-Type: application/json" -d "{\"text\": \"…\", \"use_llm\": false}"`. Hệ chạy bằng luật + câu mẫu + trả lời trích xuất — kết luận, xác suất, nguồn không đổi (§2 chạy thử ở chế độ này) |
+| **Lượt kết luận ở chế độ Qwen nghi ngờ sai số liệu** | Câu giải thích có con số khác với số người dùng đã gõ | Bỏ chọn ô **"Dùng LLM"** trước khi gõ câu xét nghiệm cuối (Story 1 lượt 5): kết luận dùng template — đúng số, đúng nguồn, như §2.1. Hệ đã tự chặn số lạ có đơn vị (`numbers_ok`, `07` §6 #15) |
 | Ollama tắt hẳn | `/v1/health` báo Ollama lỗi | Hệ tự dùng dự phòng (NLU/Router luật, NLG câu mẫu, Consult trích xuất) — không cần làm gì; nói rõ khi demo |
 | Neo4j lỗi | Câu tư vấn trả "Hệ thống tra cứu đang tạm gián đoạn" | `docker compose restart neo4j`, chờ healthcheck (~30 s). Còn hỏng: nạp dump `neo4j-admin database load` (⏳ tạo dump khi sao lưu) |
 | Web demo lỗi | Trang trắng / 500 | Chiếu log mẫu `logs/agent_runs/samples/demo-story1-chan-doan.md`, `demo-story3-tu-van.md`, `demo-story5-cap-cuu.md` hoặc video dự phòng |
