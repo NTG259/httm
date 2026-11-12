@@ -72,6 +72,7 @@ Q43, Q48, Q49, Q50, Q45, Q47, Q46, Q51, Q39, Q35/Q36.
 **⚠ Lưu ý**
 - *Câu hỏi phụ: "Vì sao F1 của MLP (0,625) thấp hơn luật ngưỡng (0,820)?"* Luật D1 chính là ngưỡng đã dùng để sinh nhãn của dataset, nên precision của nó bằng 1. MLP đổi precision lấy recall vì trong y tế, bỏ sót người bệnh nguy hiểm hơn báo nhầm.
 - *"Vì sao không dùng mạng sâu hơn?"* Dữ liệu bảng chỉ có 8 cột, mạng sâu hơn dễ overfit mà không có thêm thông tin.
+- *Câu hỏi phụ: "Vì sao demo báo nguy cơ 100%?"* Nhãn của dataset Kaggle được sinh từ chính ngưỡng HbA1c và glucose. Vì vậy khi bệnh nhân có HbA1c 7,1, mô hình gần như chắc chắn. Con số này cho thấy mô hình học lại ngưỡng của dataset, **không phải độ chắc chắn lâm sàng**, nên AG-13 chỉ là tham khảo (ADR-002).
 - Giấy phép của dataset **chưa xác minh**, và không rõ là dữ liệu thật hay dữ liệu tổng hợp. Phải nói rõ điều này.
 - App dự đoán riêng trước đây (`Assignment2-AI/`, React + NestJS) dùng **RandomForest (scikit-learn)**, không phải mạng nơ-ron. Nếu giám khảo hỏi về app đó, nói đúng như vậy.
 
