@@ -1,4 +1,4 @@
-# Bàn giao tiến độ — cập nhật 2026-11-12 17:00 (phiên 4, Giai đoạn 8)
+# Bàn giao tiến độ — cập nhật 2026-11-12 20:20 (phiên 5, Giai đoạn 9 — chạy thử, đóng băng code 21:30)
 
 > Người dùng yêu cầu làm tuần tự hết các giai đoạn 4 → 9. **GĐ 5–7 xong; GĐ 8 gần xong** (còn B1 Flat DQN đang train, đo lại độ trễ, `eval_report` cuối). Tiếp theo: **GĐ 9** (`09_ARCHITECTURE.md`, `09_DEMO_SCRIPT.md`, ảnh minh họa). **Hạn demo 07:00 13/11**, đóng băng code 23:30.
 
@@ -102,12 +102,34 @@ Môi trường:
 - Sửa thêm khi chạy thử demo: `nlu.DURATION` ("sau 2 giờ là 10,3" từng ghi 2,0), `confident_stop` 0,95, không hỏi giới tính khi đang mang thai, câu hỏi `it_van_dong` (đã đổi ở seed, `.cypher`, Neo4j), giải thích dùng tên tiếng Việt.
 - `09_ARCHITECTURE.md` v2 và `09_DEMO_SCRIPT.md` v2 đã viết theo code thật; `02 §6` có bảng "khi nào hệ dừng hỏi".
 
+### Giai đoạn 9 — phiên 5 (19:25–21:30)
+
+**Lịch người dùng chốt lúc 19:46:** đóng băng code **21:30** (trước là 23:30). Sau 21:30 chỉ sửa tài liệu hoặc lỗi làm demo không chạy được, và phải báo phiên quản lý `kg-rag-diabetes-3b` trước.
+
+**Git:** repo `D:\kg_rag_diabetes`, nhánh `main`, chỉ lưu local. `ccf62ce` là trạng thái 19:25. Sao lưu KB: `backups/neo4j.dump` (38 MB).
+
+**Thay đổi sau 17:24 (phiên trước, chưa ghi lúc đó):**
+1. Mật khẩu Neo4j đã đổi (6 ký tự, xem `NEO4J_PASSWORD` trong `diabetes_mas/.env`). `docker-compose.yml` thêm `min_password_length` 6; cổng 7474/7687 chỉ bind `127.0.0.1`.
+2. `settings.yaml` → `llm`: `keep_alive: 30m`, `num_predict_json: 256`, `num_predict: 512` (NLU JSON từng sinh không dừng tới timeout 60 s với "Tôi cao 1m65, nặng 78 kg."). NLU bỏ qua Qwen khi câu ngắn và luật đã điền slot đang hỏi (`llm_skipped`).
+3. Sửa NLU lúc 17:32 (có test).
+4. Chạy thử lần 1 lúc 17:29: 16 request 200 OK, không có biên bản bấm giờ.
+
+**Phiên 5:**
+- `f427299` NLU `CLAUSE` không tách ở dấu thập phân ("7,1%"); test hồi quy nguyên văn câu demo (`test_nlu_demo_script_sentences`); `scripts/rehearse_demo.py` (chạy thử qua API, bấm giờ, kiểm kỳ vọng; `--no-llm`).
+- `fea4046` **Lỗi #15 (07 §6):** P-06 (Qwen) viết "HbA1c của bạn là 7,4%" khi người dùng gõ 7,1 ⇒ `consult.numbers_ok` chặn số lạ có đơn vị, dùng template.
+- `3ddda90` Tài liệu: `09_DEMO_SCRIPT` §2.6 biên bản bấm giờ, §2.2 TC-23 (Router từ chối phạm vi, không qua RAG), §3 dự phòng lượt kết luận; `08` §5 + §7; `07` §6 #15–16.
+- **Chạy thử có bấm giờ (09 §2.6):** Qwen tổng 79,6 s (Story 1: 16,1 / 2,6 / 2,4 / 2,6 / 12,9 s; TC-20 20,9; TC-22 14,5; TC-23 4,6; TC-34 3,0); không LLM 19,2 s. 9/9 đạt. Đo khi RAM chỉ trống ~1,4 GB.
+- `pytest -m "not network and not slow"`: **187 passed** (20:09). Nhóm `slow`: xem dòng dưới.
+- **Giao diện web:** `api/static/index.html` đang được vẽ lại có chủ đích (Codex), kèm `tests/unit/test_web_ui.py` (chưa commit). Hạn 20:45; quá hạn thì khôi phục `git checkout ccf62ce -- diabetes_mas/src/diabetes_mas/api/static/index.html`. Khi có giao diện mới: kiểm chat, bảng slot, xác suất 5 lớp, entropy, log tool (có T-15), panel nguồn, ô "Dùng LLM"; chụp lại `demo_story1/tuvan/capcuu.png`; cập nhật mô tả giao diện trong `09_DEMO_SCRIPT`.
+- `curl` trong Git Bash làm hỏng tiếng Việt trong body JSON ⇒ dùng `scripts/rehearse_demo.py` hoặc Python `requests`.
+
 ## Việc còn lại
 
 - [x] Độ trễ đo lại khi máy rảnh: p95 11,6 s (LLM trung vị 4,2 s) — không đạt ≤ 5 s, ghi 08 §4.2, §7.
 - [x] `eval_report` bản cuối (17:21) → `experiments/eval/report.md`, 08 §4.4.
 - [x] Ảnh minh họa trong `docs/assets/`: `arch_1/2.png`, `kb_schema.png`, `kb_dtd_tip2.png` (`devtools/plot_kb`), `demo_story1/tuvan/capcuu.png` (`scripts/shots.js`, chế độ không LLM). Ảnh Neo4j Browser thật: người dùng tự chụp nếu cần (cần đăng nhập).
-- [ ] 21:30–23:30: chạy thử demo có bấm giờ với Qwen; đo thời gian mỗi lượt trên web.
-- [ ] 23:30 đóng băng code → 2 lần chạy thử, sao lưu (`git init` + commit, Neo4j dump), video dự phòng.
+- [x] Chạy thử có bấm giờ qua API, cả Qwen và không LLM (09 §2.6). [ ] Chạy lại trên giao diện web mới.
+- [ ] **21:30 đóng băng code** → chạy thử trên web, video dự phòng. Sao lưu ✅ (git `ccf62ce`, `backups/neo4j.dump`).
+- [ ] Sáng 06:00: tắt ứng dụng nặng (cả Codex), chạy `scripts/rehearse_demo.py` đo lại thời gian (T-04 ~6,4 s mỗi lần gọi khi RAM thiếu — 08 §7).
 - Không làm (ghi ở 08 §7): HRL − entropy, D2 LR, faithfulness đầy đủ, TC-21, hỏi "có mang thai không" trong intake, `review_queue`.
 - E2E Qwen 0,750 đo **trước** khi sửa `nlu.DURATION`; chạy lại nếu còn thời gian (~40 phút, `run_dialogs --n 20 --llm --resume`).
