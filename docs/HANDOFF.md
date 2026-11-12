@@ -120,7 +120,8 @@ Môi trường:
 - `3ddda90` Tài liệu: `09_DEMO_SCRIPT` §2.6 biên bản bấm giờ, §2.2 TC-23 (Router từ chối phạm vi, không qua RAG), §3 dự phòng lượt kết luận; `08` §5 + §7; `07` §6 #15–16.
 - **Chạy thử có bấm giờ (09 §2.6):** Qwen tổng 79,6 s (Story 1: 16,1 / 2,6 / 2,4 / 2,6 / 12,9 s; TC-20 20,9; TC-22 14,5; TC-23 4,6; TC-34 3,0); không LLM 19,2 s. 9/9 đạt. Đo khi RAM chỉ trống ~1,4 GB.
 - `pytest -m "not network and not slow"`: **187 passed** (20:09). Nhóm `slow`: xem dòng dưới.
-- **Giao diện web:** `api/static/index.html` đang được vẽ lại có chủ đích (Codex), kèm `tests/unit/test_web_ui.py` (chưa commit). Hạn 20:45; quá hạn thì khôi phục `git checkout ccf62ce -- diabetes_mas/src/diabetes_mas/api/static/index.html`. Khi có giao diện mới: kiểm chat, bảng slot, xác suất 5 lớp, entropy, log tool (có T-15), panel nguồn, ô "Dùng LLM"; chụp lại `demo_story1/tuvan/capcuu.png`; cập nhật mô tả giao diện trong `09_DEMO_SCRIPT`.
+- **Giao diện web mới** (Codex vẽ lại, commit `063d4c2`, bổ sung tên slot `ce73956`): chat; xác suất 5 lớp; lượt hỏi/T_max; entropy; nguy cơ DL; policy; bảng slot; luồng agent; bảng tool call (có T-15); nguồn trích dẫn; ô "Dùng LLM" chọn sẵn. Gọi `/v1/sessions`, `/messages`, `/health`. `test_web_ui.py` 2 passed. Ảnh `demo_story1/tuvan/capcuu.png` chụp lại 20:45 (`scripts/shots.js --no-llm`, puppeteer ở scratchpad phiên trước: `NODE_PATH=C:/Users/ADMIN/AppData/Local/Temp/claude/6caf4ef6f1158feb/be9b0b5f-4776-45bd-b441-7eb3513194db/scratchpad/node_modules`). File tạm Codex chưa commit: `.ui_check.py`, `.ui-*.png`, `.browser-profile-ui/`, `.codex/`, `.pytest-ui-*`.
+- **pytest:** nhóm nhanh **190 passed** (20:49, gồm `test_web_ui` và `test_numbers_ok_*`); nhóm `slow` 10 passed, 1 xfailed TC-21 (20:43; TC-35 mất 1.299 s khi thiếu RAM — bình thường vài phút).
 - `curl` trong Git Bash làm hỏng tiếng Việt trong body JSON ⇒ dùng `scripts/rehearse_demo.py` hoặc Python `requests`.
 
 ## Việc còn lại
