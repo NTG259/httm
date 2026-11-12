@@ -91,16 +91,16 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 "Tôi đang mang thai 28 tuần, đường huyết lúc đói 5,3 mmol/L, có bị tiểu đường thai kỳ không?" ⇒ hỏi tuổi, chiều cao/cân nặng (không hỏi giới tính), rồi **~6 câu triệu chứng/nguy cơ** (trả lời "Không ạ") ⇒ "Đái tháo đường thai kỳ (95%) … Glucose huyết tương lúc đói = 5,3 (ngưỡng ≥ 5,1 mmol/L, nguồn VMC-0003)". Giới hạn đã biết: ca thai kỳ cần nhiều lượt (`08` §7).
 
-### 2.5 Ảnh minh họa (chụp 2026-11-12, chế độ không LLM, `diabetes_mas/scripts/shots.js` bằng puppeteer: `NODE_PATH=<node_modules có puppeteer> node scripts/shots.js ../docs/assets --no-llm`)
+### 2.5 Ảnh minh họa (chụp lại 2026-11-12 20:45 với giao diện mới, chế độ không LLM, `diabetes_mas/scripts/shots.js` bằng puppeteer: `NODE_PATH=<node_modules có puppeteer> node scripts/shots.js ../docs/assets --no-llm`)
 
 | Ảnh | Nội dung |
 |---|---|
-| `assets/demo_story1.png` | Story 1: hội thoại, thanh xác suất (típ 2 63 %), đồ thị `nlu → router → tracker → main`, bảng tool call, nguồn trích dẫn |
-| `assets/demo_tuvan.png` | TC-20: 4 tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec), panel nguồn |
-| `assets/demo_capcuu.png` | TC-34: cảnh báo cấp cứu ngay lượt đầu |
+| `assets/demo_story1.png` | Story 1 (giao diện mới 20:45): khung chat bên trái; bên phải **Chỉ số đánh giá** (xác suất 5 lớp — típ 2 63 %, lượt hỏi 1/12, entropy 0,66, nguy cơ DL 100 %, policy `hrl_dqn`), **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %), **Phân tích lượt vừa rồi** (luồng `nlu → router → tracker → main`, bảng tool call có T-08, **T-15**, T-03, T-04, T-09) và **Nguồn trích dẫn** [1]–[10] |
+| `assets/demo_tuvan.png` | TC-20: 4 tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec), luồng `nlu → router → consult`, T-04 `enough=True`, panel nguồn |
+| `assets/demo_capcuu.png` | TC-34: cảnh báo cấp cứu (khung đỏ) ngay lượt đầu; slot Buồn nôn, Thở nhanh, Đường huyết bất kỳ 25 mmol/L; T-09 `RED FLAG` |
 | `assets/kb_dtd_tip2.png`, `assets/kb_schema.png` | Thay ảnh Neo4j Browser nếu không mở được (vẽ từ dữ liệu Neo4j thật, `devtools/plot_kb`) |
 
-Ảnh Story 1 cho thấy T-04 mất **12,6 s** ở lượt kết luận vì đó là lần đầu tiến trình nạp bge-m3 — lý do phải **làm nóng** (§0.2) trước khi demo.
+Ảnh Story 1 (chụp lại) cho thấy T-04 mất **6,7 s** ở lượt kết luận dù đã làm nóng — đo khi máy chỉ còn ~1,4 GB RAM trống (`08` §7). Ảnh cũ (lần nạp bge-m3 đầu tiên) là 12,6 s ⇒ vẫn phải **làm nóng** (§0.2) và tắt ứng dụng nặng trước khi demo.
 
 ![Story 1](assets/demo_story1.png)
 
