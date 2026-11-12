@@ -218,6 +218,7 @@
   /* Bản trình diễn: phần kỹ thuật chỉ hiện khi nhấp "Diabetes MAS" (body.show-details) */
   body:not(.show-details) .detail-only { display:none !important; }
   body:not(.show-details) #kv .metric { grid-column:1/-1; }
+  body:not(.show-details) .msg .meta { display:none; }  /* nhãn "diagnose · asking" dưới mỗi tin */
   details { margin-top:14px; padding-top:13px; border-top:1px solid var(--line); }
   .sources-card details { margin-top:0; padding-top:0; border-top:0; }
   summary { color:#405564; font-size:12px; font-weight:650; cursor:pointer; }
