@@ -1,0 +1,195 @@
+{
+ "use_llm": true,
+ "warmup_s": 26.57,
+ "total_s": 79.54,
+ "turns": [
+  {
+   "group": "Story 1",
+   "turn": 1,
+   "text": "Dạo này tôi khát nước suốt, đi tiểu nhiều, sụt 3 kg trong tháng.",
+   "seconds": 16.08,
+   "tool_s": 2.088,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Anh/chị có thể cho tôi biết tuổi của mình không?",
+   "probs": {
+    "KHONG_DTD": 0.0021655866475393673,
+    "TIEN_DTD": 0.003596700428533907,
+    "DTD_TIP_1": 0.8930958344132829,
+    "DTD_TIP_2": 0.09923282081982837,
+    "DTD_THAI_KY": 0.0019090576908155144
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 2,
+   "text": "Tôi 52 tuổi.",
+   "seconds": 2.6,
+   "tool_s": 0.003,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Anh/chị cao bao nhiêu và nặng bao nhiêu kg?",
+   "probs": {
+    "KHONG_DTD": 0.0018950932600272426,
+    "TIEN_DTD": 0.005586749337190235,
+    "DTD_TIP_1": 0.6587365734767788,
+    "DTD_TIP_2": 0.3333095845477962,
+    "DTD_THAI_KY": 0.0004719993782075614
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 3,
+   "text": "Tôi cao 1m65, nặng 78 kg.",
+   "seconds": 2.42,
+   "tool_s": 0.004,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Cho tôi hỏi, anh/chị là nam hay nữ?",
+   "probs": {
+    "KHONG_DTD": 0.0013027014658958981,
+    "TIEN_DTD": 0.005400397534926593,
+    "DTD_TIP_1": 0.4725162549443256,
+    "DTD_TIP_2": 0.5205466926355785,
+    "DTD_THAI_KY": 0.00023395341927339735
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 4,
+   "text": "Tôi là nam.",
+   "seconds": 2.62,
+   "tool_s": 0.009,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Anh/chị có biết chỉ số HbA1c gần nhất không (đơn vị %)?",
+   "probs": {
+    "KHONG_DTD": 0.0017412465697748956,
+    "TIEN_DTD": 0.0090483284950136,
+    "DTD_TIP_1": 0.3901519179444254,
+    "DTD_TIP_2": 0.5989950160921265,
+    "DTD_THAI_KY": 6.349089865966684e-05
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 5,
+   "text": "HbA1c tháng trước 7,1%.",
+   "seconds": 12.91,
+   "tool_s": 6.577,
+   "stage": "concluded",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Kết luận sơ bộ: Đái tháo đường típ 2 (xác suất ước tính 63%). Các khả năng khác: Đái tháo đường típ 1 37%.\nCăn cứ: thông tin anh/chị đã cung cấp (Uống nhiều, Tiểu nhiều, Sụt cân không rõ lý do, tuổi, BMI, giới tính, HbA1c); tiêu chuẩn xét nghiệm đạt: HbA1c = 7,1 (ngưỡng HbA1c > 6,5 %, nguồn VMC-0002) [10].\nKhuyến nghị: đi khám chuyên khoa Nội tiết – Đái tháo đường để làm xét nghiệm xác định (glucose huyết tương lúc đói, HbA1c hoặc nghiệm pháp dung nạp glucose).\nMô hình học sâu (tham khảo) ước tính nguy cơ đái tháo đường 100%.\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {
+    "KHONG_DTD": 0.0,
+    "TIEN_DTD": 0.0,
+    "DTD_TIP_1": 0.3745160422769257,
+    "DTD_TIP_2": 0.6254839577230743,
+    "DTD_THAI_KY": 0.0
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "TC-20",
+   "turn": 1,
+   "text": "Tiêu chuẩn chẩn đoán tiểu đường là gì?",
+   "seconds": 20.92,
+   "tool_s": 6.396,
+   "stage": "answered",
+   "intent": "consult",
+   "error": null,
+   "reply": "Tiêu chuẩn chẩn đoán tiểu đường bao gồm các tiêu chuẩn sau:\n\n1. Hemoglobin A1C (HbA1c) > 6,5% [2].\n2. Glucose huyết tương lúc đói >= 7 mmol/L [1].\n3. Glucose huyết tương tại thời điểm bất kỳ >= 11,1 mmol/L [4].\n4. Glucose huyết tương tại thời điểm bất kỳ >= 11,1 mmol/L hoặc HbA1c > 6,5% [7].\n5. Glucose huyết tương tại thời điểm bất kỳ >= 11,1 mmol/L kèm theo các triệu chứng kinh điển của tiểu đường [6].\n6. Hemoglobin A1C > 6,5% hoặc glucose huyết tương tại thời điểm bất kỳ >= 11,1 mmol/L kèm theo các triệu chứng kinh điển của tiểu đường [9].\n\nĐể chẩn đoán chính xác tiểu đường type 2, cần dựa vào tiêu chuẩn chẩn đoán đường huyết của WHO, IDF-2012, cụ thể là:\n\n- Hàm lượng glucose huyết tương khi đói ≥ 7.0 mmol/L (≥126 mg/dL) hoặc\n- Hàm lượng glucose huyết tương tại thời điểm bất kỳ ≥ 11.1 mmol/L (≥200 mg/dL) sau khi dung nạp glucose bằng đường uống hoặc\n- Hemoglobin A1C ≥ 6.5% (48 mmol/mol theo tiêu chuẩn của Liên đoàn sinh hóa lâm sàng quốc tế- IFCC) hoặc\n- Xuất hiện các triệu chứng lâm sàng của tiểu đường và hàm lượng glucose tại thời điểm bất kỳ ≥ 11.1 mmol/L (≥200 mg/dL) [7].\n\nNgoài ra, cần lưu ý rằng các xét nghiệm này cần được thực hiện theo đúng hướng dẫn và kết hợp với các yếu tố nguy cơ đi kèm như tuổi ≥ 45, béo phì, tiền sử gia đình mắc tiểu đường type 2, các bệnh lý nền như tăng huyết áp, hội chứng chuyển hóa, vv. [7].\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "consult"
+   ]
+  },
+  {
+   "group": "TC-22",
+   "turn": 1,
+   "text": "Metformin có tác dụng phụ gì?",
+   "seconds": 14.46,
+   "tool_s": 6.954,
+   "stage": "answered",
+   "intent": "consult",
+   "error": null,
+   "reply": "Metformin có tác dụng phụ ở đường tiêu hóa, cụ thể là rối loạn tiêu hóa [2].\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "consult"
+   ]
+  },
+  {
+   "group": "TC-23",
+   "turn": 1,
+   "text": "Cách chữa ung thư phổi?",
+   "seconds": 4.57,
+   "tool_s": 0.0,
+   "stage": "out_of_scope",
+   "intent": "out_of_scope",
+   "error": "thiếu ['chưa có đủ thông tin']",
+   "reply": "Xin lỗi, tôi chỉ hỗ trợ các câu hỏi liên quan đến bệnh đái tháo đường (tiểu đường). Anh/chị có thể hỏi về triệu chứng, xét nghiệm, điều trị hoặc mô tả tình trạng của mình.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "out_of_scope"
+   ]
+  },
+  {
+   "group": "TC-34",
+   "turn": 1,
+   "text": "Tôi đường huyết 25 mmol/L, đang buồn nôn, thở dốc",
+   "seconds": 2.96,
+   "tool_s": 0.005,
+   "stage": "emergency",
+   "intent": "emergency",
+   "error": null,
+   "reply": "Các dấu hiệu bạn mô tả có thể là biến chứng cấp tính của đái tháo đường cần được cấp cứu. Hãy gọi 115 hoặc đến cơ sở y tế gần nhất NGAY. Không tự điều trị tại nhà.\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "emergency"
+   ]
+  }
+ ]
+}

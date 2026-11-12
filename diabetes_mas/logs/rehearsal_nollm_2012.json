@@ -1,0 +1,195 @@
+{
+ "use_llm": false,
+ "warmup_s": 6.38,
+ "total_s": 19.16,
+ "turns": [
+  {
+   "group": "Story 1",
+   "turn": 1,
+   "text": "Dạo này tôi khát nước suốt, đi tiểu nhiều, sụt 3 kg trong tháng.",
+   "seconds": 0.01,
+   "tool_s": 0.001,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Anh/chị năm nay bao nhiêu tuổi?",
+   "probs": {
+    "KHONG_DTD": 0.0021655866475393673,
+    "TIEN_DTD": 0.003596700428533907,
+    "DTD_TIP_1": 0.8930958344132829,
+    "DTD_TIP_2": 0.09923282081982837,
+    "DTD_THAI_KY": 0.0019090576908155144
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 2,
+   "text": "Tôi 52 tuổi.",
+   "seconds": 0.01,
+   "tool_s": 0.001,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Anh/chị cao bao nhiêu và nặng bao nhiêu kg?",
+   "probs": {
+    "KHONG_DTD": 0.0018950932600272426,
+    "TIEN_DTD": 0.005586749337190235,
+    "DTD_TIP_1": 0.6587365734767788,
+    "DTD_TIP_2": 0.3333095845477962,
+    "DTD_THAI_KY": 0.0004719993782075614
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 3,
+   "text": "Tôi cao 1m65, nặng 78 kg.",
+   "seconds": 0.01,
+   "tool_s": 0.001,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Cho tôi hỏi giới tính của anh/chị?",
+   "probs": {
+    "KHONG_DTD": 0.0013027014658958981,
+    "TIEN_DTD": 0.005400397534926593,
+    "DTD_TIP_1": 0.4725162549443256,
+    "DTD_TIP_2": 0.5205466926355785,
+    "DTD_THAI_KY": 0.00023395341927339735
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 4,
+   "text": "Tôi là nam.",
+   "seconds": 0.01,
+   "tool_s": 0.0,
+   "stage": "asking",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Anh/chị có biết chỉ số HbA1c gần nhất không (đơn vị %)?",
+   "probs": {
+    "KHONG_DTD": 0.0017412465697748956,
+    "TIEN_DTD": 0.0090483284950136,
+    "DTD_TIP_1": 0.3901519179444254,
+    "DTD_TIP_2": 0.5989950160921265,
+    "DTD_THAI_KY": 6.349089865966684e-05
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "Story 1",
+   "turn": 5,
+   "text": "HbA1c tháng trước 7,1%.",
+   "seconds": 6.38,
+   "tool_s": 6.362,
+   "stage": "concluded",
+   "intent": "diagnose",
+   "error": null,
+   "reply": "Kết luận sơ bộ: Đái tháo đường típ 2 (xác suất ước tính 63%). Các khả năng khác: Đái tháo đường típ 1 37%.\nCăn cứ: thông tin anh/chị đã cung cấp (Uống nhiều, Tiểu nhiều, Sụt cân không rõ lý do, tuổi, BMI, giới tính, HbA1c); tiêu chuẩn xét nghiệm đạt: HbA1c = 7,1 (ngưỡng HbA1c > 6,5 %, nguồn VMC-0002) [10].\nKhuyến nghị: đi khám chuyên khoa Nội tiết – Đái tháo đường để làm xét nghiệm xác định (glucose huyết tương lúc đói, HbA1c hoặc nghiệm pháp dung nạp glucose).\nMô hình học sâu (tham khảo) ước tính nguy cơ đái tháo đường 100%.\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {
+    "KHONG_DTD": 0.0,
+    "TIEN_DTD": 0.0,
+    "DTD_TIP_1": 0.3745160422769257,
+    "DTD_TIP_2": 0.6254839577230743,
+    "DTD_THAI_KY": 0.0
+   },
+   "path": [
+    "nlu",
+    "router",
+    "tracker",
+    "main"
+   ]
+  },
+  {
+   "group": "TC-20",
+   "turn": 1,
+   "text": "Tiêu chuẩn chẩn đoán tiểu đường là gì?",
+   "seconds": 6.36,
+   "tool_s": 6.354,
+   "stage": "answered",
+   "intent": "consult",
+   "error": null,
+   "reply": "Thông tin liên quan trong cơ sở tri thức:\n- Tiêu chuẩn chẩn đoán Đái tháo đường: Glucose huyết tương bất kỳ >= 11,1 mmol/L. [1]\n- Tiêu chuẩn chẩn đoán Đái tháo đường: Glucose huyết tương lúc đói >= 7 mmol/L. [2]\n- Tiêu chuẩn chẩn đoán Đái tháo đường: HbA1c > 6,5 %. [3]\n- Tiêu chuẩn chẩn đoán Đái tháo đường: Glucose 2 giờ sau nghiệm pháp 75 g >= 11,1 mmol/L. [4]\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "consult"
+   ]
+  },
+  {
+   "group": "TC-22",
+   "turn": 1,
+   "text": "Metformin có tác dụng phụ gì?",
+   "seconds": 6.37,
+   "tool_s": 6.359,
+   "stage": "answered",
+   "intent": "consult",
+   "error": null,
+   "reply": "Thông tin liên quan trong cơ sở tri thức:\n- Metformin được dùng điều trị Đái tháo đường típ 2. [1]\n- Hướng dẫn chẩn đoán và điều trị bệnh đái tháo đường týp 2 (QĐ 3280/QĐ-BYT, 09/09/2011) › V. PHÒNG BỆNH\nMetformin còn là thuốc được khuyến cáo lựa chọn dùng điều trị người đái tháo đường có thừa\ncân, béo phì, để duy trì hoặc làm giảm cân nặng, thuốc còn có tác dụng có lợi đến giảm lipid\nmáu. [2]\n- Bị tiền đái tháo đường có cần phải uống thuốc không? › 3. [3]\n- Bị tiền đái tháo đường có cần phải uống thuốc không? › 3. [4]\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "consult"
+   ]
+  },
+  {
+   "group": "TC-23",
+   "turn": 1,
+   "text": "Cách chữa ung thư phổi?",
+   "seconds": 0.0,
+   "tool_s": 0.0,
+   "stage": "out_of_scope",
+   "intent": "out_of_scope",
+   "error": "thiếu ['chưa có đủ thông tin']",
+   "reply": "Xin lỗi, tôi chỉ hỗ trợ các câu hỏi liên quan đến bệnh đái tháo đường (tiểu đường). Anh/chị có thể hỏi về triệu chứng, xét nghiệm, điều trị hoặc mô tả tình trạng của mình.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "out_of_scope"
+   ]
+  },
+  {
+   "group": "TC-34",
+   "turn": 1,
+   "text": "Tôi đường huyết 25 mmol/L, đang buồn nôn, thở dốc",
+   "seconds": 0.01,
+   "tool_s": 0.003,
+   "stage": "emergency",
+   "intent": "emergency",
+   "error": null,
+   "reply": "Các dấu hiệu bạn mô tả có thể là biến chứng cấp tính của đái tháo đường cần được cấp cứu. Hãy gọi 115 hoặc đến cơ sở y tế gần nhất NGAY. Không tự điều trị tại nhà.\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.",
+   "probs": {},
+   "path": [
+    "nlu",
+    "router",
+    "emergency"
+   ]
+  }
+ ]
+}

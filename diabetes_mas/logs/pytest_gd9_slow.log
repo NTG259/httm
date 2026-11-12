@@ -1,0 +1,8 @@
+.........x.                                                              [100%]
+============================= slowest 5 durations =============================
+1298.74s call     tests/e2e/test_dialogs.py::test_tc35_test_split_never_exceeds_t_max_or_repeats_questions
+52.95s call     tests/e2e/test_train_repro.py::test_tc46_short_hrl_training_is_reproducible
+30.59s call     tests/e2e/test_dialogs.py::test_tc30_story1_classic_symptoms_asks_labs_early
+8.60s call     tests/e2e/test_dialogs.py::test_tc31_pregnant_fasting_5_3_is_gestational
+8.54s call     tests/e2e/test_dialogs.py::test_tc32_young_autoimmune_weight_loss_is_type1
+10 passed, 192 deselected, 1 xfailed in 1440.87s (0:24:00)
