@@ -123,6 +123,30 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 **Lưu ý Story 1 · 5 (lỗi `07` §6 #15):** lần chạy 20:10 Qwen viết "HbA1c của bạn là **7,4%**" (người dùng gõ 7,1). Đã thêm `consult.numbers_ok` ⇒ câu có số lạ bị loại, dùng template; lần chạy 20:16 lượt này ra đúng template như chế độ không LLM.
 
+#### 2.6.1 Chạy thử sau đóng băng (22:05–22:14, code `demo-freeze` = `27b280e`, Qwen)
+
+Điều kiện: uvicorn vừa khởi động lại; RAM trống 3,0 GB lúc bắt đầu và **0,7 GB** lúc chạy lần 2 (PyCharm 1,6 GB, Chrome vẫn mở). Có hai lần chạy:
+
+- **(a) Giao diện web thật:** Chrome headless (puppeteer) gõ từng câu vào `http://localhost:8000`, ô "Dùng LLM" được chọn. **Cố ý không làm nóng.**
+- **(b) API:** chạy `scripts/rehearse_demo.py`, có làm nóng 10,4 s. Kết quả ở `logs/rehearsal_llm_2214.json`.
+
+| Bước | (a) Web, chưa làm nóng (s) | (b) API, đã làm nóng (s) | T-04 ở (b) (s) | Kết quả |
+|---|---|---|---|---|
+| Story 1 · 1 | 14,0 | 5,8 | — | ✅ hỏi tuổi |
+| Story 1 · 2–4 | 2,7 / 2,5 / 2,6 | 2,6 / 2,4 / 2,6 | — | ✅ hỏi chiều cao/cân nặng → giới tính → HbA1c |
+| Story 1 · 5 | **34,4** (T-04 **26,1**) | 14,1 | 6,5 | ✅ ĐTĐ típ 2 63 %, HbA1c = 7,1 (VMC-0002), DL 100 % |
+| TC-20 | 22,9 | 21,7 | 6,5 | ✅ có `[n]` |
+| TC-22 | 14,2 | 13,4 | 6,4 | ✅ có `[n]` |
+| TC-23 | 4,6 | 4,5 | — | ✅ từ chối phạm vi |
+| TC-34 | 3,2 | 3,0 | — | ✅ cảnh báo cấp cứu, gọi 115 |
+| **Tổng** | **101,2** | **70,1** | | 9/9 ở cả hai lần; web không có lỗi console hay HTTP ≥ 400 |
+
+Kết luận:
+
+- Giao diện mới chạy đúng với Qwen. Panel xác suất, slot, luồng agent, tool call và nguồn đều hiển thị.
+- **Lần gọi T-04 đầu tiên sau khi khởi động uvicorn mất khoảng 26 s** (nạp bge-m3). Vì vậy **bắt buộc làm nóng (§0.2)** sau mỗi lần khởi động lại server. Nếu không, lượt kết luận Story 1 sẽ vượt ngưỡng 30 s ở §3.
+- Chất lượng câu Qwen ở TC-20: có ý lặp lại (HbA1c > 6,5 % xuất hiện nhiều lần). Mọi ý vẫn có `[n]` và không có số lạ.
+
 ## 3. Phương án dự phòng
 
 | Sự cố | Dấu hiệu | Xử lý |

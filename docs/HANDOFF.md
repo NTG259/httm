@@ -129,8 +129,9 @@ Môi trường:
 - [x] Độ trễ đo lại khi máy rảnh: p95 11,6 s (LLM trung vị 4,2 s) — không đạt ≤ 5 s, ghi 08 §4.2, §7.
 - [x] `eval_report` bản cuối (17:21) → `experiments/eval/report.md`, 08 §4.4.
 - [x] Ảnh minh họa trong `docs/assets/`: `arch_1/2.png`, `kb_schema.png`, `kb_dtd_tip2.png` (`devtools/plot_kb`), `demo_story1/tuvan/capcuu.png` (`scripts/shots.js`, chế độ không LLM). Ảnh Neo4j Browser thật: người dùng tự chụp nếu cần (cần đăng nhập).
-- [x] Chạy thử có bấm giờ qua API, cả Qwen và không LLM (09 §2.6). [ ] Chạy lại trên giao diện web mới.
-- [ ] **21:30 đóng băng code** → chạy thử trên web, video dự phòng. Sao lưu ✅ (git `ccf62ce`, `backups/neo4j.dump`).
+- [x] Chạy thử có bấm giờ qua API, cả Qwen và không LLM (09 §2.6).
+- [x] Chạy lại trên giao diện web mới với Qwen (22:05, sau khi đóng băng, 09 §2.6.1). Kết quả 9/9, không có lỗi console. Nếu **không làm nóng**, lượt kết luận Story 1 mất 34 s, trong đó T-04 lần đầu là 26 s ⇒ phải làm nóng sau mỗi lần khởi động lại uvicorn.
+- [x] **Đóng băng code** 21:51 (`27b280e`, tag `demo-freeze`). Sao lưu ✅ (git, `backups/neo4j.dump`). [ ] Video dự phòng.
 - [ ] Sáng 06:00: tắt ứng dụng nặng (cả Codex), chạy `scripts/rehearse_demo.py` đo lại thời gian (T-04 ~6,4 s mỗi lần gọi khi RAM thiếu — 08 §7).
 - Không làm (ghi ở 08 §7): HRL − entropy, D2 LR, faithfulness đầy đủ, TC-21, hỏi "có mang thai không" trong intake, `review_queue`.
 - E2E Qwen 0,750 đo **trước** khi sửa `nlu.DURATION`; chạy lại nếu còn thời gian (~40 phút, `run_dialogs --n 20 --llm --resume`).
