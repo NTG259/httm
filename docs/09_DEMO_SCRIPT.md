@@ -7,9 +7,10 @@
 > **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ✅ Đã chạy thử có bấm giờ qua API cả hai chế độ (§2.6). ✅ Đã chạy thử trên giao diện web mới với Qwen (§2.6.1, §2.5). ⏳ Còn quay video dự phòng.
 >
 > **Giao diện trình diễn (22:30, theo yêu cầu người dùng):**
-> - Ô "Dùng LLM" và khung "Phân tích lượt vừa rồi" (luồng agent + bảng tool call) được ẩn. LLM luôn bật.
-> - **Nhấp vào tên "Diabetes MAS"** ở góc trái trên để hiện lại cả hai; nhấp lần nữa để ẩn.
-> - Nhãn giao diện và lời chat hiển thị "Đái tháo đường Loại 2" thay cho "ĐTĐ típ 2". Panel **Nguồn trích dẫn** (nay là khung riêng, luôn hiện) giữ **nguyên văn** nguồn, nên vẫn ghi "típ".
+> - Mặc định chỉ hiện: khung chat, xác suất 5 lớp, **Nguy cơ DL** và **Thông tin đã ghi nhận**. LLM luôn bật.
+> - Bị ẩn: ô "Dùng LLM", chỉ số **Lượt hỏi / Entropy / Policy**, khung **Nguồn trích dẫn** và khung "Phân tích lượt vừa rồi" (luồng agent + bảng tool call). Cập nhật 22:50: ẩn thêm nguồn và ba chỉ số này.
+> - **Nhấp vào tên "Diabetes MAS"** ở góc trái trên để hiện lại tất cả; nhấp lần nữa để ẩn.
+> - Nhãn giao diện và lời chat hiển thị "Đái tháo đường Loại 2" thay cho "ĐTĐ típ 2". Panel nguồn giữ **nguyên văn** nguồn, nên vẫn ghi "típ".
 > - Backend, API và log không đổi.
 
 ---
@@ -62,7 +63,7 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 | 6 | 2′ | Đa agent phân cấp: Main + 4 Work-Agent, reward entropy, luật điều phối "chưa có xét nghiệm thì chưa kết luận" | Giải thích kiến trúc đa agent | `02_AGENT_DESIGN.md` mục 1–2, 6 |
 | 7 | 2′ | Demo tư vấn: TC-20, TC-22, TC-23 (§2.2) | Demo KB + RAG | Web demo, mở panel "nguồn" và "tool call" |
 | 8 | 1′ | RAG giao tiếp với KB: liên kết thực thể → graph fact → vector + chunk MENTIONS → `enough` | Cơ chế RAG ↔ KB | `06_KB_RAG_INTEGRATION.md` mục 2 + `08_EVALUATION.md` §3 (biểu đồ ngưỡng) |
-| 9 | 2′ | Demo chẩn đoán: Story 1 (§2.1), rồi ca cấp cứu (§2.3) | Demo end-to-end | Web demo, chỉ bảng slot, xác suất, entropy (khung "Chỉ số đánh giá"), log tool (**nhấp "Diabetes MAS"** để hiện bảng tool call, có dòng T-15) |
+| 9 | 2′ | Demo chẩn đoán: Story 1 (§2.1), rồi ca cấp cứu (§2.3) | Demo end-to-end | Web demo, chỉ bảng slot và xác suất. **Nhấp "Diabetes MAS"** để hiện entropy, lượt hỏi, policy, nguồn và log tool (bảng tool call có dòng T-15) |
 | 10 | 1′ | Mô hình: layer, epoch, đường học, bảng baseline | Mô hình bổ sung | `09_MODEL_NOTES.md`, `08_EVALUATION.md` §4 (`assets/curve_hrl.png`) |
 
 ## 2. Câu nói mẫu và phản hồi đã chạy thử
@@ -108,9 +109,9 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 | Ảnh | Nội dung |
 |---|---|
-| `assets/demo_story1.png` | Story 1, giao diện trình diễn. Bên trái là khung chat, kết luận "Đái tháo đường Loại 2 (63%)". Bên phải gồm: **Chỉ số đánh giá** (xác suất 5 lớp — Loại 2 63 %, Loại 1 37 %; lượt hỏi 1/12; entropy 0,66; nguy cơ DL 100 %; policy `hrl_dqn`), **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %) và **Nguồn trích dẫn** [1]–[10] (nguyên văn) |
-| `assets/demo_story1_chitiet.png` | Cùng Story 1 sau khi nhấp "Diabetes MAS". Hiện thêm ô "Dùng LLM" và khung **Phân tích lượt vừa rồi**: luồng `nlu → router → tracker → main`, bảng tool call có T-08, **T-15**, T-03, T-04, T-09 |
-| `assets/demo_tuvan.png` | TC-20 (`?llm=0`): tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec), panel nguồn |
+| `assets/demo_story1.png` | Story 1, giao diện trình diễn. Bên trái là khung chat, kết luận "Đái tháo đường Loại 2 (63%)". Bên phải gồm: **Chỉ số đánh giá** (xác suất 5 lớp — Loại 2 63 %, Loại 1 37 %; nguy cơ DL 100 %) và **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %) |
+| `assets/demo_story1_chitiet.png` | Cùng Story 1 sau khi nhấp "Diabetes MAS". Hiện thêm:<br>– ô "Dùng LLM";<br>– lượt hỏi 1/12, entropy 0,66, policy `hrl_dqn`;<br>– **Nguồn trích dẫn** [1]–[10] (nguyên văn);<br>– **Phân tích lượt vừa rồi**: luồng `nlu → router → tracker → main`, bảng tool call có T-08, **T-15**, T-03, T-04, T-09 |
+| `assets/demo_tuvan.png` | TC-20 (`?llm=0`): tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec). Danh sách nguồn ẩn, nhấp tên để xem |
 | `assets/demo_capcuu.png` | TC-34: cảnh báo cấp cứu (khung đỏ) ngay lượt đầu; slot Buồn nôn, Thở nhanh, Đường huyết bất kỳ 25 mmol/L; T-09 `RED FLAG` |
 | `assets/kb_dtd_tip2.png`, `assets/kb_schema.png` | Thay ảnh Neo4j Browser nếu không mở được (vẽ từ dữ liệu Neo4j thật, `devtools/plot_kb`) |
 

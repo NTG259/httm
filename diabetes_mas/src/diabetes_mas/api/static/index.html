@@ -215,6 +215,9 @@
   td:last-child,th:last-child { text-align:right; white-space:nowrap; }
   .table-empty { color:var(--muted); text-align:center!important; }
   [hidden] { display:none !important; }
+  /* Bản trình diễn: phần kỹ thuật chỉ hiện khi nhấp "Diabetes MAS" (body.show-details) */
+  body:not(.show-details) .detail-only { display:none !important; }
+  body:not(.show-details) #kv .metric { grid-column:1/-1; }
   details { margin-top:14px; padding-top:13px; border-top:1px solid var(--line); }
   .sources-card details { margin-top:0; padding-top:0; border-top:0; }
   summary { color:#405564; font-size:12px; font-weight:650; cursor:pointer; }
@@ -268,7 +271,7 @@
         <span class="health-dot" aria-hidden="true"></span>
         <span class="health-label">Đang kiểm tra</span>
       </span>
-      <label class="toggle" id="llmToggle" title="Bật hoặc tắt mô hình ngôn ngữ" hidden>
+      <label class="toggle detail-only" id="llmToggle" title="Bật hoặc tắt mô hình ngôn ngữ">
         <input type="checkbox" id="useLlm" aria-label="Dùng LLM" checked>
         <span>Dùng LLM</span>
       </label>
@@ -335,13 +338,13 @@
       </div>
       <div id="slots" class="empty-state">Chưa ghi nhận thông tin nào.</div>
     </section>
-    <section class="card side-card sources-card" aria-labelledby="sources-title">
+    <section class="card side-card sources-card detail-only" id="sourcesCard" aria-labelledby="sources-title">
       <details>
         <summary id="sources-title">Nguồn trích dẫn</summary>
         <div id="sources">Chưa có nguồn trích dẫn.</div>
       </details>
     </section>
-    <section class="card side-card activity-card" id="activityCard" aria-labelledby="activity-title" hidden>
+    <section class="card side-card activity-card detail-only" id="activityCard" aria-labelledby="activity-title">
       <div class="section-heading">
         <div>
           <h2 id="activity-title">Phân tích lượt vừa rồi</h2>
@@ -534,18 +537,20 @@ function render(result) {
       );
     }).join("");
   }
+  // [nhãn, giá trị, cảnh báo, chỉ hiện ở chế độ chi tiết]
   const metrics = [
-    ["Lượt hỏi",state.turn + "/" + state.T_max],
-    ["Entropy",state.entropy],
-    ["Policy",result.policy]
+    ["Lượt hỏi",state.turn + "/" + state.T_max,false,true],
+    ["Entropy",state.entropy,false,true],
+    ["Policy",result.policy,false,true]
   ];
   if (state.risk_dl != null) {
-    metrics.splice(2,0,["Nguy cơ DL",(state.risk_dl*100).toFixed(0) + "%" + (state.dl_conflict ? " · Mâu thuẫn luật" : ""),state.dl_conflict]);
+    metrics.splice(2,0,["Nguy cơ DL",(state.risk_dl*100).toFixed(0) + "%" + (state.dl_conflict ? " · Mâu thuẫn luật" : ""),state.dl_conflict,false]);
   }
-  $("kv").innerHTML = metrics.map(([label,value,bad]) =>
-    '<div class="metric"><span class="metric-label">' + esc(label) + '</span><strong class="metric-value' +
-    (bad ? " bad" : "") + '">' + esc(value) + '</strong></div>'
+  $("kv").innerHTML = metrics.map(([label,value,bad,detail]) =>
+    '<div class="metric' + (detail ? " detail-only" : "") + '"><span class="metric-label">' + esc(label) +
+    '</span><strong class="metric-value' + (bad ? " bad" : "") + '">' + esc(value) + '</strong></div>'
   ).join("");
+  $("kv").classList.toggle("detail-only",metrics.every((m) => m[3]));
   $("kv").hidden = false;
   renderSlots(state.slots);
   const path = (result.path || []).map((item,index) =>
@@ -613,13 +618,12 @@ $("form").addEventListener("submit",async (event) => {
   }
 });
 
-// Bản trình diễn: ẩn ô "Dùng LLM" (mặc định bật) và khung "Phân tích lượt vừa rồi".
+// Bản trình diễn: ẩn (class detail-only) ô "Dùng LLM" (mặc định bật), khung "Phân tích lượt vừa rồi",
+// khung "Nguồn trích dẫn" và chỉ số Lượt hỏi / Entropy / Policy; chỉ còn xác suất, Nguy cơ DL, slot.
 // Hiện lại cả hai: nhấp vào tên "Diabetes MAS" (nhấp lần nữa để ẩn) hoặc mở URL có ?chitiet.
 // Dự phòng tắt LLM: mở http://localhost:8000/?llm=0 (hoặc hiện ô rồi bỏ chọn).
 function toggleDetails(force) {
-  const show = force === undefined ? $("activityCard").hidden : force;
-  $("activityCard").hidden = !show;
-  $("llmToggle").hidden = !show;
+  document.body.classList.toggle("show-details",force);
 }
 const params = new URLSearchParams(window.location.search);
 if (params.get("llm") === "0") $("useLlm").checked = false;
