@@ -47,7 +47,8 @@ NUM = r"(\d+(?:[.,]\d+)?)"
 # Cụm thời gian (đã norm_key: không dấu, chữ thường) — không phải giá trị xét nghiệm: "2 giờ", "2h", "30 phút", "28 tuần"
 DURATION = re.compile(r"\d+(?:[.,]\d+)?\s*(?:gio|h|tieng|phut|ngay|tuan|thang|nam)\b")
 LEAD = re.compile(r"^(?:(?:da|vang|thua bac si|bac si|toi|em|minh|chau|con)\W*\s*)+")
-CLAUSE = re.compile(r"[,.;!?\n]|\s(?:nhung|ma|con)\s")
+# Dấu phẩy/chấm giữa hai chữ số là dấu thập phân ("7,1%", "5,3 mmol/L"), không phải ranh giới mệnh đề
+CLAUSE = re.compile(r"(?<!\d)[,.]|[,.](?!\d)|[;!?\n]|\s(?:nhung|ma|con)\s")
 
 
 def _f(x: str) -> float:

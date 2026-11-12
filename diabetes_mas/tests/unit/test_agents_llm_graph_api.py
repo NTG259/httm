@@ -95,6 +95,35 @@ def test_nlu_glucose_mg_dl_is_converted_and_time_number_ignored():
     assert s["GLUCOSE_DOI"].value == pytest.approx(7.0)
 
 
+def test_nlu_decimal_comma_is_not_a_clause_boundary():
+    assert nlu._clauses("HbA1c tháng trước 7,1%.") == ["hba1c thang truoc 7,1%"]
+    assert nlu._clauses("đường huyết 5,3, không khát nước") == ["duong huyet 5,3", "khong khat nuoc"]
+
+
+# Nguyên văn câu người dùng trong docs/09_DEMO_SCRIPT.md (§2.1 Story 1, §2.3 cấp cứu, §2.4 thai kỳ)
+@pytest.mark.parametrize("text,last,expected", [
+    ("Dạo này tôi khát nước suốt, đi tiểu nhiều, sụt 3 kg trong tháng.", None,
+     {"uong_nhieu": "yes", "tieu_nhieu": "yes", "sut_can": "yes"}),
+    ("Tôi 52 tuổi.", "tuoi", {"tuoi": 52}),
+    ("Tôi cao 1m65, nặng 78 kg.", "bmi", {"bmi": 28.7}),
+    ("Tôi là nam.", "gioi_tinh", {"gioi_tinh": "nam"}),
+    ("HbA1c tháng trước 7,1%.", "HBA1C", {"HBA1C": 7.1}),
+    ("HbA1c tháng trước 7,1%.", None, {"HBA1C": 7.1}),
+    ("Tôi đường huyết 25 mmol/L, đang buồn nôn, thở dốc", None,
+     {"GLUCOSE_BAT_KY": 25.0, "buon_non": "yes", "tho_nhanh": "yes"}),
+    ("Tôi đang mang thai 28 tuần, đường huyết lúc đói 5,3 mmol/L, có bị tiểu đường thai kỳ không?", None,
+     {"dang_mang_thai": "yes", "GLUCOSE_DOI": 5.3}),
+    ("đường huyết lúc đói 126 mg/dL", None, {"GLUCOSE_DOI": 7.0}),
+    ("HbA1c 6,5%, không khát nước", None, {"HBA1C": 6.5, "uong_nhieu": "no"}),
+    ("Không ạ", "it_van_dong", {"it_van_dong": "no"}),
+])
+def test_nlu_demo_script_sentences(text, last, expected):
+    s = nlu.understand(text, last_slot=last, use_llm=False).slots
+    for sid, want in expected.items():
+        got = s[sid].status if want in ("yes", "no") else s[sid].value
+        assert got == (pytest.approx(want) if isinstance(want, float) else want), sid
+
+
 @pytest.mark.parametrize("text,last,expected", [
     ("Dạ, tôi không ạ", "it_van_dong", SlotValue(status="no")),
     ("có", "it_van_dong", SlotValue(status="yes")),
