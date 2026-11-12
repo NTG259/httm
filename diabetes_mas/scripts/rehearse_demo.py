@@ -30,6 +30,17 @@ def _slot(sid, val):
     return chk
 
 
+def _hba1c_only(*vals):
+    """Số thập phân đứng sau "HbA1c" chỉ được là giá trị người dùng gõ hoặc ngưỡng (P-06 từng bịa 7,4)."""
+    import re
+
+    def chk(r):
+        bad = [m for m in re.findall(r"hba1c[^\d\n]{0,40}?(\d+[.,]\d+)", r["reply"].lower())
+               if float(m.replace(",", ".")) not in vals]
+        return f"HbA1c lạ {bad}" if bad else None
+    return chk
+
+
 def _all(*chks):
     def chk(r):
         errs = [e for c in chks if (e := c(r))]
@@ -43,11 +54,12 @@ SCRIPT = [
         ("Tôi 52 tuổi.", _slot("tuoi", 52)),
         ("Tôi cao 1m65, nặng 78 kg.", _slot("bmi", 28.7)),
         ("Tôi là nam.", None),
-        ("HbA1c tháng trước 7,1%.", _all(_slot("HBA1C", 7.1), _has("típ 2"))),
+        ("HbA1c tháng trước 7,1%.", _all(_slot("HBA1C", 7.1), _has("típ 2"), _hba1c_only(7.1, 6.5))),
     ]),
     ("TC-20", [("Tiêu chuẩn chẩn đoán tiểu đường là gì?", _has("["))]),
     ("TC-22", [("Metformin có tác dụng phụ gì?", _has("metformin", "["))]),
-    ("TC-23", [("Cách chữa ung thư phổi?", _has("chưa có đủ thông tin"))]),
+    # Router chặn bằng luật (out_of_scope) trước khi tới RAG ⇒ câu từ chối phạm vi, không phải "chưa có đủ thông tin"
+    ("TC-23", [("Cách chữa ung thư phổi?", _has("chỉ hỗ trợ"))]),
     ("TC-34", [("Tôi đường huyết 25 mmol/L, đang buồn nôn, thở dốc", _has("115"))]),
 ]
 

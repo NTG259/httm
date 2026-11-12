@@ -449,6 +449,27 @@ def test_explain_ok_rejects_dropped_negation():
     assert not consult.explain_ok("Không mắc đái tháo đường (70%) [1].", name, "54%")
 
 
+def test_numbers_ok_rejects_hallucinated_lab_value():
+    """GĐ 9 chạy thử (logs/rehearsal_llm_2011.json): người dùng gõ 7,1 nhưng P-06 viết 7,4%."""
+    from diabetes_mas.agents.state import Turn
+    from diabetes_mas.tools.schemas import CriterionHit
+    st = session.get_or_create("s-num")
+    st.history.append(Turn(speaker="user", text="HbA1c tháng trước 7,1%."))
+    st.slots["HBA1C"] = SlotValue(status="yes", value=7.1)
+    st.slots["bmi"] = SlotValue(status="yes", value=28.7)
+    h = CriterionHit(disease_id="DTD", criterion_id="CRIT_DTD_HBA1C", test_id="HBA1C", value=7.1,
+                     rule="HBA1C > 6.5 %", source_id="VMC-0002")
+    ok = consult.allowed_numbers("s-num", {"DTD_TIP2": 0.63, "DTD_TIP1": 0.37}, [h])
+    bad = ("Theo kết luận sơ bộ, bạn có nguy cơ mắc bệnh đái tháo đường típ 2 là 63% và nguy cơ mắc đái tháo "
+           "đường típ 1 là 37%. Căn cứ vào thông tin bạn cung cấp, bao gồm việc uống nhiều, tiểu nhiều, sụt cân "
+           "không rõ nguyên nhân, tuổi, chỉ số BMI, giới tính và HbA1c (7,1%), chúng tôi xác định rằng HbA1c của "
+           "bạn là 7,4%, vượt ngưỡng chẩn đoán 6,5% [1].")
+    assert not consult.numbers_ok(bad, ok)
+    good = ("Kết luận sơ bộ: đái tháo đường típ 2 (63%), típ 1 37%. HbA1c 7,1% vượt ngưỡng 6,5% [1]; "
+            "BMI 28,7 kg/m2; glucose lúc đói ≥ 7,0 mmol/L hoặc ≥ 126 mg/dL cũng là tiêu chuẩn [2].")
+    assert consult.numbers_ok(good, ok)
+
+
 def test_explain_wrong_conclusion_falls_back_to_template(monkeypatch):
     use_llm(monkeypatch, "Khả năng mắc đái tháo đường là 54% [1].", "Khả năng mắc đái tháo đường là 54% [1].")
     a = consult.explain("s-exp", "KHONG_DTD", {"KHONG_DTD": 0.54, "TIEN_DTD": 0.39}, [], ["tuoi"])

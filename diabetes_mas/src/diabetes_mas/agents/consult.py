@@ -156,6 +156,47 @@ def explain_ok(text: str, top1_name: str, prob_txt: str) -> bool:
     return top1_name.lower() in low and prob_txt.replace("%", "") in low
 
 
+MEASURE = re.compile(r"(\d+(?:[.,]\d+)?)\s*(?:%|mmol|mg|kg)")
+_NUM = re.compile(r"\d+(?:[.,]\d+)?")
+
+
+def _nums(text: str) -> set[float]:
+    return {float(x.replace(",", ".")) for x in _NUM.findall(text)}
+
+
+def _criteria_numbers() -> set[float]:
+    """Ngưỡng tiêu chuẩn trong KB (value, value_max và số trong câu trích, vd. 126 mg/dl)."""
+    from diabetes_mas.config import SEED_DIR
+    try:
+        return _nums((SEED_DIR / "criteria.csv").read_text(encoding="utf-8").split("\n", 1)[1])
+    except OSError:
+        return set()
+
+
+def allowed_numbers(session_id: str, probs: dict[str, float], rule_hits: list[CriterionHit]) -> set[float]:
+    """Số được phép xuất hiện kèm đơn vị trong P-06: giá trị đã thu thập, số người dùng gõ, xác suất, ngưỡng."""
+    from diabetes_mas.tools import session
+
+    st = session.get_or_create(session_id)
+    ok = {float(v.value) for v in st.slots.values() if isinstance(v.value, (int, float))}
+    for t in st.history:
+        if t.speaker == "user":
+            ok |= _nums(t.text)
+    ok |= {round(p * 100) for p in probs.values()}
+    for h in rule_hits:
+        ok |= {h.value} | _nums(h.rule)
+    return ok | _criteria_numbers()
+
+
+def numbers_ok(text: str, allowed: set[float]) -> bool:
+    """Chạy thử GĐ 9: Qwen viết "HbA1c của bạn là 7,4%" khi người dùng gõ 7,1 ⇒ số lạ kèm đơn vị thì dùng template."""
+    for m in MEASURE.finditer(text.lower()):
+        v = float(m.group(1).replace(",", "."))
+        if not any(abs(v - a) < 0.051 for a in allowed):
+            return False
+    return True
+
+
 def explain(session_id: str, top1: str, probs: dict[str, float], rule_hits: list[CriterionHit],
             evidence_slots: list[str], risk_dl: float | None = None, dl_conflict: bool = False,
             use_llm: bool = True) -> Answer:
@@ -195,6 +236,8 @@ def explain(session_id: str, top1: str, probs: dict[str, float], rule_hits: list
     prob_txt = f"{probs.get(top1, 0):.0%}"
     if out and not explain_ok(out, name, prob_txt):
         out = None                                       # sai kết luận / xác suất ⇒ dùng template
+    if out and not numbers_ok(out, allowed_numbers(session_id, probs, rule_hits)):
+        out = None                                       # bịa giá trị xét nghiệm ⇒ dùng template
     if out and risk_dl is not None:
         out += f"\n\nMô hình học sâu (tham khảo): nguy cơ {risk_dl:.0%}" + \
                (" — mâu thuẫn với tiêu chuẩn chẩn đoán; ưu tiên tiêu chuẩn." if dl_conflict else ".")
