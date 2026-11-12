@@ -124,7 +124,7 @@ Môi trường:
 - **Giao diện trình diễn (22:30, sau đóng băng, người dùng yêu cầu trực tiếp, đã báo phiên quản lý; chỉ sửa `index.html`):**
   - Ẩn ô "Dùng LLM" (LLM luôn bật) và khung "Phân tích lượt vừa rồi".
   - **Nhấp "Diabetes MAS"** để hiện hoặc ẩn lại. `?llm=0` để tắt LLM, `?chitiet` để mở sẵn khung chi tiết.
-  - "Nguồn trích dẫn" tách thành khung riêng. Cập nhật 22:50: khung này cùng chỉ số Lượt hỏi / Entropy / Policy cũng được ẩn (class `detail-only`). Mặc định chỉ còn xác suất, Nguy cơ DL và slot. Cập nhật 23:00: ô slot "Bệnh tự miễn khác" (`benh_tu_mien`, đôi khi hiện "unknown") cũng chỉ hiện ở chế độ chi tiết.
+  - "Nguồn trích dẫn" tách thành khung riêng. Cập nhật 22:50: khung này cùng chỉ số Lượt hỏi / Entropy / Policy cũng được ẩn (class `detail-only`). Mặc định chỉ còn xác suất, Nguy cơ DL (nhãn đổi thành "Nguy cơ ước tính" lúc 23:10) và slot. Cập nhật 23:00: ô slot "Bệnh tự miễn khác" (`benh_tu_mien`, đôi khi hiện "unknown") cũng chỉ hiện ở chế độ chi tiết.
   - Nhãn và lời chat đổi "ĐTĐ" thành "Đái tháo đường", "típ" thành "Loại"; panel nguồn giữ nguyên văn.
   - Kiểm tra trên Chrome: mọi mục OK, gồm cả request `use_llm=false` khi mở `?llm=0`. `test_web_ui` 2 passed.
   - Ảnh `demo_story1/_chitiet/tuvan/capcuu.png` chụp lại (09 §2.5).

@@ -7,7 +7,7 @@
 > **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ✅ Đã chạy thử có bấm giờ qua API cả hai chế độ (§2.6). ✅ Đã chạy thử trên giao diện web mới với Qwen (§2.6.1, §2.5). ⏳ Còn quay video dự phòng.
 >
 > **Giao diện trình diễn (22:30, theo yêu cầu người dùng):**
-> - Mặc định chỉ hiện: khung chat, xác suất 5 lớp, **Nguy cơ DL** và **Thông tin đã ghi nhận**. LLM luôn bật.
+> - Mặc định chỉ hiện: khung chat, xác suất 5 lớp, **Nguy cơ ước tính** (nguy cơ DL của AG-13, đổi tên lúc 23:10) và **Thông tin đã ghi nhận**. LLM luôn bật.
 > - Bị ẩn: ô "Dùng LLM", chỉ số **Lượt hỏi / Entropy / Policy**, khung **Nguồn trích dẫn**, ô slot "Bệnh tự miễn khác" và khung "Phân tích lượt vừa rồi" (luồng agent + bảng tool call). Cập nhật 22:50: ẩn thêm nguồn và ba chỉ số này. Cập nhật 23:00: ẩn thêm ô "Bệnh tự miễn khác", vì ô này đôi khi hiện giá trị thô "unknown".
 > - **Nhấp vào tên "Diabetes MAS"** ở góc trái trên để hiện lại tất cả; nhấp lần nữa để ẩn.
 > - Nhãn giao diện và lời chat hiển thị "Đái tháo đường Loại 2" thay cho "ĐTĐ típ 2". Panel nguồn giữ **nguyên văn** nguồn, nên vẫn ghi "típ".
@@ -109,7 +109,7 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 | Ảnh | Nội dung |
 |---|---|
-| `assets/demo_story1.png` | Story 1, giao diện trình diễn. Bên trái là khung chat, kết luận "Đái tháo đường Loại 2 (63%)". Bên phải gồm: **Chỉ số đánh giá** (xác suất 5 lớp — Loại 2 63 %, Loại 1 37 %; nguy cơ DL 100 %) và **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %) |
+| `assets/demo_story1.png` | Story 1, giao diện trình diễn. Bên trái là khung chat, kết luận "Đái tháo đường Loại 2 (63%)". Bên phải gồm: **Chỉ số đánh giá** (xác suất 5 lớp — Loại 2 63 %, Loại 1 37 %; nguy cơ ước tính 100 %) và **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %) |
 | `assets/demo_story1_chitiet.png` | Cùng Story 1 sau khi nhấp "Diabetes MAS". Hiện thêm:<br>– ô "Dùng LLM";<br>– lượt hỏi 1/12, entropy 0,66, policy `hrl_dqn`;<br>– **Nguồn trích dẫn** [1]–[10] (nguyên văn);<br>– **Phân tích lượt vừa rồi**: luồng `nlu → router → tracker → main`, bảng tool call có T-08, **T-15**, T-03, T-04, T-09 |
 | `assets/demo_tuvan.png` | TC-20 (`?llm=0`): tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec). Danh sách nguồn ẩn, nhấp tên để xem |
 | `assets/demo_capcuu.png` | TC-34: cảnh báo cấp cứu (khung đỏ) ngay lượt đầu; slot Buồn nôn, Thở nhanh, Đường huyết bất kỳ 25 mmol/L; T-09 `RED FLAG` |

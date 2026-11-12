@@ -546,7 +546,7 @@ function render(result) {
     ["Policy",result.policy,false,true]
   ];
   if (state.risk_dl != null) {
-    metrics.splice(2,0,["Nguy cơ DL",(state.risk_dl*100).toFixed(0) + "%" + (state.dl_conflict ? " · Mâu thuẫn luật" : ""),state.dl_conflict,false]);
+    metrics.splice(2,0,["Nguy cơ ước tính",(state.risk_dl*100).toFixed(0) + "%" + (state.dl_conflict ? " · Mâu thuẫn luật" : ""),state.dl_conflict,false]);
   }
   $("kv").innerHTML = metrics.map(([label,value,bad,detail]) =>
     '<div class="metric' + (detail ? " detail-only" : "") + '"><span class="metric-label">' + esc(label) +
@@ -621,7 +621,7 @@ $("form").addEventListener("submit",async (event) => {
 });
 
 // Bản trình diễn: ẩn (class detail-only) ô "Dùng LLM" (mặc định bật), khung "Phân tích lượt vừa rồi",
-// khung "Nguồn trích dẫn" và chỉ số Lượt hỏi / Entropy / Policy; chỉ còn xác suất, Nguy cơ DL, slot.
+// khung "Nguồn trích dẫn" và chỉ số Lượt hỏi / Entropy / Policy; chỉ còn xác suất, Nguy cơ ước tính (DL, AG-13), slot.
 // Hiện lại cả hai: nhấp vào tên "Diabetes MAS" (nhấp lần nữa để ẩn) hoặc mở URL có ?chitiet.
 // Dự phòng tắt LLM: mở http://localhost:8000/?llm=0 (hoặc hiện ô rồi bỏ chọn).
 function toggleDetails(force) {
