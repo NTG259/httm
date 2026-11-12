@@ -4,7 +4,13 @@
 > **Giai đoạn:** 9 · **Cập nhật:** 2026-11-12 (v2: chạy thử trên máy demo, Windows 11 / 16 GB RAM / chỉ CPU)
 > Tổng thời lượng dự kiến: 15 phút.
 
-> **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ✅ Đã chạy thử có bấm giờ qua API cả hai chế độ (§2.6). ⏳ Còn chạy thử trên giao diện web mới và quay video dự phòng.
+> **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ✅ Đã chạy thử có bấm giờ qua API cả hai chế độ (§2.6). ✅ Đã chạy thử trên giao diện web mới với Qwen (§2.6.1, §2.5). ⏳ Còn quay video dự phòng.
+>
+> **Giao diện trình diễn (22:30, theo yêu cầu người dùng):**
+> - Ô "Dùng LLM" và khung "Phân tích lượt vừa rồi" (luồng agent + bảng tool call) được ẩn. LLM luôn bật.
+> - **Nhấp vào tên "Diabetes MAS"** ở góc trái trên để hiện lại cả hai; nhấp lần nữa để ẩn.
+> - Nhãn giao diện và lời chat hiển thị "Đái tháo đường Loại 2" thay cho "ĐTĐ típ 2". Panel **Nguồn trích dẫn** (nay là khung riêng, luôn hiện) giữ **nguyên văn** nguồn, nên vẫn ghi "típ".
+> - Backend, API và log không đổi.
 
 ---
 
@@ -56,7 +62,7 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 | 6 | 2′ | Đa agent phân cấp: Main + 4 Work-Agent, reward entropy, luật điều phối "chưa có xét nghiệm thì chưa kết luận" | Giải thích kiến trúc đa agent | `02_AGENT_DESIGN.md` mục 1–2, 6 |
 | 7 | 2′ | Demo tư vấn: TC-20, TC-22, TC-23 (§2.2) | Demo KB + RAG | Web demo, mở panel "nguồn" và "tool call" |
 | 8 | 1′ | RAG giao tiếp với KB: liên kết thực thể → graph fact → vector + chunk MENTIONS → `enough` | Cơ chế RAG ↔ KB | `06_KB_RAG_INTEGRATION.md` mục 2 + `08_EVALUATION.md` §3 (biểu đồ ngưỡng) |
-| 9 | 2′ | Demo chẩn đoán: Story 1 (§2.1), rồi ca cấp cứu (§2.3) | Demo end-to-end | Web demo, chỉ bảng slot, xác suất, entropy, log tool |
+| 9 | 2′ | Demo chẩn đoán: Story 1 (§2.1), rồi ca cấp cứu (§2.3) | Demo end-to-end | Web demo, chỉ bảng slot, xác suất, entropy (khung "Chỉ số đánh giá"), log tool (**nhấp "Diabetes MAS"** để hiện bảng tool call, có dòng T-15) |
 | 10 | 1′ | Mô hình: layer, epoch, đường học, bảng baseline | Mô hình bổ sung | `09_MODEL_NOTES.md`, `08_EVALUATION.md` §4 (`assets/curve_hrl.png`) |
 
 ## 2. Câu nói mẫu và phản hồi đã chạy thử
@@ -91,12 +97,20 @@ Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://l
 
 "Tôi đang mang thai 28 tuần, đường huyết lúc đói 5,3 mmol/L, có bị tiểu đường thai kỳ không?" ⇒ hỏi tuổi, chiều cao/cân nặng (không hỏi giới tính), rồi **~6 câu triệu chứng/nguy cơ** (trả lời "Không ạ") ⇒ "Đái tháo đường thai kỳ (95%) … Glucose huyết tương lúc đói = 5,3 (ngưỡng ≥ 5,1 mmol/L, nguồn VMC-0003)". Giới hạn đã biết: ca thai kỳ cần nhiều lượt (`08` §7).
 
-### 2.5 Ảnh minh họa (chụp lại 2026-11-12 20:45 với giao diện mới, chế độ không LLM, `diabetes_mas/scripts/shots.js` bằng puppeteer: `NODE_PATH=<node_modules có puppeteer> node scripts/shots.js ../docs/assets --no-llm`)
+### 2.5 Ảnh minh họa (chụp lại 2026-11-12 22:35 với giao diện trình diễn)
+
+Ảnh chụp bằng Chrome headless (puppeteer, script kiểm tra ở scratchpad phiên này):
+
+- Story 1 chạy với Qwen.
+- TC-20 và TC-34 chạy với `?llm=0`.
+
+`scripts/shots.js` cũ bấm vào ô `#useLlm`, nay ô này đã ẩn. Vì vậy chỉ chạy được khi không truyền `--no-llm`.
 
 | Ảnh | Nội dung |
 |---|---|
-| `assets/demo_story1.png` | Story 1 (giao diện mới 20:45): khung chat bên trái; bên phải **Chỉ số đánh giá** (xác suất 5 lớp — típ 2 63 %, lượt hỏi 1/12, entropy 0,66, nguy cơ DL 100 %, policy `hrl_dqn`), **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %), **Phân tích lượt vừa rồi** (luồng `nlu → router → tracker → main`, bảng tool call có T-08, **T-15**, T-03, T-04, T-09) và **Nguồn trích dẫn** [1]–[10] |
-| `assets/demo_tuvan.png` | TC-20: 4 tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec), luồng `nlu → router → consult`, T-04 `enough=True`, panel nguồn |
+| `assets/demo_story1.png` | Story 1, giao diện trình diễn. Bên trái là khung chat, kết luận "Đái tháo đường Loại 2 (63%)". Bên phải gồm: **Chỉ số đánh giá** (xác suất 5 lớp — Loại 2 63 %, Loại 1 37 %; lượt hỏi 1/12; entropy 0,66; nguy cơ DL 100 %; policy `hrl_dqn`), **Thông tin đã ghi nhận** (slot: uống nhiều, tiểu nhiều, sụt cân, 52 tuổi, BMI 28,7, nam, HbA1c 7,1 %) và **Nguồn trích dẫn** [1]–[10] (nguyên văn) |
+| `assets/demo_story1_chitiet.png` | Cùng Story 1 sau khi nhấp "Diabetes MAS". Hiện thêm ô "Dùng LLM" và khung **Phân tích lượt vừa rồi**: luồng `nlu → router → tracker → main`, bảng tool call có T-08, **T-15**, T-03, T-04, T-09 |
+| `assets/demo_tuvan.png` | TC-20 (`?llm=0`): tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec), panel nguồn |
 | `assets/demo_capcuu.png` | TC-34: cảnh báo cấp cứu (khung đỏ) ngay lượt đầu; slot Buồn nôn, Thở nhanh, Đường huyết bất kỳ 25 mmol/L; T-09 `RED FLAG` |
 | `assets/kb_dtd_tip2.png`, `assets/kb_schema.png` | Thay ảnh Neo4j Browser nếu không mở được (vẽ từ dữ liệu Neo4j thật, `devtools/plot_kb`) |
 
@@ -151,14 +165,14 @@ Kết luận:
 
 | Sự cố | Dấu hiệu | Xử lý |
 |---|---|---|
-| **Qwen chậm / thiếu RAM** | Một lượt > 30 s, máy giật | **Chuyển chế độ không LLM**: trong web demo **bỏ chọn ô "Dùng LLM (Qwen)"** (gửi `use_llm: false`; `api/static/index.html`); hoặc gọi API trực tiếp: `curl -X POST localhost:8000/v1/sessions/<id>/messages -H "Content-Type: application/json" -d "{\"text\": \"…\", \"use_llm\": false}"`. Hệ chạy bằng luật + câu mẫu + trả lời trích xuất — kết luận, xác suất, nguồn không đổi (§2 chạy thử ở chế độ này) |
-| **Lượt kết luận ở chế độ Qwen nghi ngờ sai số liệu** | Câu giải thích có con số khác với số người dùng đã gõ | Bỏ chọn ô **"Dùng LLM"** trước khi gõ câu xét nghiệm cuối (Story 1 lượt 5): kết luận dùng template — đúng số, đúng nguồn, như §2.1. Hệ đã tự chặn số lạ có đơn vị (`numbers_ok`, `07` §6 #15) |
+| **Qwen chậm / thiếu RAM** | Một lượt > 30 s, máy giật | **Chuyển chế độ không LLM**. Trong web demo, ô "Dùng LLM" đang ẩn, có hai cách:<br>(1) Gõ địa chỉ **`http://localhost:8000/?llm=0`** rồi Enter. Trang mở phiên mới và gửi `use_llm: false`; đã thử thật lúc 22:35, request gửi `use_llm=false`.<br>(2) **Nhấp "Diabetes MAS"** để hiện ô, rồi bỏ chọn ô "Dùng LLM". Cách này giữ nguyên phiên đang chạy.<br>Cũng có thể gọi API trực tiếp: `curl -X POST localhost:8000/v1/sessions/<id>/messages -H "Content-Type: application/json" -d "{\"text\": \"…\", \"use_llm\": false}"`. Hệ chạy bằng luật + câu mẫu + trả lời trích xuất — kết luận, xác suất, nguồn không đổi (§2 chạy thử ở chế độ này) |
+| **Lượt kết luận ở chế độ Qwen nghi ngờ sai số liệu** | Câu giải thích có con số khác với số người dùng đã gõ | Nhấp **"Diabetes MAS"** rồi bỏ chọn ô **"Dùng LLM"** trước khi gõ câu xét nghiệm cuối (Story 1 lượt 5): kết luận dùng template — đúng số, đúng nguồn, như §2.1. Hệ đã tự chặn số lạ có đơn vị (`numbers_ok`, `07` §6 #15) |
 | Ollama tắt hẳn | `/v1/health` báo Ollama lỗi | Hệ tự dùng dự phòng (NLU/Router luật, NLG câu mẫu, Consult trích xuất) — không cần làm gì; nói rõ khi demo |
 | Neo4j lỗi | Câu tư vấn trả "Hệ thống tra cứu đang tạm gián đoạn" | `docker compose restart neo4j`, chờ healthcheck (~30 s). Còn hỏng: nạp dump `neo4j-admin database load` (⏳ tạo dump khi sao lưu) |
 | Web demo lỗi | Trang trắng / 500 | Chiếu log mẫu `logs/agent_runs/samples/demo-story1-chan-doan.md`, `demo-story3-tu-van.md`, `demo-story5-cap-cuu.md` hoặc video dự phòng |
 | Mất mạng | — | Không ảnh hưởng (chỉ AG-12 tìm web cần mạng; câu demo không cần) |
 
-`use_llm` mặc định `true` (ô được chọn sẵn). Thanh trạng thái trên web demo hiện `Neo4j ✓ · Ollama ✓ (qwen2.5:3b) · classifier ✓ · HRL ✓ · DL ✓` — kiểm tra trước khi bắt đầu.
+`use_llm` mặc định `true` (ô được chọn sẵn, đang ẩn; `?llm=0` để tắt). URL `?chitiet` mở sẵn khung chi tiết. Thanh trạng thái trên web demo hiện `Neo4j ✓ · Ollama ✓ (qwen2.5:3b) · classifier ✓ · HRL ✓ · DL ✓` — kiểm tra trước khi bắt đầu.
 
 ## 4. Câu hỏi giám khảo có thể hỏi
 
