@@ -1,0 +1,33 @@
+services:
+  neo4j:
+    image: neo4j:5-community
+    ports: ["127.0.0.1:7474:7474", "127.0.0.1:7687:7687"]   # chỉ máy này truy cập (mật khẩu demo yếu)
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Đặt NEO4J_PASSWORD trong .env}
+      KB_PASS: ${NEO4J_PASSWORD}                 # tên KHÔNG bắt đầu bằng NEO4J_ (Neo4j coi đó là config)
+      NEO4J_server_memory_heap_max__size: 1G
+      NEO4J_dbms_security_auth__minimum__password__length: "6"   # cho phép mật khẩu demo 123456
+    volumes:
+      - ./neo4j_data:/data
+      - ./kb:/import:ro
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p $${KB_PASS} 'RETURN 1' || exit 1"]
+      interval: 10s
+      retries: 12
+
+  ollama:
+    image: ollama/ollama
+    ports: ["11434:11434"]
+    volumes:
+      - ollama_models:/root/.ollama
+
+  searxng:
+    image: searxng/searxng
+    ports: ["127.0.0.1:${SEARXNG_PORT:-8888}:8080"]   # 8080 trên máy dev hay bị chiếm (httpd); đổi qua SEARXNG_PORT
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?Đặt SEARXNG_SECRET trong .env}
+    volumes:
+      - ./configs/searxng:/etc/searxng
+
+volumes:
+  ollama_models:

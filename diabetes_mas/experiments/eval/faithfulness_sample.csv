@@ -1,0 +1,21 @@
+id,grade,content_supported,citation_correct,note
+C002,minor,yes,partial,"Trả lời ≥ 6,5%; fact được dẫn [3] ghi > 6,5% (nguồn VMC-0002 ghi '>', ADA dùng '≥') — LLM dùng kiến thức ngoài context"
+C003,minor,yes,yes,"Gần nguyên văn VMC-0240; câu cuối đảo nghĩa: '3 ngày trước đó ăn 150–200 g carbohydrate' thành 'nghiệm pháp thực hiện 3 ngày trước'; lỗi chính tả 'menit'"
+C006,ok,yes,yes,
+C007,minor,yes,partial,"Nội dung đều có trong context nhưng nhiều [n] gắn sai fact (vd. 'Nhiễm trùng thường xuyên [8]' trỏ fact tê bì; 'Vùng da sẫm màu [10]' trỏ fact khát nước — đúng ra là [11])"
+C008,minor,yes,partial,"'Khô miệng', 'Đau bụng và nôn' có trong [11] (VMC-0091) nhưng dẫn [7]; 'Mất ý thức [11]' đúng"
+C010,ok,yes,yes,"30 % khi cả cha và mẹ mắc típ 1 — VMC-0111#001"
+C018,ok,yes,yes,
+C019,ok,yes,yes,
+C020,ok,yes,yes,
+C022,ok,yes,yes,"Đúng nhưng thiếu (chỉ nêu rối loạn ý thức)"
+C036,minor,yes,partial,"Định nghĩa dẫn [1] (fact tiêu chuẩn OGTT 1 giờ) — đúng ra là [13]"
+C044,minor,yes,no,"Nội dung gần nguyên văn VMC-0105 (40 % bột / 30 % béo / 30 % đạm, không kiêng lạc) nhưng dẫn [7] = fact biến chứng võng mạc"
+C047,ok,yes,yes,
+C050,unfaithful,partial,no,"Trích dẫn dạng '(Metformin có thể gây rối loạn tiêu hóa [2])' với [2] = tiêu chuẩn glucose đói — các [n] không liên quan tới ý; 'hoạt chất tương tự insulin' không có trong nguồn được dẫn"
+C053,ok,yes,yes,
+C055,ok,yes,yes,
+C058,ok,yes,yes,
+C061,minor,yes,partial,"'cần lượng insulin cao hơn mức bình thường' không có trong [6] (VMC-0226 nói 'tế bào không sử dụng đúng insulin')"
+C064,minor,yes,yes,"Mục cuối bị cắt 'Đo đườn [3]'"
+C065,ok,yes,yes,"6,5–7,0 % trong vòng 3 tháng — MOH-3280-2011"

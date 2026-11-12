@@ -1,0 +1,12 @@
+# AG-09 NLG — slot cần hỏi; câu ra phải qua nlg.ok_question
+- {slot: uong_nhieu}
+- {slot: tieu_nhieu}
+- {slot: sut_can}
+- {slot: an_nhieu}
+- {slot: HBA1C}
+- {slot: GLUCOSE_DOI}
+- {slot: OGTT_2H}
+- {slot: tang_huyet_ap}
+- {slot: tien_su_gia_dinh_dtd}
+- {slot: nhin_mo}
+- {slot: tuoi}

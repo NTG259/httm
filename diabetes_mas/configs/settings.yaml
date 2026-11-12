@@ -1,0 +1,76 @@
+# Cấu hình tập trung (NFR-06). Giá trị bí mật nằm trong .env
+http:
+  user_agent: "diabetes-mas-student/0.1 (educational research; non-commercial)"
+  min_interval_s: 2.0          # ≤ 1 request / 2 giây cho mỗi domain
+  timeout_s: 30
+  retries: 2
+
+vinmec:
+  sitemap_index: https://www.vinmec.com/sitemap.xml
+  disease_pages:               # trang bệnh — fetch trước, cấu trúc mục rõ ràng
+    - https://www.vinmec.com/vie/benh/tieu-duong-tuyp-1-3041
+    - https://www.vinmec.com/vie/benh/tieu-duong-tuyp-2-3042
+    - https://www.vinmec.com/vie/benh/tieu-duong-thai-ky-3091
+    - https://www.vinmec.com/vie/benh/ha-duong-huyet-4863
+  post_slug_keywords:          # lọc URL bài viết theo slug
+    - tieu-duong
+    - dai-thao-duong
+    - duong-huyet
+    - hba1c
+    - insulin
+    - metformin
+  max_posts: 300
+
+chunk:
+  max_words: 300               # ~400 token bge-m3 với tiếng Việt
+  min_words: 40
+  overlap_words: 45            # ~15%
+
+rag:
+  # Điểm vector index Neo4j, đã chuẩn hóa (1+cos)/2. Giai đoạn 0 đo: trong phạm vi 0,80–0,87, ngoài phạm vi
+  # vẫn 0,81. Đã chọn lại bằng quét ngưỡng ở Giai đoạn 8 (08_EVALUATION.md §3, devtools/eval_consult).
+  min_score: 0.75
+  # GĐ 8 (08 §3, quét trên consult_eval.csv 88 câu): câu KHÔNG liên kết được thực thể KB vẫn đủ căn cứ khi
+  # cosine ≥ ngưỡng này. Ngoài phạm vi không thực thể cao nhất 0,818; hợp lệ kế tiếp 0,830 ⇒ chọn giữa 0,825.
+  # min_score (có thực thể) giữ 0,75: mọi giá trị 0,60–0,78 cho cùng kết quả.
+  min_score_no_entity: 0.825
+  vector_k: 20                 # số ứng viên từ vector index
+  guided_k: 30                 # số ứng viên chunk MENTIONS thực thể (graph-guided)
+  # Điểm cosine của Neo4j bị nén (ứng viên tốt chỉ chênh nhau ~0,01–0,05) ⇒ điểm cộng phải NHỎ hơn mức chênh
+  # đó, chỉ để phân định khi gần bằng nhau. Bản đầu (0,7/0,2/0,1) đẩy chunk khớp chính xác (cos 1,0) xuống
+  # hạng 5 — phát hiện bởi tests/integration/test_tools_neo4j.py. Tinh chỉnh ở Giai đoạn 8.
+  weights: {cosine: 1.0, mention: 0.02, reviewed: 0.01}
+  max_chunks_per_source: 2
+
+search:
+  enabled: true
+  allowed_domains: [vinmec.com, moh.gov.vn, kcb.vn, who.int, medlineplus.gov, diabetes.org]
+  max_web_calls_per_session: 3
+  max_fetch_per_question: 2    # AG-12: số bài T-13 tối đa cho một câu hỏi (04_SEQUENCE.md Luồng B)
+  timeout_s: 8                 # thời hạn request HTTP của T-13 (không phải thời hạn cả tool)
+  max_embed_chunks: 8          # T-13: lọc trước theo từ khóa, chỉ nhúng tối đa N đoạn (bge-m3 trên CPU chậm)
+  local_min_cosine: 0.75       # AG-12: bài trong kho dùng được khi cosine THÔ(truy vấn, tiêu đề + snippet) ≥ ngưỡng
+                               #   (khác thang (1+cos)/2 của rag.min_score; đo 2026-11-12: lạc đề ≤ 0,56, đúng 0,77)
+
+cases:
+  n_total: 1500
+  split: {train: 0.70, val: 0.15, test: 0.15}
+  seed: 42
+  p_lab_unknown: 0.5           # xác suất bệnh nhân không biết một chỉ số xét nghiệm
+  p_explicit: 0.35             # xác suất một triệu chứng dương tính được kể ngay từ đầu
+
+classifier:
+  variant: mlp                 # mlp (AG-02/AG-03-h, experiments/best/classifier.pt) | kb_naive_bayes (baseline)
+
+logging:
+  train_calls: false           # T-10 ở chế độ train: tắt mặc định (hàng triệu tool call/epoch); demo luôn ghi
+
+llm:                           # Qwen qua Ollama (K3). Biến môi trường LLM_MODEL / OLLAMA_URL ghi đè
+  model: qwen2.5:3b
+  url: http://localhost:11434
+  timeout_s: 60
+  num_ctx: 4096
+  # Chạy thử demo GĐ 9: NLU (JSON mode) với "Tôi cao 1m65, nặng 78 kg." sinh không dừng tới hết timeout 60 s.
+  num_predict_json: 256        # trần token cho lời gọi JSON (P-01, P-02, P-04, P-07, P-08)
+  num_predict: 512             # trần token cho văn bản (P-03, P-05, P-06 ≤ 150 từ)
+  keep_alive: 30m              # giữ model trong RAM giữa các lượt demo (mặc định Ollama 5 phút)

@@ -1,0 +1,36 @@
+{
+  "nodes": {
+    "Anatomy": 46,
+    "Chunk": 2359,
+    "DiagnosticCriterion": 9,
+    "Disease": 14,
+    "Drug": 25,
+    "Gene": 374,
+    "LabTest": 5,
+    "RiskFactor": 11,
+    "Source": 307,
+    "Symptom": 14
+  },
+  "relationships": {
+    "AFFECTS": 72,
+    "ASSOCIATED_GENE": 406,
+    "DIAGNOSED_BY": 9,
+    "DIFFERENTIAL_OF": 1,
+    "FROM_SOURCE": 2359,
+    "HAS_COMPLICATION": 7,
+    "HAS_RISK_FACTOR": 14,
+    "HAS_SYMPTOM": 26,
+    "MENTIONS": 5198,
+    "SUBTYPE_OF": 4,
+    "TREATS": 28,
+    "USES_TEST": 9
+  },
+  "hetionet_overlap_with_seed": 3,
+  "mentions_by_label": {
+    "Disease": 3271,
+    "Drug": 659,
+    "LabTest": 212,
+    "RiskFactor": 535,
+    "Symptom": 521
+  }
+}

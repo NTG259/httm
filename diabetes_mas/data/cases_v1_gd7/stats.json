@@ -1,0 +1,35 @@
+{
+  "n_total": 1500,
+  "by_split": {
+    "train": {
+      "DTD_THAI_KY": 134,
+      "DTD_TIP_1": 127,
+      "DTD_TIP_2": 309,
+      "KHONG_DTD": 270,
+      "TIEN_DTD": 210
+    },
+    "val": {
+      "DTD_THAI_KY": 29,
+      "DTD_TIP_1": 27,
+      "DTD_TIP_2": 66,
+      "KHONG_DTD": 58,
+      "TIEN_DTD": 45
+    },
+    "test": {
+      "DTD_THAI_KY": 28,
+      "DTD_TIP_1": 27,
+      "DTD_TIP_2": 67,
+      "KHONG_DTD": 58,
+      "TIEN_DTD": 45
+    }
+  },
+  "by_disease": {
+    "DTD_THAI_KY": 191,
+    "DTD_TIP_1": 181,
+    "DTD_TIP_2": 442,
+    "KHONG_DTD": 386,
+    "TIEN_DTD": 300
+  },
+  "cases_all_labs_unknown": 85,
+  "avg_explicit": 0.48
+}

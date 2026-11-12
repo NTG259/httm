@@ -1,0 +1,11 @@
+# AG-07 Consult — giải thích kết luận; phải có trích dẫn hợp lệ hoặc rơi về template
+- {top1: DTD_TIP_2, hba1c: 7.4}
+- {top1: DTD_TIP_2, hba1c: 9.1}
+- {top1: DTD_TIP_1, glucose_doi: 9.0}
+- {top1: TIEN_DTD, hba1c: 6.0}
+- {top1: TIEN_DTD, glucose_doi: 6.5}
+- {top1: DTD_THAI_KY, glucose_doi: 5.3, pregnant: true}
+- {top1: KHONG_DTD, hba1c: 5.2}
+- {top1: KHONG_DTD}
+- {top1: DTD_TIP_2}
+- {top1: DTD_TIP_1}

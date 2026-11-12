@@ -1,0 +1,8 @@
+id,question,type,expect,expect_graph
+Q1,How many adults were living with diabetes worldwide in 2014?,text,422 million,
+Q2,How many adults had diabetes in 1980?,text,108 million,
+Q3,What are the main types of diabetes?,text,gestational,
+Q4,Which complications can diabetes cause?,text,blindness,
+Q5,Which drugs treat type 2 diabetes mellitus?,relation,,metformin treats
+Q6,What symptoms are associated with type 2 diabetes mellitus?,relation,,presents symptom
+Q7,Who won the 2022 FIFA World Cup?,no_answer,,

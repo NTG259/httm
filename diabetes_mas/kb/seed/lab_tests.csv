@@ -1,0 +1,6 @@
+id,name_vi,name_en,unit,kind,question_vi,aliases
+GLUCOSE_DOI,Glucose huyết tương lúc đói,Fasting plasma glucose,mmol/L,numeric,"Anh/chị có biết chỉ số đường huyết lúc đói (sáng chưa ăn) gần nhất không? Đơn vị mmol/L hoặc mg/dL, nếu không biết cứ nói không biết.",đường huyết lúc đói|đường máu lúc đói|glucose lúc đói
+OGTT_2H,Glucose 2 giờ sau nghiệm pháp 75 g,2-hour OGTT glucose,mmol/L,numeric,"Anh/chị đã làm nghiệm pháp uống đường (OGTT) chưa? Chỉ số sau 2 giờ là bao nhiêu?",nghiệm pháp dung nạp glucose|nghiệm pháp tăng đường huyết|uống nước đường
+OGTT_1H,Glucose 1 giờ sau nghiệm pháp 75 g,1-hour OGTT glucose,mmol/L,numeric,Chỉ số đường huyết sau 1 giờ uống nước đường của chị là bao nhiêu?,
+GLUCOSE_BAT_KY,Glucose huyết tương bất kỳ,Random plasma glucose,mmol/L,numeric,"Anh/chị có đo đường huyết bất kỳ lúc nào gần đây không, kết quả bao nhiêu?",đường huyết bất kỳ|đường máu bất kỳ
+HBA1C,HbA1c,Glycated hemoglobin,%,numeric,"Anh/chị có biết chỉ số HbA1c gần nhất không (đơn vị %)?",hba1c|đường huyết trung bình 3 tháng

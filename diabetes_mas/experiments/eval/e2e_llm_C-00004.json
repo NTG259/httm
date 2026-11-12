@@ -1,0 +1,85 @@
+{
+  "ts": "2026-11-12 14:23:07",
+  "split": "test",
+  "llm": true,
+  "policy": "hrl_dqn",
+  "T_max": 12,
+  "summary": {
+    "n": 1,
+    "concluded": 1,
+    "accuracy": 1.0,
+    "avg_turns": 1.0,
+    "max_turns": 1,
+    "over_T_max": 0,
+    "with_repeats": 0,
+    "stages": {
+      "concluded": 1
+    },
+    "avg_messages": 5.0
+  },
+  "seconds": 152.2,
+  "cases": [
+    {
+      "case_id": "C-00004",
+      "disease": "KHONG_DTD",
+      "stage": "concluded",
+      "top1": "KHONG_DTD",
+      "correct": true,
+      "turns": 1,
+      "T_max": 12,
+      "n_messages": 5,
+      "asked": [
+        "tuoi",
+        "bmi",
+        "gioi_tinh",
+        "GLUCOSE_BAT_KY"
+      ],
+      "repeats": [],
+      "risk_dl": 0.2157,
+      "dl_conflict": false,
+      "session_id": "4d1249534901"
+    }
+  ],
+  "transcript": [
+    [
+      "user",
+      "Tôi muốn kiểm tra xem mình có bị tiểu đường không."
+    ],
+    [
+      "system",
+      "Anh/chị có thể cho tôi biết tuổi của mình không?"
+    ],
+    [
+      "user",
+      "Tôi không biết, chưa đo. Tôi là 38 tuổi."
+    ],
+    [
+      "system",
+      "Anh/chị cao bao nhiêu và nặng bao nhiêu kg?"
+    ],
+    [
+      "user",
+      "Tôi cao 1m65, nặng 61 kg."
+    ],
+    [
+      "system",
+      "Cho tôi hỏi, anh/chị là nam hay nữ?"
+    ],
+    [
+      "user",
+      "Tôi là nam."
+    ],
+    [
+      "system",
+      "Bạn có đo glucose huyết tương bất kỳ lúc nào gần đây không, kết quả bao nhiêu (đơn vị mmol/L; nếu không nhớ, bạn cứ nói không biết)?"
+    ],
+    [
+      "user",
+      "Không biết."
+    ],
+    [
+      "system",
+      "Dựa trên thông tin mà bạn cung cấp, kết luận sơ bộ cho bệnh nhân là khả năng mắc đái tháo đường là 54% và khả năng khác là tiền đái tháo đường là 39%. \n\nCăn cứ vào thông tin về tuổi, BMI và giới tính của bệnh nhân, xét nghiệm cần thiết tiếp theo là kiểm tra HbA1c. Nếu HbA1c của bệnh nhân vượt ngưỡng chẩn đoán 6,5% [1], thì cần tiến hành xét nghiệm HbA1c để xác định chính xác tình trạng của bệnh nhân. \n\nNếu xét nghiệm HbA1c không đạt chuẩn, bệnh nhân nên khám chuyên khoa để được tư vấn và điều trị phù hợp. \n\nHãy thực hiện các xét nghiệm cần thiết và khám chuyên khoa để có được thông tin chính xác nhất về sức khỏe của mình.\n\nMô hình học sâu (tham khảo): nguy cơ 22%.\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ."
+    ]
+  ]
+}

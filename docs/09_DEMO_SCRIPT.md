@@ -1,0 +1,138 @@
+# 09 — Kịch bản demo
+
+> **Mục đích:** trình tự demo bám checklist của thầy, kèm lệnh chạy, câu nói mẫu và phản hồi **đã chạy thử**.
+> **Giai đoạn:** 9 · **Cập nhật:** 2026-11-12 (v2: chạy thử trên máy demo, Windows 11 / 16 GB RAM / chỉ CPU)
+> Tổng thời lượng dự kiến: 15 phút.
+
+> **Trạng thái triển khai (2026-11-12): ✅ đã chạy thử** — phản hồi ở §2 lấy từ lần chạy thử với `use_llm=false` (luật + câu mẫu). Bật Qwen thì câu chữ hỏi/giải thích tự nhiên hơn nhưng kết luận, xác suất và nguồn giống nhau. ⏳ Còn phải chạy thử toàn bộ có bấm giờ và quay video dự phòng.
+
+---
+
+## 0. Chuẩn bị (trước giờ demo)
+
+### 0.1 Tối hôm trước (KB đã nạp sẵn trong `./neo4j_data`, không cần nạp lại)
+
+```bash
+cd diabetes_mas
+docker compose up -d neo4j searxng           # KHÔNG bật service ollama (Ollama cài trên máy, cổng 11434)
+ollama list                                   # phải có qwen2.5:3b
+../.venv/Scripts/python -m diabetes_mas.kb.neo4j_io check   # 4/4 kiểm tra chất lượng KB
+../.venv/Scripts/python -m pytest -q -m "not network"        # 180+ passed, 1 xfailed (TC-21)
+```
+
+Nạp KB lại từ đầu (chỉ khi `neo4j_data` hỏng — mất khoảng 42 giây + embed chunk vài phút):
+
+```bash
+docker compose exec neo4j sh -c 'cypher-shell -u neo4j -p "$KB_PASS" -f /import/schema.cypher'
+docker compose exec neo4j sh -c 'cypher-shell -u neo4j -p "$KB_PASS" -f /import/kb_diabetes.cypher'
+../.venv/Scripts/python -m diabetes_mas.rag.embed_chunks
+```
+
+Không pipe file bằng `cat … |` trong PowerShell 5.1 (hỏng tiếng Việt) — dùng `-f` như trên hoặc `python -m diabetes_mas.kb.neo4j_io load`.
+
+### 0.2 Sáng hôm demo (máy 16 GB RAM)
+
+1. **Đóng PyCharm, Chrome thừa, Zalo, Discord** (PyCharm ~2 GB). Cần ~8 GB cho Neo4j + Python + Qwen.
+2. Bật dịch vụ và API:
+   ```bash
+   cd diabetes_mas
+   docker compose up -d neo4j searxng
+   ../.venv/Scripts/python -m uvicorn diabetes_mas.api.app:app --port 8000
+   ```
+3. Kiểm tra: `curl http://localhost:8000/v1/health` — Neo4j, Ollama, checkpoint classifier/HRL/DL đều ok (web demo hiện cùng thông tin ở thanh trạng thái).
+4. **Làm nóng** (tránh lượt đầu chậm vì nạp model): mở `http://localhost:8000`, gửi một câu tư vấn bất kỳ ("Tiền đái tháo đường là gì?") rồi tạo phiên mới.
+
+Mở sẵn các tab: Web demo `http://localhost:8000` · Neo4j Browser `http://localhost:7474` (chỉ mở được trên chính máy demo; đăng nhập user `neo4j`, mật khẩu = `NEO4J_PASSWORD` trong `diabetes_mas/.env`) · `docs/09_ARCHITECTURE.md` · `docs/02_AGENT_DESIGN.md` · `docs/08_EVALUATION.md` · `diabetes_mas/logs/agent_runs/samples/demo-story1-chan-doan.md`.
+
+## 1. Trình tự
+
+| # | Thời gian | Nội dung | Mục checklist của thầy | Thao tác |
+|---|---|---|---|---|
+| 1 | 1′ | Bài toán & nguồn dữ liệu: Vinmec (302 bài, nguồn tiếng Việt chính), QĐ 3280/2011 Bộ Y tế, WHO 2016, Hetionet | — | `00_DATA_SOURCES.md` mục 1 |
+| 2 | 2′ | Kiến trúc tổng thể: 6 lớp, 17 agent, 15 tool; luật trước – LLM sau | Giải thích kiến trúc | `09_ARCHITECTURE.md` §1–2 |
+| 3 | 1′ | Nạp KB từ file `.cypher` | Khởi động Neo4j, nạp KB | Chiếu `kb/kb_diabetes.cypher`, chiếu lệnh §0.1 (không chạy lại — 42 s + embed) |
+| 4 | 1′ | Giải thích schema | Mở file KB_Graph | `00_KB_GRAPH.md` mục 1–3 |
+| 5 | 2′ | Show đồ thị | Show Neo4j Browser | Chạy truy vấn ở `00_KB_GRAPH.md` mục 7 (toàn cảnh típ 2; triệu chứng phân biệt típ 1/2; tiêu chuẩn chẩn đoán kèm nguồn) |
+| 6 | 2′ | Đa agent phân cấp: Main + 4 Work-Agent, reward entropy, luật điều phối "chưa có xét nghiệm thì chưa kết luận" | Giải thích kiến trúc đa agent | `02_AGENT_DESIGN.md` mục 1–2, 6 |
+| 7 | 2′ | Demo tư vấn: TC-20, TC-22, TC-23 (§2.2) | Demo KB + RAG | Web demo, mở panel "nguồn" và "tool call" |
+| 8 | 1′ | RAG giao tiếp với KB: liên kết thực thể → graph fact → vector + chunk MENTIONS → `enough` | Cơ chế RAG ↔ KB | `06_KB_RAG_INTEGRATION.md` mục 2 + `08_EVALUATION.md` §3 (biểu đồ ngưỡng) |
+| 9 | 2′ | Demo chẩn đoán: Story 1 (§2.1), rồi ca cấp cứu (§2.3) | Demo end-to-end | Web demo, chỉ bảng slot, xác suất, entropy, log tool |
+| 10 | 1′ | Mô hình: layer, epoch, đường học, bảng baseline | Mô hình bổ sung | `09_MODEL_NOTES.md`, `08_EVALUATION.md` §4 (`assets/curve_hrl.png`) |
+
+## 2. Câu nói mẫu và phản hồi đã chạy thử
+
+### 2.1 Story 1 — chẩn đoán (4 câu hỏi, ~4 lượt)
+
+| Lượt | Người dùng gõ | Hệ thống (chạy thử `use_llm=false`) |
+|---|---|---|
+| 1 | "Dạo này tôi khát nước suốt, đi tiểu nhiều, sụt 3 kg trong tháng." | "Anh/chị năm nay bao nhiêu tuổi?" (NLU đã ghi: uống nhiều, tiểu nhiều, sụt cân) |
+| 2 | "Tôi 52 tuổi." | "Anh/chị cao bao nhiêu và nặng bao nhiêu kg?" |
+| 3 | "Tôi cao 1m65, nặng 78 kg." | "Cho tôi hỏi giới tính của anh/chị?" (BMI 28,7 tự tính) |
+| 4 | "Tôi là nam." | "Anh/chị có biết chỉ số HbA1c gần nhất không (đơn vị %)?" — W2 xét nghiệm được chọn ngay |
+| 5 | "HbA1c tháng trước 7,1%." | **"Kết luận sơ bộ: Đái tháo đường típ 2 (xác suất ước tính 63%). Các khả năng khác: Đái tháo đường típ 1 37%. Căn cứ: … HbA1c = 7,1 (ngưỡng HbA1c > 6,5 %, nguồn VMC-0002) [10]. Khuyến nghị: đi khám chuyên khoa Nội tiết – Đái tháo đường…"** + dòng "Mô hình học sâu (tham khảo)" + câu miễn trừ |
+
+Điểm cần chỉ khi demo: 3 câu đầu là **intake cố định** (không tính T_max); câu 4 là **policy HRL** chọn W2; hệ **không được kết luận khi chưa có giá trị xét nghiệm** (`labs_ready`); kết luận dựa trên luật KB có nguồn (`rule_hits`), mô hình DL chỉ tham khảo.
+
+> Nếu ai hỏi "sao không hỏi tiền sử gia đình?": khi đã có HbA1c đạt tiêu chuẩn và classifier đủ chắc, policy học được rằng hỏi thêm không đổi kết luận (reward −1/lượt). Kết luận vẫn khuyên đi khám xác định.
+
+### 2.2 Tư vấn (mỗi câu < 1 s không LLM; với Qwen ~5–12 s)
+
+| TC | Người dùng gõ | Kỳ vọng (đã chạy thử) |
+|---|---|---|
+| TC-20 | "Tiêu chuẩn chẩn đoán tiểu đường là gì?" | Liệt kê glucose đói ≥ 7 mmol/L, OGTT 2h ≥ 11,1, glucose bất kỳ ≥ 11,1, HbA1c > 6,5 % — mỗi ý có `[n]` (Bộ Y tế QĐ 3280 / Vinmec) |
+| TC-22 | "Metformin có tác dụng phụ gì?" | Graph fact "Metformin được dùng điều trị ĐTĐ típ 2" + đoạn QĐ 3280 về Metformin, có `[n]` |
+| TC-23 | "Cách chữa ung thư phổi?" | **Từ chối**: "Tôi chưa có đủ thông tin đáng tin cậy để trả lời câu hỏi này." (không liên kết được thực thể KB, cosine < 0,825) |
+
+### 2.3 Cấp cứu (1 lượt)
+
+"Tôi đường huyết 25 mmol/L, đang buồn nôn, thở dốc" ⇒ dừng ngay, không hỏi thêm: "Các dấu hiệu bạn mô tả có thể là biến chứng cấp tính của đái tháo đường cần được cấp cứu. Hãy gọi 115…" (TC-34).
+
+### 2.4 Ca dự trữ — thai kỳ (dài, chỉ dùng nếu được hỏi)
+
+"Tôi đang mang thai 28 tuần, đường huyết lúc đói 5,3 mmol/L, có bị tiểu đường thai kỳ không?" ⇒ hỏi tuổi, chiều cao/cân nặng (không hỏi giới tính), rồi **~6 câu triệu chứng/nguy cơ** (trả lời "Không ạ") ⇒ "Đái tháo đường thai kỳ (95%) … Glucose huyết tương lúc đói = 5,3 (ngưỡng ≥ 5,1 mmol/L, nguồn VMC-0003)". Giới hạn đã biết: ca thai kỳ cần nhiều lượt (`08` §7).
+
+### 2.5 Ảnh minh họa (chụp 2026-11-12, chế độ không LLM, `diabetes_mas/scripts/shots.js` bằng puppeteer: `NODE_PATH=<node_modules có puppeteer> node scripts/shots.js ../docs/assets --no-llm`)
+
+| Ảnh | Nội dung |
+|---|---|
+| `assets/demo_story1.png` | Story 1: hội thoại, thanh xác suất (típ 2 63 %), đồ thị `nlu → router → tracker → main`, bảng tool call, nguồn trích dẫn |
+| `assets/demo_tuvan.png` | TC-20: 4 tiêu chuẩn chẩn đoán kèm `[n]` (QĐ 3280, Vinmec), panel nguồn |
+| `assets/demo_capcuu.png` | TC-34: cảnh báo cấp cứu ngay lượt đầu |
+| `assets/kb_dtd_tip2.png`, `assets/kb_schema.png` | Thay ảnh Neo4j Browser nếu không mở được (vẽ từ dữ liệu Neo4j thật, `devtools/plot_kb`) |
+
+Ảnh Story 1 cho thấy T-04 mất **12,6 s** ở lượt kết luận vì đó là lần đầu tiến trình nạp bge-m3 — lý do phải **làm nóng** (§0.2) trước khi demo.
+
+![Story 1](assets/demo_story1.png)
+
+## 3. Phương án dự phòng
+
+| Sự cố | Dấu hiệu | Xử lý |
+|---|---|---|
+| **Qwen chậm / thiếu RAM** | Một lượt > 30 s, máy giật | **Chuyển chế độ không LLM**: trong web demo **bỏ chọn ô "Dùng LLM (Qwen)"** (gửi `use_llm: false`; `api/static/index.html`); hoặc gọi API trực tiếp: `curl -X POST localhost:8000/v1/sessions/<id>/messages -H "Content-Type: application/json" -d "{\"text\": \"…\", \"use_llm\": false}"`. Hệ chạy bằng luật + câu mẫu + trả lời trích xuất — kết luận, xác suất, nguồn không đổi (§2 chạy thử ở chế độ này) |
+| Ollama tắt hẳn | `/v1/health` báo Ollama lỗi | Hệ tự dùng dự phòng (NLU/Router luật, NLG câu mẫu, Consult trích xuất) — không cần làm gì; nói rõ khi demo |
+| Neo4j lỗi | Câu tư vấn trả "Hệ thống tra cứu đang tạm gián đoạn" | `docker compose restart neo4j`, chờ healthcheck (~30 s). Còn hỏng: nạp dump `neo4j-admin database load` (⏳ tạo dump khi sao lưu) |
+| Web demo lỗi | Trang trắng / 500 | Chiếu log mẫu `logs/agent_runs/samples/demo-story1-chan-doan.md`, `demo-story3-tu-van.md`, `demo-story5-cap-cuu.md` hoặc video dự phòng |
+| Mất mạng | — | Không ảnh hưởng (chỉ AG-12 tìm web cần mạng; câu demo không cần) |
+
+`use_llm` mặc định `true` (ô được chọn sẵn). Thanh trạng thái trên web demo hiện `Neo4j ✓ · Ollama ✓ (qwen2.5:3b) · classifier ✓ · HRL ✓ · DL ✓` — kiểm tra trước khi bắt đầu.
+
+## 4. Câu hỏi giám khảo có thể hỏi
+
+| Câu hỏi | Trả lời ngắn | Nguồn |
+|---|---|---|
+| Khi nào hệ dừng hỏi? | (1) Đã có ít nhất một giá trị xét nghiệm hoặc đã hỏi hết xét nghiệm (`labs_ready`) **và** Main chọn CLASSIFY; (2) đã có xét nghiệm và classifier chắc ≥ 0,95 (`confident_stop`); (3) hết T_max = 12 câu; (4) có dấu hiệu cấp cứu | `02_AGENT_DESIGN.md` §6, `configs/slots.yaml` |
+| HRL có tốt hơn không phân cấp? | Test HRL 0,782 / 3,4 lượt, Flat DQN 0,751 / 3,5, Random 0,716 / 12; nhưng val gần bằng nhau và chỉ 1 seed — chưa đủ kết luận. Lợi ích chính: giải thích được, gắn luật theo nhóm | `08_EVALUATION.md` §4.1, §6 |
+| Có bịa không? | Tư vấn bắt buộc `[n]` trong context; chấm mẫu 20 câu: nội dung có căn cứ 0,95, nhưng `[n]` trỏ đúng nguồn chỉ 0,65 | `08` §4.2 |
+| Sao HbA1c dùng ">" mà không "≥"? | Theo đúng nguồn Vinmec VMC-0002; ADA dùng "≥"; QĐ 3280/2011 không có tiêu chí HbA1c — đã ghi trong `kb/seed/criteria.csv` | `00_KB_GRAPH.md` |
+| Mô hình DL dùng làm gì? | Chỉ tham khảo, không thay luật KB (ADR-002); F1 0,625 < luật ngưỡng 0,820 vì nhãn dataset sinh từ chính ngưỡng đó | `08` §4.3 |
+
+## 5. Checklist cuối
+
+- [ ] Khởi động Neo4j, nạp KB từ `kb_diabetes.cypher` (chiếu lệnh; dữ liệu đã nạp sẵn)
+- [ ] Mở `00_KB_GRAPH.md` giải thích cấu trúc đồ thị
+- [ ] Show Neo4j Browser — visualize nodes/relationships
+- [ ] Chạy demo KB + RAG end-to-end với câu hỏi mẫu (§2.2)
+- [ ] Demo chẩn đoán Story 1 (§2.1) và cấp cứu (§2.3)
+- [ ] Giải thích kiến trúc đa agent
+- [ ] Giải thích cơ chế RAG giao tiếp với KB
+- [ ] Trình bày layer/epoch và kết quả huấn luyện

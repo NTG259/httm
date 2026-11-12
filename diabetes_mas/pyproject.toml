@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diabetes_mas"
+version = "0.1.0"
+description = "Hệ đa tác tử KG + RAG chẩn đoán & tư vấn tiểu đường"
+requires-python = ">=3.11"
+dependencies = [
+  "requests>=2.31",
+  "beautifulsoup4>=4.12",
+  "pypdf>=4.0",
+  "pyyaml>=6.0",
+  "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+kb = ["neo4j>=5.20"]
+embed = ["sentence-transformers>=3.0"]
+dev = ["pytest>=8", "matplotlib>=3.8"]   # matplotlib: biểu đồ GĐ 8 (devtools/plot_eval.py)
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["neo4j: cần Neo4j đang chạy", "network: cần Internet", "slow: E2E hội thoại (vài phút)",
+           "ollama: cần Ollama đang chạy"]

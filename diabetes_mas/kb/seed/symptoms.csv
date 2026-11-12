@@ -1,0 +1,15 @@
+id,name_vi,name_en,group,question_vi,aliases
+an_nhieu,Ăn nhiều,Polyphagia,trieu_chung_kinh_dien,"Gần đây anh/chị có hay đói, ăn nhiều hơn bình thường không?",hay đói|đói nhiều
+uong_nhieu,Uống nhiều (hay khát nước),Polydipsia,trieu_chung_kinh_dien,"Anh/chị có hay khát nước, uống nhiều nước hơn bình thường không?",khát nước|khát nhiều|uống nhiều nước
+tieu_nhieu,Tiểu nhiều,Polyuria,trieu_chung_kinh_dien,"Anh/chị có đi tiểu nhiều lần, kể cả ban đêm, hơn trước không?",đi tiểu nhiều|tiểu đêm|đái nhiều
+sut_can,Sụt cân không rõ lý do,Unexplained weight loss,trieu_chung_kinh_dien,Anh/chị có bị sụt cân mà không rõ lý do trong thời gian gần đây không?,gầy sút cân|gầy nhiều|giảm cân không rõ lý do
+nhin_mo,Nhìn mờ,Blurred vision,bien_chung,Anh/chị có thấy mắt nhìn mờ đi không?,mờ mắt|thị lực giảm
+te_bi_ban_chan,Tê bì dị cảm ở bàn chân,Foot numbness / paresthesia,bien_chung,"Anh/chị có bị tê bì, kiến bò hay châm chích ở bàn chân không?",tê bì chân|tê chân|dị cảm
+loet_ban_chan,"Loét, nhiễm trùng bàn chân",Foot ulcer / infection,bien_chung,"Anh/chị có vết loét hoặc vết thương lâu lành ở bàn chân không?",vết thương lâu lành|loét chân
+dau_nguc,Đau ngực,Chest pain,bien_chung,Anh/chị có hay bị đau tức ngực không?,tức ngực
+day_bung_cham_tieu,"Đầy bụng, chậm tiêu, nuốt khó",Bloating / gastroparesis,bien_chung,"Anh/chị có hay đầy bụng, chậm tiêu hoặc nuốt khó không?",đầy bụng|chậm tiêu|nuốt khó
+dau_cach_hoi,Đau cách hồi chi dưới,Intermittent claudication,bien_chung,"Anh/chị có bị đau chân khi đi lại, nghỉ thì đỡ không?",đau chân khi đi lại
+buon_non,Buồn nôn,Nausea,canh_bao,,nôn|buồn nôn
+tho_nhanh,Thở nhanh,Tachypnea,canh_bao,,thở dốc|khó thở|thở nhanh sâu
+hoi_tho_mui_tao_thoi,Hơi thở mùi táo thối,Fruity breath odor,canh_bao,,hơi thở mùi trái cây|hơi thở có mùi
+roi_loan_y_thuc,"Rối loạn ý thức (lơ mơ, ngủ gà, hôn mê)",Altered consciousness,canh_bao,,lơ mơ|ngủ gà|hôn mê|ngất

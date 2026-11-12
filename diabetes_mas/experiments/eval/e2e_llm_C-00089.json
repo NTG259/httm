@@ -1,0 +1,112 @@
+{
+  "ts": "2026-11-12 11:44:03",
+  "split": "test",
+  "llm": true,
+  "policy": "hrl_dqn",
+  "T_max": 12,
+  "summary": {
+    "n": 1,
+    "concluded": 1,
+    "accuracy": 1.0,
+    "avg_turns": 4.0,
+    "max_turns": 4,
+    "over_T_max": 0,
+    "with_repeats": 0,
+    "stages": {
+      "concluded": 1
+    },
+    "avg_messages": 8.0
+  },
+  "seconds": 137.9,
+  "cases": [
+    {
+      "case_id": "C-00089",
+      "disease": "DTD_THAI_KY",
+      "stage": "concluded",
+      "top1": "DTD_THAI_KY",
+      "correct": true,
+      "turns": 4,
+      "T_max": 12,
+      "n_messages": 8,
+      "asked": [
+        "tuoi",
+        "bmi",
+        "gioi_tinh",
+        "it_van_dong",
+        "roi_loan_lipid",
+        "tang_huyet_ap",
+        "dang_mang_thai"
+      ],
+      "repeats": [],
+      "risk_dl": 0.0744,
+      "dl_conflict": false,
+      "session_id": "37fe06e89edd"
+    }
+  ],
+  "transcript": [
+    [
+      "user",
+      "Tôi muốn kiểm tra xem mình có bị tiểu đường không."
+    ],
+    [
+      "system",
+      "Anh/chị có thể cho tôi biết tuổi của mình không?"
+    ],
+    [
+      "user",
+      "Tôi 32 tuổi."
+    ],
+    [
+      "system",
+      "Anh/chị cao bao nhiêu và nặng bao nhiêu kg?"
+    ],
+    [
+      "user",
+      "Tôi cao 1m65 dan và nặng 47,9 kg."
+    ],
+    [
+      "system",
+      "Cho tôi hỏi, anh/chị là nam hay nữ?"
+    ],
+    [
+      "user",
+      "Tôi là nữ."
+    ],
+    [
+      "system",
+      "Anh/chị có thường xuyên tập thể dục hay vận động không?"
+    ],
+    [
+      "user",
+      "Tôi chưa đo."
+    ],
+    [
+      "system",
+      "Bạn có bị rối loạn mỡ máu (bao gồm cả cholesterol và triglyceride) không?"
+    ],
+    [
+      "user",
+      "Không"
+    ],
+    [
+      "system",
+      "Bạn có bị tăng huyết áp (huyết áp cao) không?"
+    ],
+    [
+      "user",
+      "Tôi không"
+    ],
+    [
+      "system",
+      "Chị có đang mang thai không? Nếu có thì được bao nhiêu tuần?"
+    ],
+    [
+      "user",
+      "Tôi có mang thai, nhưng chưa biết được tuần thứ mấy."
+    ],
+    [
+      "system",
+      "Kết luận sơ bộ: Qua thông tin bệnh nhân cung cấp, xác suất bệnh nhân mắc đái tháo đường thai kỳ là 93% [1]. Các khả năng khác như đái tháo đường không đáng kể [2].\n\nKhuyến nghị bước tiếp theo: Cần thực hiện xét nghiệm Glucose huyết tương lúc đói để xác định chính xác tình trạng của bệnh nhân [3]. Nếu xét nghiệm này cho kết quả dương tính, bệnh nhân nên được khám chuyên khoa Sản Phụ khoa để đánh giá và theo dõi kỹ lưỡng [4].\n\nMô hình học sâu (tham khảo): nguy cơ 7%.\n\nThông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ."
+    ]
+  ]
+}

@@ -1,0 +1,7 @@
+id,name,atc,class_vi,hetionet_name,aliases
+METFORMIN,Metformin,A10BA02,Biguanid,Metformin,metformin
+GLICLAZID,Gliclazid,A10BB09,Sulfonylurê,Gliclazide,gliclazide|gliclazid
+SITAGLIPTIN,Sitagliptin,A10BH01,Ức chế DPP-4,Sitagliptin,sitaglyptin|sitagliptin
+EMPAGLIFLOZIN,Empagliflozin,A10BK03,Ức chế SGLT2,,empagliflozin
+DAPAGLIFLOZIN,Dapagliflozin,A10BK01,Ức chế SGLT2,,dapagliflozin
+INSULIN,Insulin,A10A,Insulin,Insulin,insulin ngoại sinh|tiêm insulin

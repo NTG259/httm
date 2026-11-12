@@ -1,0 +1,43 @@
+# Nguồn tĩnh (PDF, TSV). `local_file` = sao chép từ máy; `url` = tải về.
+# Chỉ thêm URL đã kiểm tra mở được là file thật.
+static:
+  - id: MOH-3280-2011
+    publisher: Bộ Y tế
+    title: Hướng dẫn chẩn đoán và điều trị bệnh đái tháo đường týp 2 (QĐ 3280/QĐ-BYT, 09/09/2011)
+    kind: pdf
+    dest: moh/qd3280_2011_dtd_tip2.pdf
+    local_file: ../kg_rag_diabetes/docs/qd5481_dtd_tip2_2020.pdf   # tên file cũ đặt nhầm; nội dung là QĐ 3280/2011
+    published: "2011-09-09"
+    reviewed: true
+
+  - id: WHO-GRD-2016
+    publisher: WHO
+    title: Global Report on Diabetes (2016)
+    kind: pdf
+    dest: who/who_global_report_on_diabetes_2016.pdf
+    local_file: ../kg_rag_diabetes/data/raw/who_global_report_on_diabetes_2016.pdf
+    published: "2016-04-07"
+    reviewed: true
+
+  - id: HETIONET-1.0-NODES
+    publisher: Hetionet
+    title: Hetionet v1.0 nodes
+    kind: tsv
+    dest: hetionet/hetionet-v1.0-nodes.tsv
+    local_file: ../kg_rag_diabetes/data/raw/hetionet-v1.0-nodes.tsv
+    url: https://github.com/hetio/hetionet/raw/main/hetnet/tsv/hetionet-v1.0-nodes.tsv
+    license: CC0 1.0
+
+  - id: HETIONET-1.0-EDGES
+    publisher: Hetionet
+    title: Hetionet v1.0 edges
+    kind: sif.gz
+    dest: hetionet/hetionet-v1.0-edges.sif.gz
+    local_file: ../kg_rag_diabetes/data/raw/hetionet-v1.0-edges.sif.gz
+    url: https://github.com/hetio/hetionet/raw/main/hetnet/tsv/hetionet-v1.0-edges.sif.gz
+    license: CC0 1.0
+
+  # CHƯA CÓ — cần người dùng cung cấp file/URL đã xác minh:
+  # - MOH QĐ 5481/QĐ-BYT (2020) Hướng dẫn ĐTĐ típ 2 (có tiêu chí HbA1c)
+  # - MOH QĐ 3087/QĐ-BYT (2020?) Hướng dẫn tiền ĐTĐ
+  # - MOH hướng dẫn ĐTĐ típ 1

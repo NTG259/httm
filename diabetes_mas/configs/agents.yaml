@@ -1,0 +1,24 @@
+# Sổ đăng ký agent (02_AGENT_DESIGN.md §2). Runtime dùng `tools` làm danh sách cho phép:
+# agent gọi tool ngoài danh sách ⇒ lỗi. Đồng bộ với tài liệu bằng `python -m diabetes_mas.devtools.check_docs`.
+# impl: learned (PyTorch, có epoch/layer) | rule (code xác định) | llm (Qwen qua Ollama)
+
+agents:
+  AG-00: {name: Router, block: io, impl: llm, tools: [], modes: [demo]}
+  AG-01: {name: Main Agent, block: core, impl: learned+rule, tools: [T-06], modes: [train, demo]}   # kích hoạt AG-13 (agent), không gọi T-15 trực tiếp
+  AG-W1: {name: Work-Agent triệu chứng kinh điển, block: core, impl: learned, tools: [T-01, T-06, T-07], modes: [train, demo]}
+  AG-W2: {name: Work-Agent xét nghiệm, block: core, impl: learned, tools: [T-01, T-06, T-07], modes: [train, demo]}
+  AG-W3: {name: Work-Agent tiền sử & nguy cơ, block: core, impl: learned, tools: [T-01, T-06, T-07], modes: [train, demo]}
+  AG-W4: {name: Work-Agent biến chứng, block: core, impl: learned, tools: [T-01, T-06, T-07], modes: [train, demo]}
+  AG-02: {name: Main Classifier, block: core, impl: learned+rule, tools: [T-03, T-06], modes: [train, demo]}
+  AG-03-h: {name: Sub-Classifier 1..4, block: core, impl: learned, tools: [T-06], modes: [train, demo]}
+  AG-13: {name: Prediction (Deep Learning), block: core, impl: learned, tools: [T-15, T-03], modes: [demo]}
+  AG-05: {name: State Tracker, block: simulator, impl: rule, tools: [T-05, T-06, T-08, T-09], modes: [train, demo]}
+  AG-10: {name: Patient Action, block: simulator, impl: rule+llm, tools: [], modes: [train, demo]}
+  AG-11: {name: Reward Generator, block: reward, impl: rule, tools: [T-11], modes: [train]}
+  AG-06: {name: NLU, block: io, impl: llm, tools: [T-02], modes: [demo]}
+  AG-09: {name: NLG, block: io, impl: llm, tools: [T-01], modes: [demo]}
+  AG-07: {name: Consult, block: io, impl: llm, tools: [T-03, T-04], modes: [demo]}
+  AG-08: {name: Safety, block: io, impl: rule+llm, tools: [T-09], modes: [demo]}
+  AG-12: {name: Research, block: io, impl: llm, tools: [T-12, T-13, T-14], modes: [demo]}
+
+# T-10 log_event được gọi TỰ ĐỘNG bởi decorator cho mọi tool, không cấp riêng cho agent nào.

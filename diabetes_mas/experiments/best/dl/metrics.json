@@ -1,0 +1,56 @@
+{
+  "run_id": "20261112-072147_dl",
+  "n": {
+    "train": 67302,
+    "val": 14422,
+    "test": 14422
+  },
+  "pos_rate": 0.0882,
+  "full": {
+    "epochs_run": 32,
+    "params": 3137,
+    "pos_weight": 10.336,
+    "val": {
+      "pr_auc": 0.8691,
+      "roc_auc": 0.9734,
+      "f1": 0.6051,
+      "precision": 0.4557,
+      "recall": 0.9002,
+      "threshold": 0.54
+    },
+    "test": {
+      "pr_auc": 0.8846,
+      "roc_auc": 0.9772,
+      "f1": 0.625,
+      "precision": 0.4756,
+      "recall": 0.9112,
+      "threshold": 0.54
+    }
+  },
+  "no_labs": {
+    "epochs_run": 21,
+    "params": 3009,
+    "pos_weight": 10.336,
+    "val": {
+      "pr_auc": 0.3189,
+      "roc_auc": 0.8263,
+      "f1": 0.2799,
+      "precision": 0.1657,
+      "recall": 0.901,
+      "threshold": 0.335
+    },
+    "test": {
+      "pr_auc": 0.3358,
+      "roc_auc": 0.8393,
+      "f1": 0.2906,
+      "precision": 0.1725,
+      "recall": 0.9222,
+      "threshold": 0.335
+    }
+  },
+  "baseline_D1_rules_test": {
+    "f1": 0.8195,
+    "precision": 1.0,
+    "recall": 0.6942
+  }
+}

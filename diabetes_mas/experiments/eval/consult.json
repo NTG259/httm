@@ -1,0 +1,86 @@
+{
+  "n": 88,
+  "min_score": 0.75,
+  "min_score_no_entity": 0.825,
+  "retrievers": {
+    "vector": {
+      "R@1": 0.8485,
+      "R@3": 0.9697,
+      "R@5": 1,
+      "source@5": 0.9697,
+      "correct_rejection": 0.3636,
+      "false_rejection": 0
+    },
+    "graph": {
+      "R@1": 0.3939,
+      "R@3": 0.4697,
+      "R@5": 0.4697,
+      "source@5": 0.3939,
+      "fact_hit": 0.9048,
+      "n_fact_q": 21,
+      "correct_rejection": 0.9091,
+      "false_rejection": 0.1061
+    },
+    "hybrid_gate": {
+      "R@1": 0.8485,
+      "R@3": 0.9697,
+      "R@5": 1,
+      "source@5": 0.9848,
+      "fact_hit": 0.9048,
+      "n_fact_q": 21,
+      "correct_rejection": 0.9091,
+      "false_rejection": 0.1061
+    },
+    "hybrid": {
+      "R@1": 0.8485,
+      "R@3": 0.9697,
+      "R@5": 1,
+      "source@5": 0.9848,
+      "fact_hit": 0.9048,
+      "n_fact_q": 21,
+      "correct_rejection": 0.9091,
+      "false_rejection": 0.0303
+    }
+  },
+  "latency_retrieve_p95_s": 0.38,
+  "sweep_pick_hybrid": {
+    "min_score": 0.82,
+    "vector_CR": 0.9545,
+    "vector_FR": 0.0455,
+    "hybrid_gate_CR": 0.9545,
+    "hybrid_gate_FR": 0.1212,
+    "hybrid_CR": 0.9091,
+    "hybrid_FR": 0.0303
+  },
+  "sweep_pick_vector": {
+    "min_score": 0.82,
+    "vector_CR": 0.9545,
+    "vector_FR": 0.0455,
+    "hybrid_gate_CR": 0.9545,
+    "hybrid_gate_FR": 0.1212,
+    "hybrid_CR": 0.9091,
+    "hybrid_FR": 0.0303
+  },
+  "sweep_pick_hybrid_gate": null,
+  "misses_hybrid_R@5": [],
+  "false_accept_hybrid": [
+    "N006",
+    "N016"
+  ],
+  "answers": {
+    "use_llm": true,
+    "research": false,
+    "n": 88,
+    "methods": {
+      "extractive": 9,
+      "llm": 57,
+      "refusal": 22
+    },
+    "citation_validity": 1,
+    "correct_rejection": 0.9091,
+    "false_rejection": 0.0303,
+    "latency_p95_s": 11.56,
+    "latency_p95_web_s": null,
+    "n_web": 0
+  }
+}

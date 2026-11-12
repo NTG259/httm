@@ -1,0 +1,6 @@
+{
+  "run_id": "20261112-071840_cls",
+  "epochs_run": 22,
+  "best_val_macro_f1": 0.7109,
+  "params": 74585
+}

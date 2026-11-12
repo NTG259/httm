@@ -1,0 +1,35 @@
+{
+  "B0_random": {
+    "val": {
+      "success": 0.7244,
+      "avg_turns": 12,
+      "avg_reward": 0.191,
+      "n": 225
+    },
+    "test": {
+      "success": 0.7156,
+      "avg_turns": 12,
+      "avg_reward": -0.185,
+      "n": 225
+    }
+  },
+  "B1_flat_dqn": {
+    "run_id": "20261112-164238_flatdqn",
+    "best_epoch": 18,
+    "epochs_run": 40,
+    "n_actions": 29,
+    "params": 104733,
+    "val": {
+      "success": 0.8533,
+      "avg_turns": 3.556,
+      "avg_reward": 12.877,
+      "n": 225
+    },
+    "test": {
+      "success": 0.7511,
+      "avg_turns": 3.542,
+      "avg_reward": 8.653,
+      "n": 225
+    }
+  }
+}

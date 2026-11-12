@@ -1,0 +1,82 @@
+{
+  "full": {
+    "threshold": 0.54,
+    "hidden": [
+      64,
+      32
+    ],
+    "dropout": 0.2,
+    "features": [
+      "age",
+      "bmi",
+      "HbA1c_level",
+      "blood_glucose_level",
+      "hypertension",
+      "heart_disease",
+      "gender×3",
+      "smoking_history×6"
+    ],
+    "scaler": {
+      "age": {
+        "mean": 41.749598526046775,
+        "std": 22.45376371666432
+      },
+      "bmi": {
+        "mean": 27.305729398829158,
+        "std": 6.748459958191248
+      },
+      "HbA1c_level": {
+        "mean": 5.530281418085644,
+        "std": 1.0738354786350783
+      },
+      "blood_glucose_level": {
+        "mean": 138.10545006091942,
+        "std": 40.9150859487918
+      },
+      "hypertension": {
+        "mean": 0.07794716353154438,
+        "std": 0.26809041597717914
+      },
+      "heart_disease": {
+        "mean": 0.04084574009687676,
+        "std": 0.1979342005172738
+      }
+    },
+    "run_id": "20261112-072147_dl"
+  },
+  "no_labs": {
+    "threshold": 0.335,
+    "hidden": [
+      64,
+      32
+    ],
+    "dropout": 0.2,
+    "features": [
+      "age",
+      "bmi",
+      "hypertension",
+      "heart_disease",
+      "gender×3",
+      "smoking_history×6"
+    ],
+    "scaler": {
+      "age": {
+        "mean": 41.749598526046775,
+        "std": 22.45376371666432
+      },
+      "bmi": {
+        "mean": 27.305729398829158,
+        "std": 6.748459958191248
+      },
+      "hypertension": {
+        "mean": 0.07794716353154438,
+        "std": 0.26809041597717914
+      },
+      "heart_disease": {
+        "mean": 0.04084574009687676,
+        "std": 0.1979342005172738
+      }
+    },
+    "run_id": "20261112-072147_dl"
+  }
+}

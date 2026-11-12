@@ -1,0 +1,14 @@
+# AG-00 Router — input → intent kỳ vọng
+- {text: "Metformin có tác dụng phụ gì?", intent: consult}
+- {text: "Người tiểu đường nên ăn gì?", intent: consult}
+- {text: "HbA1c là gì?", intent: consult}
+- {text: "Biến chứng của bệnh tiểu đường là gì?", intent: consult}
+- {text: "Tiểu đường típ 1 và típ 2 khác nhau thế nào?", intent: consult}
+- {text: "Dạo này tôi khát nước nhiều, tiểu đêm 3-4 lần", intent: diagnose}
+- {text: "Tôi đo đường huyết lúc đói 7,5 thì có bị tiểu đường không?", intent: diagnose}
+- {text: "Tôi 52 tuổi, hay mệt, sụt cân không rõ lý do", intent: diagnose}
+- {text: "Em đang mang thai tuần 26, bác sĩ bảo đường huyết hơi cao", intent: diagnose}
+- {text: "Bố tôi lơ mơ, thở rất nhanh, hơi thở có mùi táo", intent: emergency}
+- {text: "Mẹ tôi nôn nhiều, rối loạn ý thức, đường huyết 30", intent: emergency}
+- {text: "Giá vàng hôm nay bao nhiêu?", intent: out_of_scope}
+- {text: "Đội nào vô địch World Cup 2022?", intent: out_of_scope}

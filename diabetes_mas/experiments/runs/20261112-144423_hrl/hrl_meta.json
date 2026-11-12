@@ -1,0 +1,10 @@
+{
+  "run_id": "20261112-144423_hrl",
+  "epoch": 33,
+  "val": {
+    "success": 0.8267,
+    "avg_turns": 3.2,
+    "avg_reward": 12.163,
+    "n": 225
+  }
+}

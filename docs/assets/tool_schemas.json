@@ -1,0 +1,1963 @@
+{
+  "T-01": {
+    "description": "Không gian hành động của Work-Agent. Lấy từ kho slot (KB seed + slot hồ sơ) — cùng nguồn với KB\ntrong Neo4j, nhưng gồm cả slot hồ sơ vốn không phải node KB.",
+    "input": {
+      "properties": {
+        "worker": {
+          "enum": [
+            "W1",
+            "W2",
+            "W3",
+            "W4"
+          ],
+          "title": "Worker",
+          "type": "string"
+        }
+      },
+      "required": [
+        "worker"
+      ],
+      "title": "GetGroupSlotsIn",
+      "type": "object"
+    },
+    "name": "kg_get_group_slots",
+    "output": {
+      "$defs": {
+        "SlotInfo": {
+          "properties": {
+            "kind": {
+              "enum": [
+                "binary",
+                "numeric",
+                "categorical"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "question_vi": {
+              "title": "Question Vi",
+              "type": "string"
+            },
+            "slot_id": {
+              "title": "Slot Id",
+              "type": "string"
+            },
+            "source": {
+              "title": "Source",
+              "type": "string"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Unit"
+            },
+            "values": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "title": "Values",
+              "type": "array"
+            }
+          },
+          "required": [
+            "slot_id",
+            "kind",
+            "source",
+            "question_vi"
+          ],
+          "title": "SlotInfo",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "slots": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SlotInfo"
+          },
+          "title": "Slots",
+          "type": "array"
+        }
+      },
+      "title": "GetGroupSlotsOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-02": {
+    "description": "Chính: từ điển (cùng mã dùng tạo quan hệ MENTIONS ⇒ hai phía khớp nhau, tất định).\nDự phòng: fulltext Neo4j (điểm Lucene không chuẩn hóa → chỉ dùng khi từ điển không khớp gì).",
+    "input": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "top_k": {
+          "default": 8,
+          "maximum": 20,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "LinkIn",
+      "type": "object"
+    },
+    "name": "kg_link_entities",
+    "output": {
+      "$defs": {
+        "LinkedEntity": {
+          "properties": {
+            "count": {
+              "default": 1,
+              "title": "Count",
+              "type": "integer"
+            },
+            "label": {
+              "title": "Label",
+              "type": "string"
+            },
+            "method": {
+              "default": "lexicon",
+              "enum": [
+                "lexicon",
+                "fulltext"
+              ],
+              "title": "Method",
+              "type": "string"
+            },
+            "name_vi": {
+              "title": "Name Vi",
+              "type": "string"
+            },
+            "node_id": {
+              "title": "Node Id",
+              "type": "string"
+            },
+            "score": {
+              "default": 1.0,
+              "title": "Score",
+              "type": "number"
+            }
+          },
+          "required": [
+            "node_id",
+            "label",
+            "name_vi"
+          ],
+          "title": "LinkedEntity",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "entities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LinkedEntity"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        }
+      },
+      "title": "LinkOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-03": {
+    "description": "",
+    "input": {
+      "properties": {
+        "context": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "default": {},
+          "title": "Context",
+          "type": "object"
+        },
+        "measurements": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Measurements",
+          "type": "object"
+        }
+      },
+      "required": [
+        "measurements"
+      ],
+      "title": "CheckCriteriaIn",
+      "type": "object"
+    },
+    "name": "kg_check_criteria",
+    "output": {
+      "$defs": {
+        "CriterionHit": {
+          "properties": {
+            "criterion_id": {
+              "title": "Criterion Id",
+              "type": "string"
+            },
+            "disease_id": {
+              "title": "Disease Id",
+              "type": "string"
+            },
+            "evidence": {
+              "default": "",
+              "title": "Evidence",
+              "type": "string"
+            },
+            "rule": {
+              "title": "Rule",
+              "type": "string"
+            },
+            "source_id": {
+              "title": "Source Id",
+              "type": "string"
+            },
+            "source_title": {
+              "default": "",
+              "title": "Source Title",
+              "type": "string"
+            },
+            "test_id": {
+              "title": "Test Id",
+              "type": "string"
+            },
+            "value": {
+              "title": "Value",
+              "type": "number"
+            }
+          },
+          "required": [
+            "disease_id",
+            "criterion_id",
+            "test_id",
+            "value",
+            "rule",
+            "source_id"
+          ],
+          "title": "CriterionHit",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "hits": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CriterionHit"
+          },
+          "title": "Hits",
+          "type": "array"
+        },
+        "kb_backend": {
+          "default": "seed",
+          "enum": [
+            "neo4j",
+            "seed"
+          ],
+          "title": "Kb Backend",
+          "type": "string"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        }
+      },
+      "title": "CheckCriteriaOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-04": {
+    "description": "",
+    "input": {
+      "properties": {
+        "k_chunks": {
+          "default": 5,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "K Chunks",
+          "type": "integer"
+        },
+        "max_facts": {
+          "default": 20,
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Max Facts",
+          "type": "integer"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question"
+      ],
+      "title": "RetrieveIn",
+      "type": "object"
+    },
+    "name": "hybrid_retrieve",
+    "output": {
+      "$defs": {
+        "ChunkHit": {
+          "properties": {
+            "chunk_id": {
+              "title": "Chunk Id",
+              "type": "string"
+            },
+            "cosine": {
+              "title": "Cosine",
+              "type": "number"
+            },
+            "reviewed": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Reviewed"
+            },
+            "score": {
+              "title": "Score",
+              "type": "number"
+            },
+            "source_id": {
+              "title": "Source Id",
+              "type": "string"
+            },
+            "source_title": {
+              "default": "",
+              "title": "Source Title",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Url"
+            },
+            "web": {
+              "default": false,
+              "title": "Web",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "chunk_id",
+            "text",
+            "score",
+            "cosine",
+            "source_id"
+          ],
+          "title": "ChunkHit",
+          "type": "object"
+        },
+        "Fact": {
+          "properties": {
+            "evidence": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Evidence"
+            },
+            "source_id": {
+              "title": "Source Id",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "triple": {
+              "maxItems": 3,
+              "minItems": 3,
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "title": "Triple",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "triple",
+            "source_id"
+          ],
+          "title": "Fact",
+          "type": "object"
+        },
+        "LinkedEntity": {
+          "properties": {
+            "count": {
+              "default": 1,
+              "title": "Count",
+              "type": "integer"
+            },
+            "label": {
+              "title": "Label",
+              "type": "string"
+            },
+            "method": {
+              "default": "lexicon",
+              "enum": [
+                "lexicon",
+                "fulltext"
+              ],
+              "title": "Method",
+              "type": "string"
+            },
+            "name_vi": {
+              "title": "Name Vi",
+              "type": "string"
+            },
+            "node_id": {
+              "title": "Node Id",
+              "type": "string"
+            },
+            "score": {
+              "default": 1.0,
+              "title": "Score",
+              "type": "number"
+            }
+          },
+          "required": [
+            "node_id",
+            "label",
+            "name_vi"
+          ],
+          "title": "LinkedEntity",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "chunks": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ChunkHit"
+          },
+          "title": "Chunks",
+          "type": "array"
+        },
+        "enough": {
+          "default": false,
+          "title": "Enough",
+          "type": "boolean"
+        },
+        "enough_reason": {
+          "default": "",
+          "title": "Enough Reason",
+          "type": "string"
+        },
+        "entities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LinkedEntity"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "facts": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Fact"
+          },
+          "title": "Facts",
+          "type": "array"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        }
+      },
+      "title": "RetrieveOut",
+      "type": "object"
+    },
+    "timeout_s": 60.0
+  },
+  "T-05": {
+    "description": "",
+    "input": {
+      "$defs": {
+        "SlotValue": {
+          "properties": {
+            "status": {
+              "default": "not_asked",
+              "enum": [
+                "yes",
+                "no",
+                "unknown",
+                "not_asked"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Value"
+            }
+          },
+          "title": "SlotValue",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "asked_slot": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asked Slot"
+        },
+        "count_turn": {
+          "default": true,
+          "title": "Count Turn",
+          "type": "boolean"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "updates": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SlotValue"
+          },
+          "title": "Updates",
+          "type": "object"
+        }
+      },
+      "required": [
+        "session_id",
+        "updates"
+      ],
+      "title": "UpdateStateIn",
+      "type": "object"
+    },
+    "name": "update_state",
+    "output": {
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "turn": {
+          "default": 0,
+          "title": "Turn",
+          "type": "integer"
+        }
+      },
+      "title": "UpdateStateOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-06": {
+    "description": "",
+    "input": {
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "GetStateIn",
+      "type": "object"
+    },
+    "name": "get_state",
+    "output": {
+      "$defs": {
+        "DialogState": {
+          "properties": {
+            "current_worker": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Current Worker"
+            },
+            "dl_conflict": {
+              "default": false,
+              "title": "Dl Conflict",
+              "type": "boolean"
+            },
+            "done": {
+              "default": false,
+              "title": "Done",
+              "type": "boolean"
+            },
+            "entropy": {
+              "default": 1.6094379124341003,
+              "title": "Entropy",
+              "type": "number"
+            },
+            "history": {
+              "items": {
+                "$ref": "#/$defs/Turn"
+              },
+              "title": "History",
+              "type": "array"
+            },
+            "probs": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "title": "Probs",
+              "type": "object"
+            },
+            "red_flag": {
+              "default": false,
+              "title": "Red Flag",
+              "type": "boolean"
+            },
+            "risk_dl": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Risk Dl"
+            },
+            "session_id": {
+              "title": "Session Id",
+              "type": "string"
+            },
+            "slots": {
+              "additionalProperties": {
+                "$ref": "#/$defs/SlotValue"
+              },
+              "title": "Slots",
+              "type": "object"
+            },
+            "sub_turn": {
+              "default": 0,
+              "title": "Sub Turn",
+              "type": "integer"
+            },
+            "turn": {
+              "default": 0,
+              "title": "Turn",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "session_id"
+          ],
+          "title": "DialogState",
+          "type": "object"
+        },
+        "SlotValue": {
+          "properties": {
+            "status": {
+              "default": "not_asked",
+              "enum": [
+                "yes",
+                "no",
+                "unknown",
+                "not_asked"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Value"
+            }
+          },
+          "title": "SlotValue",
+          "type": "object"
+        },
+        "Turn": {
+          "properties": {
+            "agent": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Agent"
+            },
+            "slot": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Slot"
+            },
+            "speaker": {
+              "enum": [
+                "system",
+                "user"
+              ],
+              "title": "Speaker",
+              "type": "string"
+            },
+            "text": {
+              "default": "",
+              "title": "Text",
+              "type": "string"
+            }
+          },
+          "required": [
+            "speaker"
+          ],
+          "title": "Turn",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "state": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DialogState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "vector": {
+          "default": [],
+          "items": {
+            "type": "number"
+          },
+          "title": "Vector",
+          "type": "array"
+        }
+      },
+      "title": "GetStateOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-07": {
+    "description": "Kênh simulator (chế độ slot): trả lời đúng slot được hỏi theo ca bệnh gắn với phiên.\nKênh UI (người thật) sẽ cài ở Giai đoạn 5 cùng NLU.",
+    "input": {
+      "properties": {
+        "question_text": {
+          "default": "",
+          "title": "Question Text",
+          "type": "string"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "slot_id": {
+          "title": "Slot Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id",
+        "slot_id"
+      ],
+      "title": "AskIn",
+      "type": "object"
+    },
+    "name": "ask_patient",
+    "output": {
+      "$defs": {
+        "SlotValue": {
+          "properties": {
+            "status": {
+              "default": "not_asked",
+              "enum": [
+                "yes",
+                "no",
+                "unknown",
+                "not_asked"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Value"
+            }
+          },
+          "title": "SlotValue",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "answer_text": {
+          "default": "",
+          "title": "Answer Text",
+          "type": "string"
+        },
+        "channel": {
+          "default": "simulator",
+          "enum": [
+            "simulator",
+            "ui"
+          ],
+          "title": "Channel",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "parsed": {
+          "additionalProperties": {
+            "$ref": "#/$defs/SlotValue"
+          },
+          "default": {},
+          "title": "Parsed",
+          "type": "object"
+        }
+      },
+      "title": "AskOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-08": {
+    "description": "Biến thể hiện tại: kb_naive_bayes (Naive Bayes từ xác suất trong KB) + luật T-03.\nSẽ thay bằng MLP AG-02/AG-03 ở Giai đoạn 5; giao diện giữ nguyên.",
+    "input": {
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "ClassifyIn",
+      "type": "object"
+    },
+    "name": "classify",
+    "output": {
+      "$defs": {
+        "CriterionHit": {
+          "properties": {
+            "criterion_id": {
+              "title": "Criterion Id",
+              "type": "string"
+            },
+            "disease_id": {
+              "title": "Disease Id",
+              "type": "string"
+            },
+            "evidence": {
+              "default": "",
+              "title": "Evidence",
+              "type": "string"
+            },
+            "rule": {
+              "title": "Rule",
+              "type": "string"
+            },
+            "source_id": {
+              "title": "Source Id",
+              "type": "string"
+            },
+            "source_title": {
+              "default": "",
+              "title": "Source Title",
+              "type": "string"
+            },
+            "test_id": {
+              "title": "Test Id",
+              "type": "string"
+            },
+            "value": {
+              "title": "Value",
+              "type": "number"
+            }
+          },
+          "required": [
+            "disease_id",
+            "criterion_id",
+            "test_id",
+            "value",
+            "rule",
+            "source_id"
+          ],
+          "title": "CriterionHit",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "entropy": {
+          "default": 0.0,
+          "title": "Entropy",
+          "type": "number"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "probs": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "default": {},
+          "title": "Probs",
+          "type": "object"
+        },
+        "rule_hits": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CriterionHit"
+          },
+          "title": "Rule Hits",
+          "type": "array"
+        },
+        "sub_probs": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object"
+          },
+          "default": {},
+          "title": "Sub Probs",
+          "type": "object"
+        },
+        "top1": {
+          "default": "",
+          "title": "Top1",
+          "type": "string"
+        },
+        "variant": {
+          "default": "kb_naive_bayes",
+          "enum": [
+            "kb_naive_bayes",
+            "mlp"
+          ],
+          "title": "Variant",
+          "type": "string"
+        }
+      },
+      "title": "ClassifyOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-09": {
+    "description": "Cấp cứu khi có bất kỳ dấu hiệu nhóm `canh_bao` (KB: triệu chứng của hôn mê nhiễm toan ceton /\ntăng áp lực thẩm thấu — VMC-0001: \"Biến chứng này cần phải điều trị cấp cứu\").\nKHÔNG dùng ngưỡng đường huyết đơn lẻ: 13,9 mmol/L (QĐ 3280 tr.9) là tiêu chí cận lâm sàng KÈM\ntriệu chứng, không phải ngưỡng cấp cứu độc lập — chỉ dùng để bổ sung lý do.",
+    "input": {
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "RedFlagIn",
+      "type": "object"
+    },
+    "name": "check_red_flags",
+    "output": {
+      "properties": {
+        "action_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Text"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "reasons": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "red_flag": {
+          "default": false,
+          "title": "Red Flag",
+          "type": "boolean"
+        }
+      },
+      "title": "RedFlagOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-10": {
+    "description": "Đăng ký để có schema; trên thực tế base.call() ghi log tự động sau MỌI tool call.",
+    "input": {
+      "properties": {
+        "agent": {
+          "title": "Agent",
+          "type": "string"
+        },
+        "args": {
+          "additionalProperties": true,
+          "title": "Args",
+          "type": "object"
+        },
+        "latency_ms": {
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "ok": {
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "result_summary": {
+          "title": "Result Summary",
+          "type": "string"
+        },
+        "session_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Session Id"
+        },
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id",
+        "agent",
+        "tool",
+        "args",
+        "result_summary",
+        "latency_ms",
+        "ok"
+      ],
+      "title": "LogEventIn",
+      "type": "object"
+    },
+    "name": "log_event",
+    "output": {
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "path": {
+          "default": "",
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "title": "LogEventOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-11": {
+    "description": "",
+    "input": {
+      "properties": {
+        "asked": {
+          "title": "Asked",
+          "type": "boolean"
+        },
+        "correct": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Correct"
+        },
+        "entropy": {
+          "title": "Entropy",
+          "type": "number"
+        },
+        "hit": {
+          "title": "Hit",
+          "type": "boolean"
+        },
+        "prev_entropy": {
+          "title": "Prev Entropy",
+          "type": "number"
+        },
+        "terminal": {
+          "title": "Terminal",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prev_entropy",
+        "entropy",
+        "asked",
+        "hit",
+        "terminal"
+      ],
+      "title": "RewardIn",
+      "type": "object"
+    },
+    "name": "compute_reward",
+    "output": {
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "parts": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "default": {},
+          "title": "Parts",
+          "type": "object"
+        },
+        "reward": {
+          "default": 0.0,
+          "title": "Reward",
+          "type": "number"
+        }
+      },
+      "title": "RewardOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-12": {
+    "description": "",
+    "input": {
+      "properties": {
+        "domains": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Domains"
+        },
+        "max_results": {
+          "default": 5,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Max Results",
+          "type": "integer"
+        },
+        "query": {
+          "title": "Query",
+          "type": "string"
+        },
+        "scope": {
+          "default": "local",
+          "enum": [
+            "local",
+            "web"
+          ],
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "SearchArticlesIn",
+      "type": "object"
+    },
+    "name": "search_articles",
+    "output": {
+      "$defs": {
+        "ArticleHit": {
+          "properties": {
+            "domain": {
+              "title": "Domain",
+              "type": "string"
+            },
+            "in_kb": {
+              "title": "In Kb",
+              "type": "boolean"
+            },
+            "score": {
+              "default": 0.0,
+              "title": "Score",
+              "type": "number"
+            },
+            "snippet": {
+              "title": "Snippet",
+              "type": "string"
+            },
+            "source_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Source Id"
+            },
+            "title": {
+              "title": "Title",
+              "type": "string"
+            },
+            "url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Url"
+            }
+          },
+          "required": [
+            "url",
+            "title",
+            "snippet",
+            "domain",
+            "in_kb"
+          ],
+          "title": "ArticleHit",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "hits": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ArticleHit"
+          },
+          "title": "Hits",
+          "type": "array"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        }
+      },
+      "title": "SearchArticlesOut",
+      "type": "object"
+    },
+    "timeout_s": 15.0
+  },
+  "T-13": {
+    "description": "",
+    "input": {
+      "properties": {
+        "k_chunks": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "K Chunks",
+          "type": "integer"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "timeout_s": {
+          "default": 8.0,
+          "exclusiveMinimum": 0,
+          "maximum": 60,
+          "title": "Timeout S",
+          "type": "number"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "question"
+      ],
+      "title": "FetchArticleIn",
+      "type": "object"
+    },
+    "name": "fetch_article",
+    "output": {
+      "$defs": {
+        "ChunkHit": {
+          "properties": {
+            "chunk_id": {
+              "title": "Chunk Id",
+              "type": "string"
+            },
+            "cosine": {
+              "title": "Cosine",
+              "type": "number"
+            },
+            "reviewed": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Reviewed"
+            },
+            "score": {
+              "title": "Score",
+              "type": "number"
+            },
+            "source_id": {
+              "title": "Source Id",
+              "type": "string"
+            },
+            "source_title": {
+              "default": "",
+              "title": "Source Title",
+              "type": "string"
+            },
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Url"
+            },
+            "web": {
+              "default": false,
+              "title": "Web",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "chunk_id",
+            "text",
+            "score",
+            "cosine",
+            "source_id"
+          ],
+          "title": "ChunkHit",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "chunks": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ChunkHit"
+          },
+          "title": "Chunks",
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published"
+        },
+        "title": {
+          "default": "",
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "default": "",
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "title": "FetchArticleOut",
+      "type": "object"
+    },
+    "timeout_s": 90.0
+  },
+  "T-14": {
+    "description": "",
+    "input": {
+      "properties": {
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "title",
+        "reason",
+        "session_id"
+      ],
+      "title": "QueueArticleIn",
+      "type": "object"
+    },
+    "name": "queue_article_for_kb",
+    "output": {
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "queued": {
+          "default": false,
+          "title": "Queued",
+          "type": "boolean"
+        }
+      },
+      "title": "QueueArticleOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  },
+  "T-15": {
+    "description": "",
+    "input": {
+      "properties": {
+        "HbA1c_level": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hba1C Level"
+        },
+        "age": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age"
+        },
+        "blood_glucose_level": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Blood Glucose Level"
+        },
+        "bmi": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bmi"
+        },
+        "gender": {
+          "anyOf": [
+            {
+              "enum": [
+                "Female",
+                "Male",
+                "Other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gender"
+        },
+        "heart_disease": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heart Disease"
+        },
+        "hypertension": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hypertension"
+        },
+        "smoking_history": {
+          "default": "No Info",
+          "enum": [
+            "never",
+            "former",
+            "current",
+            "not current",
+            "ever",
+            "No Info"
+          ],
+          "title": "Smoking History",
+          "type": "string"
+        }
+      },
+      "title": "PredictIn",
+      "type": "object"
+    },
+    "name": "predict_diabetes_risk",
+    "output": {
+      "properties": {
+        "assumptions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "conflict_with_rules": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conflict With Rules"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "missing_features": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Features",
+          "type": "array"
+        },
+        "model_variant": {
+          "anyOf": [
+            {
+              "enum": [
+                "full",
+                "no_labs"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Variant"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "risk": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Risk"
+        },
+        "rule_disease_hits": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Rule Disease Hits",
+          "type": "array"
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Threshold"
+        }
+      },
+      "title": "PredictOut",
+      "type": "object"
+    },
+    "timeout_s": 10.0
+  }
+}

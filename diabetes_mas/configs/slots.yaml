@@ -1,0 +1,43 @@
+# Kho slot của hội thoại chẩn đoán (02_AGENT_DESIGN.md §3).
+# Slot y khoa lấy từ KB seed (Symptom / RiskFactor / LabTest); slot hồ sơ (profile) khai báo ở đây
+# vì là đặc trưng nhân khẩu học cho mô hình DL (FR-19), không phải tri thức y khoa cần nguồn.
+
+workers:                       # Work-Agent → nhóm slot được hỏi (không gian hành động)
+  W1: {kb_groups: [trieu_chung_kinh_dien]}
+  W2: {kb_labels: [LabTest]}
+  W3: {kb_groups: [tien_su_nguy_co], profile: true}
+  W4: {kb_groups: [bien_chung]}
+
+not_askable_groups: [canh_bao]  # chỉ NLU ghi nhận khi người dùng tự nói; Safety dùng
+
+profile:
+  tuoi:      {kind: numeric, unit: "tuổi", range: [0, 100], question_vi: "Anh/chị năm nay bao nhiêu tuổi?"}
+  bmi:       {kind: numeric, unit: "kg/m²", range: [10, 60], question_vi: "Anh/chị cao bao nhiêu và nặng bao nhiêu kg?"}
+  gioi_tinh: {kind: categorical, values: [nam, nu, khac], question_vi: "Cho tôi hỏi giới tính của anh/chị?"}
+  hut_thuoc: {kind: categorical, values: [chua_bao_gio, da_bo, dang_hut, hien_khong_hut, tung_hut],
+              question_vi: "Anh/chị có hút thuốc lá không, hay đã từng hút?"}
+  benh_tim:  {kind: binary, question_vi: "Anh/chị có mắc bệnh tim mạch nào không?"}
+
+# Cờ nhị phân trong KB SUY RA từ slot số (không hỏi trực tiếp).
+derived:
+  tuoi_tu_45:   {from: tuoi, op: ">=", value: 45}   # MOH-3280-2011: "Tuổi ≥ 45"
+  tuoi_duoi_30: {from: tuoi, op: "<",  value: 30}   # VMC-0001: "tuổi khởi phát <30" — xấp xỉ bằng tuổi hiện tại (giả định)
+  bmi_tu_23:    {from: bmi,  op: ">=", value: 23}   # MOH-3280-2011: "BMI ≥ 23"
+
+numeric_ranges:                # chuẩn hóa min-max cho vector trạng thái
+  GLUCOSE_DOI: [2, 30]
+  OGTT_1H: [2, 35]
+  OGTT_2H: [2, 35]
+  GLUCOSE_BAT_KY: [2, 40]
+  HBA1C: [3, 15]
+
+dialog:
+  # Hỏi hồ sơ cố định (do điều phối AG-01, không phải policy) — chạy cả khi huấn luyện lẫn demo
+  # để AG-13 luôn có tuoi + bmi (Q45/Q49) và phân phối trạng thái hai chế độ giống nhau.
+  # Không tính vào T_max, không có reward; slot đã biết từ câu đầu thì bỏ qua.
+  intake_slots: [tuoi, bmi, gioi_tinh]
+  T_max: 12                    # tối đa số câu hỏi do policy chọn (FR-03), KHÔNG gồm intake
+  max_sub_turns: 4             # số câu hỏi tối đa mỗi lần Main giao quyền cho 1 Work-Agent
+  min_turns_before_classify: 1 # Main chỉ được CLASSIFY sau ≥ 1 câu hỏi
+  confident_stop: 0.95       # GĐ 9: đã có xét nghiệm (labs_ready) và max p ≥ 0,95 ⇒ kết luận ngay. E2E 0,796 giữ nguyên, lượt 3,57 → 3,48 (0,90: acc giảm)
+  require_lab_before_classify: true  # GĐ 8 (TC-30): chưa có giá trị xét nghiệm và còn xét nghiệm chưa hỏi ⇒ chưa CLASSIFY

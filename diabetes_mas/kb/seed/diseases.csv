@@ -1,0 +1,15 @@
+id,name_vi,name_en,icd10,in_scope,hetionet_id,aliases
+KHONG_DTD,Không mắc đái tháo đường,No diabetes,,true,,
+TIEN_DTD,Tiền đái tháo đường,Prediabetes,R73.0,true,,tiền tiểu đường|rối loạn dung nạp glucose|suy giảm glucose máu lúc đói
+DTD,Đái tháo đường,Diabetes mellitus,E14,false,,tiểu đường|bệnh tiểu đường|đái tháo đường|ĐTĐ
+DTD_TIP_1,Đái tháo đường típ 1,Type 1 diabetes mellitus,E10,true,Disease::DOID:9744,tiểu đường tuýp 1|tiểu đường type 1|tiểu đường típ 1|đái tháo đường týp 1|đái tháo đường type 1|đái tháo đường tuýp 1|đái tháo đường typ 1|type 1 diabetes
+DTD_TIP_2,Đái tháo đường típ 2,Type 2 diabetes mellitus,E11,true,Disease::DOID:9352,tiểu đường tuýp 2|tiểu đường type 2|tiểu đường típ 2|đái tháo đường týp 2|đái tháo đường type 2|đái tháo đường tuýp 2|đái tháo đường typ 2|type 2 diabetes
+DTD_THAI_KY,Đái tháo đường thai kỳ,Gestational diabetes mellitus,O24.4,true,,tiểu đường thai kỳ|tiểu đường thai kì|đái tháo đường thai kì
+DTD_KHAC,Đái tháo đường thể đặc biệt khác,Other specific types of diabetes,E13,false,,
+HON_ME_NHIEM_TOAN_CETON,Hôn mê nhiễm toan ceton,Diabetic ketoacidosis,E10.1,false,,nhiễm toan ceton
+HON_ME_TANG_AP_LUC_THAM_THAU,Hôn mê tăng áp lực thẩm thấu,Hyperosmolar hyperglycemic state,E11.0,false,,tăng áp lực thẩm thấu
+BENH_VONG_MAC_DTD,Bệnh võng mạc đái tháo đường,Diabetic retinopathy,H36.0,false,,biến chứng võng mạc
+BENH_THAN_KINH_DTD,Bệnh thần kinh đái tháo đường,Diabetic neuropathy,G63.2,false,,biến chứng thần kinh
+BENH_MACH_VANH,Bệnh mạch vành,Coronary artery disease,I25,false,,biến chứng mạch vành
+TIEN_SAN_GIAT,Tiền sản giật,Pre-eclampsia,O14,false,,sản giật
+HA_DUONG_HUYET,Hạ đường huyết,Hypoglycemia,E16.2,false,,tụt đường huyết|hạ đường máu

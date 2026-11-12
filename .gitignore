@@ -1,0 +1,10 @@
+# Sao lưu trước demo 13/11 — repo gốc cho toàn dự án (chỉ local, chưa có remote)
+.venv/
+.idea/
+.claude/
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+**/.env
+diabetes_mas/neo4j_data/
+kg_rag_diabetes/data/

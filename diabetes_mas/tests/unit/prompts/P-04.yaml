@@ -1,0 +1,11 @@
+# AG-10 Patient Simulator (ngôn ngữ) — câu trả lời không được nói tên bệnh; NLU phải hiểu lại đúng slot
+- {slot: uong_nhieu, status: yes}
+- {slot: tieu_nhieu, status: no}
+- {slot: sut_can, status: yes}
+- {slot: nhin_mo, status: no}
+- {slot: HBA1C, status: yes, value: 7.4}
+- {slot: GLUCOSE_DOI, status: unknown}
+- {slot: tang_huyet_ap, status: yes}
+- {slot: tien_su_gia_dinh_dtd, status: no}
+- {slot: dau_nguc, status: no}
+- {slot: it_van_dong, status: yes}

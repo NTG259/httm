@@ -1,0 +1,58 @@
+{
+  "HRL": {
+    "val": {
+      "success": 0.8622,
+      "avg_turns": 3.16,
+      "avg_reward": 13.628,
+      "n": 225
+    },
+    "test": {
+      "success": 0.7822,
+      "avg_turns": 3.324,
+      "avg_reward": 10.178,
+      "n": 225
+    }
+  },
+  "B0_random": {
+    "val": {
+      "success": 0.7556,
+      "avg_turns": 11.387,
+      "avg_reward": 1.973,
+      "n": 225
+    },
+    "test": {
+      "success": 0.6978,
+      "avg_turns": 11.538,
+      "avg_reward": -0.566,
+      "n": 225
+    }
+  },
+  "B0p_rule": {
+    "val": {
+      "success": 0.8844,
+      "avg_turns": 10.458,
+      "avg_reward": 9.115,
+      "n": 225
+    },
+    "test": {
+      "success": 0.8533,
+      "avg_turns": 10.702,
+      "avg_reward": 7.562,
+      "n": 225
+    }
+  },
+  "B1_flat": {
+    "val": {
+      "success": 0.8533,
+      "avg_turns": 3.556,
+      "avg_reward": 12.877,
+      "n": 225
+    },
+    "test": {
+      "success": 0.7511,
+      "avg_turns": 3.542,
+      "avg_reward": 8.653,
+      "n": 225
+    }
+  }
+}

@@ -1,0 +1,12 @@
+[theme]
+base = "dark"
+
+# Màu nhấn chính — đỏ đậm thay cho đỏ sáng và tím mặc định
+primaryColor = "#8B0000"
+
+# Nền trang và nền sidebar
+backgroundColor = "#1a0a0a"
+secondaryBackgroundColor = "#2d1010"
+
+# Màu chữ
+textColor = "#f5e6e6"

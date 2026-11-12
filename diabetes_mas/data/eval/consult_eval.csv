@@ -1,0 +1,89 @@
+id,question,type,expect_chunk_substr,expect_source,expect_fact,reference_answer
+C001,Tiêu chuẩn chẩn đoán đái tháo đường theo glucose lúc đói là bao nhiêu?,answerable,"126 mg/dl|7 mmol/l|7,0 mmol/l",MOH-3280-2011|VMC-0239|VMC-0240,Tiêu chuẩn chẩn đoán,Glucose huyết tương lúc đói ≥ 7 mmol/L (126 mg/dL) sau nhịn đói ít nhất 8 giờ.
+C002,HbA1c bao nhiêu thì được chẩn đoán đái tháo đường?,answerable,"6,5%|6.5%",VMC-0199|VMC-0283|VMC-0001|VMC-0002,HbA1c,"HbA1c ≥ 6,5% (xét nghiệm ở phòng thí nghiệm chuẩn hóa) là một tiêu chuẩn chẩn đoán."
+C003,Nghiệm pháp dung nạp glucose đường uống làm thế nào?,answerable,75g glucose|75 g glucose,VMC-0193|VMC-0020|MOH-3280-2011,,"Uống 75 g glucose sau nhịn đói; đo glucose máu lúc đói và 2 giờ sau uống; ≥ 11,1 mmol/L là ĐTĐ."
+C004,Glucose máu bất kỳ bao nhiêu kèm triệu chứng thì là tiểu đường?,answerable,"11,1 mmol",MOH-3280-2011|VMC-0239|VMC-0240,Glucose huyết tương bất kỳ,"Glucose bất kỳ ≥ 11,1 mmol/L (200 mg/dL) kèm triệu chứng kinh điển."
+C005,Thế nào là tiền đái tháo đường?,answerable,"rối loạn glucose máu lúc đói|rối loạn dung nạp glucose|5,7",VMC-0040|VMC-0086|VMC-0133,Tiền đái tháo đường,"Glucose máu cao hơn bình thường nhưng chưa tới ngưỡng ĐTĐ: rối loạn glucose lúc đói hoặc rối loạn dung nạp glucose; HbA1c 5,7–6,4%."
+C006,Tiền đái tháo đường có chữa khỏi được không?,answerable,tiền tiểu đường|tiền đái tháo đường,VMC-0133|VMC-0086|VMC-0132,,Có thể đảo ngược nhờ giảm cân và tăng vận động; một số trường hợp cần thuốc.
+C007,Triệu chứng của bệnh tiểu đường típ 2 là gì?,answerable,khát nước|tiểu nhiều|đi tiểu nhiều,VMC-0002|VMC-0088|VMC-0234,có triệu chứng,"Khát nhiều, tiểu nhiều, ăn nhiều, sụt cân, nhìn mờ, vết thương lâu lành, tê bì chân tay."
+C008,Tiểu đường típ 1 có những triệu chứng gì?,answerable,khát nước|tiểu nhiều|sụt cân|giảm cân,VMC-0001|VMC-0110|VMC-0235,có triệu chứng,"Khát, tiểu nhiều, ăn nhiều nhưng sụt cân nhanh, mệt mỏi, nhìn mờ; có thể khởi phát bằng nhiễm toan ceton."
+C009,Những ai có nguy cơ cao mắc đái tháo đường típ 2?,answerable,thừa cân|béo phì|tiền sử gia đình,VMC-0028|VMC-0244|MOH-3280-2011,là yếu tố nguy cơ,"Tuổi ≥ 45, thừa cân/béo phì, tăng huyết áp, rối loạn mỡ máu, tiền sử gia đình, tiền sử ĐTĐ thai kỳ, ít vận động, buồng trứng đa nang."
+C010,Bệnh tiểu đường có di truyền không?,answerable,di truyền,VMC-0091|VMC-0111,,"Có yếu tố di truyền (đặc biệt típ 2) nhưng lối sống đóng vai trò lớn; người có bố mẹ mắc bệnh có nguy cơ cao hơn."
+C011,Tiểu đường típ 1 và típ 2 khác nhau thế nào?,answerable,tế bào beta|kháng insulin,VMC-0001|VMC-0002|VMC-0205|VMC-0051,Cần phân biệt,"Típ 1 do phá hủy tế bào beta tụy, thiếu insulin tuyệt đối, thường ở người trẻ; típ 2 do kháng insulin kèm thiếu insulin tương đối, thường ở người lớn tuổi, thừa cân."
+C012,Metformin có tác dụng phụ gì?,answerable,metformin,MOH-3280-2011|VMC-0213|VMC-0220|VMC-0221,Metformin được dùng điều trị,"Rối loạn tiêu hóa (buồn nôn, tiêu chảy), hiếm gặp nhiễm toan lactic; thận trọng khi suy thận."
+C013,Các nhóm thuốc uống điều trị đái tháo đường típ 2 gồm những gì?,answerable,sulfonylurea|dpp-4|sglt2,VMC-0213|VMC-0220|VMC-0221|MOH-3280-2011,được dùng điều trị,"Biguanid (metformin), sulfonylurê, ức chế DPP-4, ức chế SGLT2, thiazolidinedion, ức chế alpha-glucosidase…"
+C014,Thuốc ức chế SGLT2 hoạt động thế nào?,answerable,sglt2,VMC-0213|VMC-0221|VMC-0274,,Ức chế tái hấp thu glucose ở ống thận làm tăng thải glucose qua nước tiểu.
+C015,Khi nào bệnh nhân tiểu đường cần tiêm insulin?,answerable,tiêm insulin,VMC-0072|VMC-0210|VMC-0154,Insulin được dùng điều trị,"Típ 1 cần insulin suốt đời; típ 2 khi thuốc uống không kiểm soát được, HbA1c rất cao, có biến chứng cấp, mang thai…"
+C016,Có những loại insulin nào?,answerable,insulin tác dụng nhanh|tác dụng nhanh|tác dụng kéo dài,VMC-0210|VMC-0200|VMC-0226,,"Insulin tác dụng nhanh/ngắn, trung bình, kéo dài (nền) và insulin trộn sẵn."
+C017,Bảo quản insulin như thế nào?,answerable,tủ lạnh|bảo quản insulin,VMC-0210|MOH-3280-2011,,Lọ chưa dùng để ngăn mát tủ lạnh (2–8 °C); lọ đang dùng để nhiệt độ phòng tránh nắng nóng.
+C018,Dùng quá liều insulin thì xử trí ra sao?,answerable,quá liều,VMC-0032,,"Gây hạ đường huyết; cần ăn/uống đường nhanh và theo dõi đường huyết; nặng thì đi cấp cứu."
+C019,Hạ đường huyết có biểu hiện gì?,answerable,run|vã mồ hôi|đổ mồ hôi,VMC-0004|VMC-0233|VMC-0236,,"Run tay, vã mồ hôi, hồi hộp, đói, chóng mặt, lú lẫn; nặng có thể co giật, hôn mê."
+C020,Cấp cứu khi bị hạ đường huyết đột ngột thế nào?,answerable,15 g|15 gam|đường nhanh|nước đường,VMC-0245|VMC-0004|VMC-0236,,"Ăn/uống 15–20 g đường hấp thu nhanh, kiểm tra lại sau 15 phút; bất tỉnh thì không cho ăn uống, gọi cấp cứu, tiêm glucagon nếu có."
+C021,Đường huyết bao nhiêu thì được coi là hạ đường huyết?,answerable,"70 mg/dl|3,9 mmol",MOH-3280-2011|VMC-0236|VMC-0046,,"Glucose máu < 3,9 mmol/L (70 mg/dL)."
+C022,Nhiễm toan ceton do đái tháo đường có dấu hiệu gì?,answerable,hơi thở có mùi|ceton,VMC-0297|VMC-0185|VMC-0001,Hôn mê nhiễm toan ceton,"Khát, tiểu nhiều, buồn nôn, nôn, đau bụng, thở nhanh sâu, hơi thở mùi trái cây, lơ mơ."
+C023,Hôn mê tăng áp lực thẩm thấu là gì?,answerable,tăng áp lực thẩm thấu,VMC-0269|VMC-0185,Hôn mê tăng áp lực thẩm thấu,"Biến chứng cấp, thường ở ĐTĐ típ 2 người lớn tuổi: đường huyết rất cao, mất nước nặng, rối loạn ý thức, không có nhiễm toan ceton đáng kể."
+C024,Các biến chứng mạn tính của bệnh tiểu đường là gì?,answerable,mạch máu nhỏ|mạch máu lớn|võng mạc,VMC-0187|VMC-0189|VMC-0190|VMC-0168,có thể gây biến chứng,"Mạch máu nhỏ (võng mạc, thận, thần kinh) và mạch máu lớn (mạch vành, đột quỵ, động mạch chi dưới), bàn chân ĐTĐ."
+C025,Bệnh võng mạc đái tháo đường có mấy giai đoạn?,answerable,tăng sinh,VMC-0202|VMC-0124|VMC-0125,Bệnh võng mạc đái tháo đường,Giai đoạn không tăng sinh (nhẹ–vừa–nặng) và giai đoạn tăng sinh; có thể kèm phù hoàng điểm.
+C026,Người tiểu đường nên khám mắt bao lâu một lần?,answerable,soi đáy mắt|khám mắt,VMC-0024|VMC-0047|VMC-0124,,Khám/soi đáy mắt ít nhất mỗi năm một lần từ khi chẩn đoán (típ 2) hoặc sau vài năm (típ 1).
+C027,Bệnh thận do đái tháo đường được phát hiện bằng xét nghiệm gì?,answerable,albumin niệu|microalbumin|mức lọc cầu thận|tiểu albumin|nước tiểu để làm xét nghiệm,VMC-0052|VMC-0290|VMC-0175|VMC-0203|VMC-0061|VMC-0267,,Xét nghiệm albumin niệu (microalbumin/creatinin niệu) và ước tính mức lọc cầu thận (eGFR) hằng năm.
+C028,Biến chứng thần kinh do tiểu đường có triệu chứng gì?,answerable,tê bì|kim châm|nóng rát,VMC-0064|VMC-0069|VMC-0085|VMC-0166,Bệnh thần kinh đái tháo đường,"Tê bì, kim châm, nóng rát, mất cảm giác ở bàn chân bàn tay; có thể đau về đêm."
+C029,Chăm sóc bàn chân cho người tiểu đường thế nào?,answerable,kiểm tra bàn chân|giày|đi chân đất,VMC-0246|VMC-0247|VMC-0039|VMC-0065,,"Kiểm tra chân hằng ngày, rửa và lau khô, dưỡng ẩm, cắt móng đúng cách, đi giày vừa, không đi chân đất."
+C030,Bàn chân Charcot là gì?,answerable,charcot,VMC-0037|VMC-0166,,"Tổn thương xương khớp bàn chân do bệnh thần kinh ĐTĐ, gây biến dạng bàn chân."
+C031,Người tiểu đường có nguy cơ mắc bệnh tim mạch không?,answerable,tim mạch|bệnh tim,VMC-0076|VMC-0191|VMC-0095,Bệnh mạch vành,"Có, nguy cơ bệnh mạch vành, nhồi máu cơ tim, đột quỵ cao hơn; cần kiểm soát huyết áp, mỡ máu, đường huyết."
+C032,Tiểu đường gây liệt dạ dày như thế nào?,answerable,liệt dạ dày,VMC-0167|VMC-0057,,"Tổn thương thần kinh phế vị làm dạ dày chậm làm rỗng: đầy bụng, buồn nôn, no sớm, đường huyết dao động."
+C033,Người tiểu đường có hay bị nhiễm trùng không?,answerable,nhiễm trùng,VMC-0171|VMC-0074,,"Có, đường huyết cao làm giảm miễn dịch: nhiễm trùng da, tiết niệu, bàn chân, nấm…"
+C034,Tiểu đường có gây ngứa da không?,answerable,ngứa,VMC-0131|VMC-0092|VMC-0178,,"Có, do da khô, nhiễm nấm, tuần hoàn kém hoặc tổn thương thần kinh."
+C035,Biến chứng răng miệng ở người tiểu đường là gì?,answerable,nha chu|răng miệng,VMC-0084,,"Viêm nướu, viêm nha chu, khô miệng, nhiễm nấm miệng."
+C036,Tiểu đường thai kỳ là gì và vì sao xảy ra?,answerable,nhau thai|thai kỳ,VMC-0003|VMC-0087,là một thể của,Rối loạn dung nạp glucose phát hiện lần đầu khi mang thai do hormone nhau thai gây kháng insulin.
+C037,Khi nào bà bầu nên làm xét nghiệm tiểu đường thai kỳ?,answerable,24 - 28|24-28|24 đến 28,VMC-0243|VMC-0291|VMC-0161|VMC-0017,,Tuần thai 24–28 bằng nghiệm pháp dung nạp glucose 75 g; nguy cơ cao thì sàng lọc sớm hơn.
+C038,Ngưỡng chẩn đoán tiểu đường thai kỳ là bao nhiêu?,answerable,"5,1 mmol|92 mg/dl|8,5 mmol",VMC-0238|VMC-0020|VMC-0292,Tiêu chuẩn chẩn đoán Đái tháo đường thai kỳ,"OGTT 75 g: lúc đói ≥ 5,1 mmol/L, 1 giờ ≥ 10,0 mmol/L hoặc 2 giờ ≥ 8,5 mmol/L (chỉ cần 1 giá trị)."
+C039,Tiểu đường thai kỳ ảnh hưởng gì đến mẹ và bé?,answerable,tiền sản giật|thai to,VMC-0087|VMC-0003|VMC-0128,Tiền sản giật,"Mẹ: tiền sản giật, sinh mổ, ĐTĐ típ 2 về sau; con: thai to, hạ đường huyết sơ sinh, suy hô hấp."
+C040,Bà bầu bị tiểu đường thai kỳ nên ăn uống thế nào?,answerable,thai kỳ,VMC-0033|VMC-0301|VMC-0058|VMC-0155,,"Chia nhiều bữa nhỏ, hạn chế đường và tinh bột tinh chế, ưu tiên rau xanh, đạm, ngũ cốc nguyên hạt; theo dõi đường huyết."
+C041,Bị tiểu đường thai kỳ có sinh thường được không?,answerable,sinh thường|đẻ thường,VMC-0157|VMC-0159,,"Được nếu đường huyết kiểm soát tốt, thai không quá to và không có chỉ định mổ."
+C042,Tiểu đường típ 2 có chữa khỏi được không?,answerable,chữa khỏi|thuyên giảm|lui bệnh,VMC-0112|VMC-0113,,Chưa chữa khỏi hoàn toàn nhưng có thể kiểm soát tốt và thuyên giảm nhờ giảm cân và lối sống.
+C043,Người tiểu đường nên tập thể dục như thế nào?,answerable,150 phút|đi bộ,VMC-0183|VMC-0184|VMC-0021,,"Ít nhất 150 phút/tuần hoạt động vừa (đi bộ nhanh, bơi, đạp xe) kèm bài tập sức cơ 2–3 buổi/tuần."
+C044,Người tiểu đường nên ăn gì và kiêng gì?,answerable,nên ăn|nên tránh|hạn chế,VMC-0105|VMC-0053|VMC-0303,,"Ưu tiên rau, ngũ cốc nguyên hạt, đạm nạc, chất béo tốt; hạn chế đường, đồ ngọt, tinh bột tinh chế, đồ chiên."
+C045,Chỉ số đường huyết (GI) của thực phẩm là gì?,answerable,chỉ số đường huyết (gi)|chỉ số đường huyết thấp|gi thấp,VMC-0044|VMC-0045|VMC-0227,,"Mức làm tăng đường huyết của thực phẩm so với glucose; GI thấp ≤ 55, trung bình 56–69, cao ≥ 70."
+C046,Người tiểu đường ăn bao nhiêu tinh bột mỗi ngày?,answerable,carb,VMC-0043,,Tùy người; thường chia đều các bữa và ưu tiên carb nhiều chất xơ; cần cá thể hóa theo bác sĩ/chuyên gia dinh dưỡng.
+C047,Bị tiểu đường có ăn được sầu riêng không?,answerable,sầu riêng,VMC-0141,,"Ăn được lượng nhỏ, không thường xuyên vì sầu riêng nhiều đường và năng lượng."
+C048,Người tiểu đường có uống được nước dừa không?,answerable,nước dừa,VMC-0082,,Uống lượng vừa phải vì nước dừa có đường tự nhiên.
+C049,Mật ong có tốt cho người tiểu đường típ 2 không?,answerable,mật ong,VMC-0031|VMC-0042,,"Mật ong vẫn làm tăng đường huyết, chỉ nên dùng rất hạn chế."
+C050,Người tiểu đường có nên ăn mướp đắng?,answerable,mướp đắng,VMC-0144|VMC-0194,,Mướp đắng có thể giúp hạ đường huyết nhẹ nhưng không thay thế thuốc.
+C051,Người bị tiểu đường ăn gạo lứt được không?,answerable,gạo lứt,VMC-0147,,"Được, gạo lứt nhiều chất xơ, GI thấp hơn gạo trắng; vẫn cần kiểm soát lượng."
+C052,Uống bia hàng ngày có hại cho người tiểu đường típ 2 không?,answerable,bia,VMC-0163,,"Có hại: rượu bia gây dao động đường huyết, hạ đường huyết, tăng cân; nên hạn chế."
+C053,Chất thay thế đường nào tốt cho người tiểu đường?,answerable,stevia|cỏ ngọt,VMC-0195|VMC-0116,,"Stevia (cỏ ngọt), erythritol, sucralose… dùng vừa phải."
+C054,Người tiểu đường nên tiêm vắc xin gì hằng năm?,answerable,vắc xin,VMC-0077,,"Cúm hằng năm, phế cầu, viêm gan B…"
+C055,Bệnh tiểu đường có lây không?,answerable,lây,VMC-0093,,Không lây qua tiếp xúc hay quan hệ tình dục.
+C056,Tiểu đường có gây loãng xương không?,answerable,loãng xương,VMC-0056|VMC-0071,,Có làm tăng nguy cơ loãng xương và gãy xương.
+C057,Căng thẳng ảnh hưởng đến đường huyết như thế nào?,answerable,căng thẳng|cortisol,VMC-0260,,Stress làm tăng cortisol/adrenalin khiến đường huyết tăng và khó kiểm soát.
+C058,Vì sao adrenalin làm tăng đường huyết?,answerable,adrenalin,VMC-0027,,Adrenalin kích thích phân giải glycogen và tân tạo glucose ở gan.
+C059,MODY là thể tiểu đường gì?,answerable,mody,VMC-0099|VMC-0294,,"Tiểu đường đơn gen khởi phát ở người trẻ, di truyền trội."
+C060,LADA là gì?,answerable,lada|tiềm ẩn ở người,VMC-0289|VMC-0224|VMC-0204,,Đái tháo đường tự miễn tiềm ẩn ở người lớn (típ 1.5).
+C061,Kháng insulin là gì và điều trị thế nào?,answerable,kháng insulin,VMC-0300|VMC-0012,,"Tế bào giảm đáp ứng với insulin; điều trị bằng giảm cân, vận động, ăn uống hợp lý, có thể dùng metformin."
+C062,Buồng trứng đa nang có liên quan đến tiểu đường không?,answerable,buồng trứng đa nang,VMC-0182|VMC-0107,Hội chứng buồng trứng đa nang,Có; hội chứng buồng trứng đa nang liên quan kháng insulin và làm tăng nguy cơ ĐTĐ típ 2.
+C063,Người tiểu đường đi du lịch cần chuẩn bị gì?,answerable,du lịch|múi giờ,VMC-0018,,"Mang đủ thuốc/insulin, máy đo, đồ ăn nhẹ, giấy tờ bệnh; chú ý lệch múi giờ khi dùng insulin."
+C064,Nên đo đường huyết vào những thời điểm nào trong ngày?,answerable,trước bữa ăn|sau ăn,VMC-0217|VMC-0046,,"Lúc đói buổi sáng, trước bữa ăn, 2 giờ sau ăn, trước khi ngủ, khi có triệu chứng hạ đường huyết."
+C065,Mục tiêu HbA1c khi điều trị tiểu đường típ 2 là bao nhiêu?,answerable,dưới 7|< 7|7%,VMC-0198|MOH-3280-2011,,"Nói chung HbA1c < 7%, cá thể hóa theo tuổi và bệnh kèm."
+C066,Trẻ em bị tiểu đường típ 1 cần lưu ý gì?,answerable,trẻ em|con bạn,VMC-0013|VMC-0263|VMC-0278,,"Cần insulin, theo dõi đường huyết, phối hợp nhà trường, nhận biết hạ đường huyết, ăn uống và vận động hợp lý."
+N001,Cách nấu phở bò ngon tại nhà?,no_answer,,,,
+N002,Giá vàng hôm nay bao nhiêu?,no_answer,,,,
+N003,Đội nào vô địch World Cup 2022?,no_answer,,,,
+N004,Làm sao để học lập trình Python nhanh?,no_answer,,,,
+N005,Triệu chứng của sốt xuất huyết là gì?,no_answer,,,,
+N006,Ung thư phổi ở người tiểu đường điều trị thế nào?,no_answer,,,,
+N007,Cách chữa cận thị ở trẻ em?,no_answer,,,,
+N008,Bệnh trầm cảm điều trị bằng thuốc gì?,no_answer,,,,
+N009,Thuốc kháng sinh amoxicillin dùng cho bệnh gì?,no_answer,,,,
+N010,Viêm gan B lây qua đường nào?,no_answer,,,,
+N011,Thời tiết Hà Nội ngày mai thế nào?,no_answer,,,,
+N012,Cách trị mụn trứng cá tuổi dậy thì?,no_answer,,,,
+N013,Tiêm vắc xin HPV ở độ tuổi nào?,no_answer,,,,
+N014,Đau dạ dày nên ăn gì?,no_answer,,,,
+N015,Hen suyễn ở trẻ em xử trí thế nào?,no_answer,,,,
+N016,Người tiểu đường nên mua bảo hiểm nhân thọ của hãng nào?,no_answer,,,,
+N017,Bệnh Parkinson có di truyền không?,no_answer,,,,
+N018,Cách tính thuế thu nhập cá nhân?,no_answer,,,,
+N019,Phẫu thuật thẩm mỹ nâng mũi có an toàn không?,no_answer,,,,
+N020,Bệnh Alzheimer có chữa được không?,no_answer,,,,
+N021,Giá thuốc Ozempic ở hiệu thuốc gần tôi là bao nhiêu?,no_answer,,,,
+N022,Viêm xoang mãn tính điều trị thế nào?,no_answer,,,,

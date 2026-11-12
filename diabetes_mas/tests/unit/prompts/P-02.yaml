@@ -1,0 +1,14 @@
+# AG-06 NLU — slot kỳ vọng (tập con phải có); last_slot = slot hệ thống vừa hỏi
+- {text: "Tôi khát nước nhiều, tiểu đêm 3-4 lần, không sụt cân", expect: {uong_nhieu: yes, tieu_nhieu: yes, sut_can: no}}
+- {text: "52 tuổi, 1m65, 78 kg, nam", expect: {tuoi: 52, bmi: 28.7, gioi_tinh: nam}}
+- {text: "7,1 phần trăm", last_slot: HBA1C, expect: {HBA1C: 7.1}}
+- {text: "không biết", last_slot: HBA1C, expect: {HBA1C: unknown}}
+- {text: "có", last_slot: uong_nhieu, expect: {uong_nhieu: yes}}
+- {text: "không", last_slot: dau_nguc, expect: {dau_nguc: no}}
+- {text: "Tôi đo đường huyết lúc đói 7,5 mmol, HbA1c 6,9%", expect: {GLUCOSE_DOI: 7.5, HBA1C: 6.9}}
+- {text: "đường huyết sau ăn 2 giờ 220 mg/dl", expect: {OGTT_2H: 12.2}}
+- {text: "Bố tôi bị tiểu đường, tôi có huyết áp cao", expect: {tien_su_gia_dinh_dtd: yes, tang_huyet_ap: yes}}
+- {text: "thở nhanh, hơi thở có mùi táo", expect: {tho_nhanh: yes, hoi_tho_mui_tao_thoi: yes}}
+- {text: "tôi là nữ, đang mang thai", expect: {gioi_tinh: nu, dang_mang_thai: yes}}
+- {text: "tôi đã bỏ thuốc lá 5 năm", expect: {hut_thuoc: da_bo}}
+- {text: "đường máu 126 mg/dl lúc đói", expect: {GLUCOSE_DOI: 7.0}}

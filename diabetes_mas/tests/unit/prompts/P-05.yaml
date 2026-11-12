@@ -1,0 +1,11 @@
+# AG-07 Consult — câu hỏi kiến thức (cần Neo4j); mọi [n] phải nằm trong context
+- {question: "Metformin có tác dụng phụ gì?"}
+- {question: "Triệu chứng của bệnh tiểu đường típ 2 là gì?"}
+- {question: "Tiêu chuẩn chẩn đoán đái tháo đường theo HbA1c?"}
+- {question: "Biến chứng bàn chân do tiểu đường là gì?"}
+- {question: "Đái tháo đường thai kỳ được chẩn đoán thế nào?"}
+- {question: "Những ai có nguy cơ mắc tiểu đường típ 2?"}
+- {question: "Insulin dùng để điều trị loại tiểu đường nào?"}
+- {question: "Tiền đái tháo đường là gì?"}
+- {question: "Hạ đường huyết có biểu hiện gì?"}
+- {question: "Người bệnh tiểu đường nên tập thể dục thế nào?"}

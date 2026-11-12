@@ -1,0 +1,12 @@
+id,name_vi,group,question_vi,aliases
+tuoi_tu_45,Tuổi từ 45 trở lên,tien_su_nguy_co,Anh/chị năm nay bao nhiêu tuổi?,
+tuoi_duoi_30,Khởi phát dưới 30 tuổi,tien_su_nguy_co,Anh/chị năm nay bao nhiêu tuổi?,
+bmi_tu_23,Thừa cân / béo phì (BMI ≥ 23),tien_su_nguy_co,"Anh/chị cao và nặng bao nhiêu (để tính chỉ số BMI)?",béo phì|thừa cân|béo
+tang_huyet_ap,Tăng huyết áp,tien_su_nguy_co,Anh/chị có bị tăng huyết áp (huyết áp cao) không?,huyết áp cao|cao huyết áp
+tien_su_gia_dinh_dtd,Gia đình có người mắc đái tháo đường,tien_su_nguy_co,"Bố, mẹ hoặc anh chị em ruột của anh/chị có ai bị tiểu đường không?",bố bị tiểu đường|mẹ bị tiểu đường|gia đình có người bị tiểu đường
+tien_su_dtd_thai_ky,Tiền sử đái tháo đường thai kỳ,tien_su_nguy_co,Chị đã từng bị tiểu đường thai kỳ ở lần mang thai trước chưa?,
+roi_loan_lipid,Rối loạn mỡ máu,tien_su_nguy_co,Anh/chị có bị mỡ máu cao (rối loạn lipid máu) không?,mỡ máu cao|rối loạn lipid máu
+it_van_dong,Lối sống tĩnh tại / ít vận động,tien_su_nguy_co,"Anh/chị có ít vận động, ít tập thể dục (ngồi nhiều) không?",ít vận động|ít tập thể dục
+buong_trung_da_nang,Hội chứng buồng trứng đa nang,tien_su_nguy_co,Chị có được chẩn đoán hội chứng buồng trứng đa nang không?,buồng trứng đa nang
+benh_tu_mien,Mắc bệnh tự miễn khác,tien_su_nguy_co,Anh/chị có mắc bệnh tự miễn nào không?,bệnh tự miễn
+dang_mang_thai,Đang mang thai,tien_su_nguy_co,Chị có đang mang thai không? Nếu có thì được bao nhiêu tuần?,có thai|mang bầu|bà bầu|mẹ bầu

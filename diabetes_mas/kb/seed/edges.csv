@@ -1,0 +1,61 @@
+rel,from_id,to_id,prob,strength,line,confidence,prob_source,source_id,evidence
+SUBTYPE_OF,DTD_TIP_1,DTD,,,,1.0,,MOH-3280-2011,Đái tháo đường týp 1: Là hậu quả của quá trình hủy hoại các tế bào beta của đảo tụy
+SUBTYPE_OF,DTD_TIP_2,DTD,,,,1.0,,MOH-3280-2011,b) Đái tháo đường týp 2.
+SUBTYPE_OF,DTD_KHAC,DTD,,,,1.0,,MOH-3280-2011,c) Các thể đặc biệt khác.
+SUBTYPE_OF,DTD_THAI_KY,DTD,,,,0.9,,VMC-0003,Tiểu đường thai kỳ (đái tháo đường thai kỳ) là gì?
+DIFFERENTIAL_OF,DTD_TIP_1,DTD_TIP_2,,,,0.9,,VMC-0001,Phân biệt chi tiết tiểu đường type 1 và type 2
+HAS_SYMPTOM,DTD_TIP_1,an_nhieu,0.6,,,0.8,team_estimate,VMC-0001,Ăn nhiều
+HAS_SYMPTOM,DTD_TIP_1,uong_nhieu,0.85,,,0.8,team_estimate,VMC-0001,Uống nhiều (hay khát nước)
+HAS_SYMPTOM,DTD_TIP_1,tieu_nhieu,0.85,,,0.8,team_estimate,VMC-0001,Tiểu nhiều (do đường trong nước tiểu cao
+HAS_SYMPTOM,DTD_TIP_1,sut_can,0.7,,,0.8,team_estimate,VMC-0001,Gầy nhiều (gầy sút cân)
+HAS_SYMPTOM,DTD_TIP_1,nhin_mo,0.1,,,0.6,team_estimate,VMC-0001,Nhìn mờ (do biến chứng võng mạc
+HAS_SYMPTOM,DTD_TIP_1,te_bi_ban_chan,0.08,,,0.6,team_estimate,VMC-0001,Tê bì dị cảm ở bàn chân
+HAS_SYMPTOM,DTD_TIP_2,an_nhieu,0.3,,,0.8,team_estimate,VMC-0002,Ăn nhiều
+HAS_SYMPTOM,DTD_TIP_2,uong_nhieu,0.4,,,0.8,team_estimate,VMC-0002,Uống nhiều (hay khát nước)
+HAS_SYMPTOM,DTD_TIP_2,tieu_nhieu,0.4,,,0.8,team_estimate,VMC-0002,Tiểu nhiều (do đường trong nước tiểu cao
+HAS_SYMPTOM,DTD_TIP_2,sut_can,0.2,,,0.8,team_estimate,VMC-0002,có thể có giai đoạn sụt cân không rõ lí do
+HAS_SYMPTOM,DTD_TIP_2,nhin_mo,0.2,,,0.7,team_estimate,VMC-0002,Nhìn mờ (do biến chứng võng mạc
+HAS_SYMPTOM,DTD_TIP_2,te_bi_ban_chan,0.25,,,0.7,team_estimate,VMC-0002,Tê bì dị cảm ở bàn chân
+HAS_SYMPTOM,DTD_TIP_2,loet_ban_chan,0.08,,,0.7,team_estimate,VMC-0002,"Loét, nhiễm trùng bàn chân"
+HAS_SYMPTOM,DTD_TIP_2,dau_nguc,0.1,,,0.6,team_estimate,VMC-0002,Đau ngực thường không điển hình
+HAS_SYMPTOM,DTD_TIP_2,day_bung_cham_tieu,0.1,,,0.6,team_estimate,VMC-0002,"Đầy bụng, chậm tiêu, nuốt khó"
+HAS_SYMPTOM,DTD_TIP_2,dau_cach_hoi,0.08,,,0.6,team_estimate,VMC-0002,Đau cách hồi chi dưới
+HAS_SYMPTOM,DTD_THAI_KY,uong_nhieu,0.1,,,0.5,team_estimate,VMC-0003,Hầu như tiểu đường thai kỳ không có triệu chứng gì đặc biệt
+HAS_SYMPTOM,DTD_THAI_KY,tieu_nhieu,0.1,,,0.5,team_estimate,VMC-0003,Hầu như tiểu đường thai kỳ không có triệu chứng gì đặc biệt
+HAS_SYMPTOM,HON_ME_NHIEM_TOAN_CETON,buon_non,,,,0.9,,VMC-0001,"buồn nôn, thở nhanh, hơi thở mùi táo thối"
+HAS_SYMPTOM,HON_ME_NHIEM_TOAN_CETON,tho_nhanh,,,,0.9,,VMC-0001,"buồn nôn, thở nhanh, hơi thở mùi táo thối"
+HAS_SYMPTOM,HON_ME_NHIEM_TOAN_CETON,hoi_tho_mui_tao_thoi,,,,0.9,,VMC-0001,"buồn nôn, thở nhanh, hơi thở mùi táo thối"
+HAS_SYMPTOM,HON_ME_NHIEM_TOAN_CETON,roi_loan_y_thuc,,,,0.9,,VMC-0001,"rối loạn ý thức (lơ mơ, ngủ gà, hôn mê)"
+HAS_SYMPTOM,HON_ME_TANG_AP_LUC_THAM_THAU,roi_loan_y_thuc,,,,0.9,,VMC-0002,"rối loạn ý thức (lơ mơ, ngủ gà, hôn mê)"
+HAS_SYMPTOM,BENH_VONG_MAC_DTD,nhin_mo,,,,0.9,,VMC-0002,Nhìn mờ (do biến chứng võng mạc
+HAS_SYMPTOM,BENH_THAN_KINH_DTD,te_bi_ban_chan,,,,0.9,,VMC-0002,Tê bì dị cảm ở bàn chân (biến chứng thần kinh)
+HAS_SYMPTOM,BENH_MACH_VANH,dau_nguc,,,,0.9,,VMC-0002,Đau ngực thường không điển hình (do biến chứng mạch vành)
+HAS_COMPLICATION,DTD_TIP_1,HON_ME_NHIEM_TOAN_CETON,,,,0.9,,VMC-0001,Hôn mê nhiễm toan ceton
+HAS_COMPLICATION,DTD_TIP_2,HON_ME_TANG_AP_LUC_THAM_THAU,,,,0.9,,VMC-0002,Hôn mê tăng áp lực thẩm thấu
+HAS_COMPLICATION,DTD,BENH_VONG_MAC_DTD,,,,0.9,,VMC-0002,do biến chứng võng mạc
+HAS_COMPLICATION,DTD,BENH_THAN_KINH_DTD,,,,0.9,,VMC-0002,biến chứng thần kinh
+HAS_COMPLICATION,DTD,BENH_MACH_VANH,,,,0.9,,VMC-0002,do biến chứng mạch vành
+HAS_COMPLICATION,DTD_THAI_KY,TIEN_SAN_GIAT,,,,0.9,,VMC-0003,"Tiền sản giật, sản giật"
+HAS_COMPLICATION,DTD,HA_DUONG_HUYET,,,,0.7,,VMC-0002,tránh bị tụt đường huyết
+HAS_RISK_FACTOR,DTD_TIP_2,tuoi_tu_45,0.65,cao,,0.8,team_estimate,MOH-3280-2011,Tuổi ≥ 45
+HAS_RISK_FACTOR,DTD_TIP_2,bmi_tu_23,0.7,cao,,0.8,team_estimate,MOH-3280-2011,BMI ≥ 23
+HAS_RISK_FACTOR,DTD_TIP_2,tang_huyet_ap,0.5,vua,,0.8,team_estimate,MOH-3280-2011,Huyết áp trên 130/85 mmHg
+HAS_RISK_FACTOR,DTD_TIP_2,tien_su_gia_dinh_dtd,0.4,cao,,0.8,team_estimate,MOH-3280-2011,"bố, mẹ, anh, chị em ruột"
+HAS_RISK_FACTOR,DTD_TIP_2,roi_loan_lipid,0.5,vua,,0.8,team_estimate,MOH-3280-2011,Người có rối loạn Lipid máu
+HAS_RISK_FACTOR,DTD_TIP_2,tien_su_dtd_thai_ky,0.1,cao,,0.8,team_estimate,VMC-0002,Tiền sử mắc tiểu đường thai kì ở nữ
+HAS_RISK_FACTOR,DTD_TIP_2,it_van_dong,0.5,vua,,0.7,team_estimate,VMC-0002,Lối sống tĩnh tại
+HAS_RISK_FACTOR,DTD_TIP_2,buong_trung_da_nang,0.05,vua,,0.7,team_estimate,VMC-0002,Hội chứng buồng trứng đa nang
+HAS_RISK_FACTOR,DTD_TIP_1,tuoi_duoi_30,0.75,cao,,0.8,team_estimate,VMC-0001,tuổi khởi phát <30
+HAS_RISK_FACTOR,DTD_TIP_1,tien_su_gia_dinh_dtd,0.15,vua,,0.7,team_estimate,VMC-0001,gia đình có bố hoặc mẹ mắc tiểu đường tuýp 1
+HAS_RISK_FACTOR,DTD_TIP_1,benh_tu_mien,0.2,vua,,0.7,team_estimate,VMC-0001,mắc bệnh tự miễn khác
+HAS_RISK_FACTOR,DTD_THAI_KY,dang_mang_thai,1.0,bat_buoc,,1.0,definition,VMC-0003,3 tháng giữa hoặc 3 tháng cuối của thai kỳ
+HAS_RISK_FACTOR,TIEN_DTD,tuoi_tu_45,0.5,vua,,0.5,team_estimate,MOH-3280-2011,Tuổi ≥ 45
+HAS_RISK_FACTOR,TIEN_DTD,bmi_tu_23,0.55,vua,,0.5,team_estimate,MOH-3280-2011,BMI ≥ 23
+TREATS,METFORMIN,DTD_TIP_2,,,dau_tay,0.9,,VMC-0002,"metformin, gliclazid, sitaglyptin"
+TREATS,GLICLAZID,DTD_TIP_2,,,bo_sung,0.9,,VMC-0002,"metformin, gliclazid, sitaglyptin"
+TREATS,SITAGLIPTIN,DTD_TIP_2,,,bo_sung,0.9,,VMC-0002,"metformin, gliclazid, sitaglyptin"
+TREATS,EMPAGLIFLOZIN,DTD_TIP_2,,,bo_sung,0.9,,VMC-0002,"empagliflozin, dapagliflozin"
+TREATS,DAPAGLIFLOZIN,DTD_TIP_2,,,bo_sung,0.9,,VMC-0002,"empagliflozin, dapagliflozin"
+TREATS,INSULIN,DTD_TIP_1,,,dau_tay,1.0,,VMC-0001,kiểm soát bằng insulin ngoại sinh là chủ yếu
+TREATS,INSULIN,DTD_TIP_2,,,bo_sung,0.9,,VMC-0002,có thể dùng thuốc viên hoặc tiêm insulin
+TREATS,INSULIN,DTD_THAI_KY,,,bo_sung,0.9,,VMC-0003,chỉ nên kiểm soát đường huyết bằng insulin ngoại sinh

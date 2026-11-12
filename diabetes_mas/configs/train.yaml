@@ -1,0 +1,38 @@
+# Siêu tham số huấn luyện (09_MODEL_NOTES.md §3). Đổi giá trị ⇒ ghi nhật ký 08_EVALUATION.md §5.
+seed: 42
+
+classifier:                    # AG-02 Main Classifier + AG-03-h Sub-Classifier (học có giám sát)
+  epochs: 50
+  batch_size: 128
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  early_stopping_patience: 5   # theo val macro-F1
+  slot_mask_prob: [0.0, 0.8]   # mỗi ca lấy p ~ U(lo, hi), che từng slot (trừ intake) với xác suất p
+  sub_loss_weight: 0.5         # loss = CE(main) + w · mean CE(sub_h)
+
+hrl:                           # AG-01 Main + AG-W1..W4 (DQN phân cấp, options)
+  # T_max, max_sub_turns, intake_slots: nguồn duy nhất là configs/slots.yaml → dialog
+  epochs: 40
+  episodes_per_epoch: 700
+  gamma: 0.95
+  lr: 5.0e-4
+  batch_size: 64
+  replay_size: 50000
+  warmup_steps: 500
+  train_every: 2               # cập nhật mạng sau mỗi 2 transition
+  target_update_every: 500     # step
+  epsilon: {start: 1.0, end: 0.05, decay_epochs: 20}
+  val_episodes: 225            # toàn bộ val.jsonl
+  classifier_finetune: false   # v1: giữ classifier cố định trong HRL (ổn định reward); xem 08 §5
+  reward: {turn: -1, hit: 1, entropy_lambda: 2.0, success: 20, fail: -20}
+
+dl:                            # AG-13 Prediction (09_MODEL_NOTES.md §2b)
+  csv: ../archive/diabetes_prediction_dataset.csv
+  split: {train: 0.70, val: 0.15, test: 0.15}
+  epochs: 50
+  batch_size: 256
+  lr: 1.0e-3
+  dropout: 0.2
+  hidden: [64, 32]
+  early_stopping_patience: 5   # theo PR-AUC val
+  target_recall: 0.90          # ngưỡng quyết định chọn trên val

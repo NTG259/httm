@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diabetes MAS — Demo</title>
+<style>
+  :root { --bg:#f6f7f9; --panel:#fff; --ink:#1d2330; --muted:#647089; --line:#e2e6ee; --accent:#2f6fde;
+          --user:#2f6fde; --warn:#b42318; --ok:#1a7f4b; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#12151b; --panel:#1a1f28; --ink:#e7ebf3; --muted:#98a2b8;
+          --line:#2a3140; --accent:#6c9cff; --user:#3d6fd6; --warn:#ff7a6b; --ok:#4cc38a; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); }
+  header { padding:12px 16px; border-bottom:1px solid var(--line); background:var(--panel); display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  header h1 { font-size:16px; margin:0; }
+  header .health { font-size:12px; color:var(--muted); }
+  header label { font-size:13px; color:var(--muted); margin-left:auto; }
+  button { font:inherit; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:8px; padding:6px 12px; cursor:pointer; }
+  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  main { display:grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap:16px; padding:16px; max-width:1300px; margin:0 auto; }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; min-width:0; }
+  #chat { height:62vh; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+  .msg { max-width:88%; padding:9px 12px; border-radius:12px; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .msg.user { align-self:flex-end; background:var(--user); color:#fff; }
+  .msg.bot { align-self:flex-start; background:var(--bg); border:1px solid var(--line); }
+  .msg.bot.emergency { border-color:var(--warn); color:var(--warn); font-weight:600; }
+  .meta { font-size:12px; color:var(--muted); margin-top:4px; }
+  form { display:flex; gap:8px; margin-top:12px; }
+  input[type=text] { flex:1; min-width:0; font:inherit; padding:9px 12px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); }
+  h2 { font-size:14px; margin:0 0 8px; }
+  .bar { display:grid; grid-template-columns: 120px 1fr 48px; gap:8px; align-items:center; font-size:13px; margin:4px 0; }
+  .bar .track { height:10px; background:var(--bg); border-radius:6px; overflow:hidden; border:1px solid var(--line); }
+  .bar .fill { height:100%; background:var(--accent); }
+  .kv { font-size:13px; color:var(--muted); }
+  .kv b { color:var(--ink); font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  td, th { border-bottom:1px solid var(--line); padding:4px 6px; text-align:left; vertical-align:top; overflow-wrap:anywhere; }
+  .bad { color:var(--warn); }
+  .chips span { display:inline-block; font-size:12px; border:1px solid var(--line); border-radius:999px; padding:1px 8px; margin:2px; }
+  .side { display:flex; flex-direction:column; gap:16px; }
+  details summary { cursor:pointer; font-size:13px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hệ đa tác tử KG + RAG — Tiểu đường</h1>
+  <span class="health" id="health">đang kiểm tra dịch vụ…</span>
+  <label><input type="checkbox" id="useLlm" checked> Dùng LLM (Qwen)</label>
+  <button id="newBtn">Phiên mới</button>
+</header>
+<main>
+  <section class="card">
+    <div id="chat"></div>
+    <form id="form">
+      <input type="text" id="text" placeholder="Ví dụ: Tôi khát nước nhiều, tiểu đêm 3-4 lần" autocomplete="off">
+      <button class="primary" type="submit">Gửi</button>
+    </form>
+    <div class="meta">Thông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.</div>
+  </section>
+  <aside class="side">
+    <section class="card">
+      <h2>Trạng thái chẩn đoán</h2>
+      <div id="probs" class="kv">Chưa có.</div>
+      <div id="kv" class="kv" style="margin-top:8px"></div>
+    </section>
+    <section class="card">
+      <h2>Lượt vừa rồi</h2>
+      <div id="path" class="chips kv"></div>
+      <table><thead><tr><th>Agent</th><th>Tool</th><th>Kết quả</th><th>ms</th></tr></thead><tbody id="tools"></tbody></table>
+      <details style="margin-top:8px"><summary>Nguồn trích dẫn</summary><div id="sources" class="kv"></div></details>
+    </section>
+  </aside>
+</main>
+<script>
+const NAMES = {KHONG_DTD:"Không ĐTĐ", TIEN_DTD:"Tiền ĐTĐ", DTD_TIP_1:"ĐTĐ típ 1", DTD_TIP_2:"ĐTĐ típ 2", DTD_THAI_KY:"ĐTĐ thai kỳ"};
+let sid = null;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+async function newSession() {
+  const r = await fetch("/v1/sessions", {method: "POST"});
+  sid = (await r.json()).session_id;
+  $("chat").innerHTML = ""; $("probs").textContent = "Chưa có."; $("kv").innerHTML = "";
+  $("tools").innerHTML = ""; $("path").innerHTML = ""; $("sources").innerHTML = "";
+  bot("Xin chào! Anh/chị có thể mô tả triệu chứng, chỉ số xét nghiệm của mình, hoặc hỏi kiến thức về bệnh tiểu đường.", "");
+}
+function add(cls, text, meta) {
+  const d = document.createElement("div");
+  d.className = "msg " + cls; d.textContent = text;
+  if (meta) { const m = document.createElement("div"); m.className = "meta"; m.textContent = meta; d.appendChild(m); }
+  $("chat").appendChild(d); $("chat").scrollTop = $("chat").scrollHeight;
+}
+const bot = (t, m, extra="") => add("bot " + extra, t, m);
+
+function render(r) {
+  const s = r.state;
+  if (s.probs && Object.keys(s.probs).length) {
+    $("probs").innerHTML = Object.entries(s.probs).sort((a,b) => b[1]-a[1]).map(([k,v]) =>
+      `<div class="bar"><span>${esc(NAMES[k]||k)}</span><div class="track"><div class="fill" style="width:${(v*100).toFixed(1)}%"></div></div><span>${(v*100).toFixed(0)}%</span></div>`).join("");
+  }
+  $("kv").innerHTML = `Lượt hỏi: <b>${s.turn}/${s.T_max}</b> · Entropy: <b>${s.entropy}</b>` +
+    (s.risk_dl != null ? ` · Nguy cơ DL (tham khảo): <b>${(s.risk_dl*100).toFixed(0)}%</b>${s.dl_conflict ? ' <span class="bad">(mâu thuẫn luật)</span>' : ''}` : "") +
+    ` · Policy: <b>${esc(r.policy)}</b>`;
+  $("path").innerHTML = "Đồ thị: " + r.path.map(p => `<span>${esc(p)}</span>`).join("→") +
+    (r.notes && r.notes.router ? ` <span>router: ${esc(r.notes.router.method)}</span>` : "");
+  $("tools").innerHTML = r.tool_calls.map(t => `<tr><td>${esc(t.agent)}</td><td>${esc(t.tool)} ${esc(t.name)}</td><td class="${t.ok?'':'bad'}">${esc(t.summary)}</td><td>${t.latency_ms}</td></tr>`).join("");
+  $("sources").innerHTML = (r.sources||[]).map(x => `<p>[${x.n}] <b>${esc(x.source_id)}</b> ${esc(x.title||"")} — ${esc((x.text||"").slice(0,220))}${x.url ? ` <a href="${esc(x.url)}" target="_blank" rel="noopener">link</a>` : ""}</p>`).join("") || "Không có.";
+}
+
+$("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const text = $("text").value.trim(); if (!text) return;
+  $("text").value = ""; add("user", text);
+  try {
+    const r = await (await fetch(`/v1/sessions/${sid}/messages`, {method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({text, use_llm: $("useLlm").checked})})).json();
+    bot(r.reply, `${r.intent || ""} · ${r.stage}`, r.stage === "emergency" ? "emergency" : "");
+    render(r);
+  } catch (err) { bot("Lỗi kết nối tới máy chủ: " + err, "", "emergency"); }
+});
+$("newBtn").addEventListener("click", newSession);
+fetch("/v1/health").then(r => r.json()).then(h => {
+  $("health").textContent = `Neo4j ${h.neo4j?"✓":"✗"} · Ollama ${h.ollama?"✓":"✗"} (${h.llm_model}) · classifier ${h.models.classifier?"✓":"✗"} · HRL ${h.models.hrl?"✓":"✗"} · DL ${h.models.dl?"✓":"✗"}`;
+}).catch(() => $("health").textContent = "không lấy được trạng thái dịch vụ");
+newSession();
+</script>
+</body>
+</html>

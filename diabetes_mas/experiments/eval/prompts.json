@@ -1,0 +1,75 @@
+{
+  "model": "qwen2.5:3b",
+  "ts": "2026-11-12 10:24:08",
+  "prompt_versions": {
+    "P-01": "P-01@v2",
+    "P-02": "P-02@v2",
+    "P-03": "P-03@v1",
+    "P-04": "P-04@v2",
+    "P-05": "P-05@v2",
+    "P-06": "P-06@v2",
+    "P-07": "P-07@v1",
+    "P-08": "P-08@v1"
+  },
+  "P-02": {
+    "n_calls": 13,
+    "json_valid_rate": 1.0,
+    "agent_accuracy": 1.0,
+    "rules_only_accuracy": 1.0,
+    "n_examples": 13,
+    "seconds": 198.4
+  },
+  "P-04": {
+    "disease_name_leak_rate": 0.0,
+    "nlu_roundtrip_accuracy": 0.9,
+    "n_examples": 10,
+    "seconds": 77.4
+  },
+  "P-07": {
+    "rules_accuracy": 1.0,
+    "llm_json_valid_rate": 1.0,
+    "n_examples": 10,
+    "seconds": 26.1
+  },
+  "P-08": {
+    "clean_rate": 1.0,
+    "llm_used": 3,
+    "n_examples": 10,
+    "seconds": 26.7
+  },
+  "P-06": {
+    "n_examples": 10,
+    "llm": 6,
+    "template_fallback": 4,
+    "citation_ok_rate": 1.0,
+    "seconds": 117.1
+  },
+  "P-01": {
+    "n_calls": 39,
+    "json_valid_rate": 1.0,
+    "llm_accuracy": 1.0,
+    "agent_accuracy": 1.0,
+    "n_examples": 13,
+    "seconds": 127.2
+  },
+  "P-03": {
+    "llm_question_rate": 0.9091,
+    "examples": [
+      "Anh/chị có khát nước, uống nhiều nước hơn bình thường không?",
+      "Anh/chị có đi tiểu nhiều lần, kể cả ban đêm, hơn trước không?",
+      "Anh/chị có bị sụt cân mà không rõ lý do trong thời gian gần đây không?",
+      "Gần đây anh/chị có thường xuyên đói và ăn nhiều hơn bình thường không?"
+    ],
+    "n_examples": 11,
+    "seconds": 29.2
+  },
+  "P-05": {
+    "n_examples": 10,
+    "answered": 10,
+    "llm": 9,
+    "extractive_fallback": 1,
+    "refusal": 0,
+    "citation_out_of_context": 0,
+    "seconds": 169.6
+  }
+}

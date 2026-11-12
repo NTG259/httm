@@ -1,0 +1,10 @@
+id,disease_id,test_id,op,value,value_max,unit,condition,source_id,evidence,note
+CRIT_DTD_GLUCOSE_DOI,DTD,GLUCOSE_DOI,>=,7.0,,mmol/L,,MOH-3280-2011,"Mức glucose huyết tương lúc đói ≥ 7,0 mmol/l (≥ 126 mg/dl)",Làm 2 lần vào hai ngày khác nhau
+CRIT_DTD_OGTT_2H,DTD,OGTT_2H,>=,11.1,,mmol/L,,MOH-3280-2011,"Mức glucose huyết tương ≥ 11,1 mmol/l (200 mg/dl) ở thời điểm 2 giờ sau nghiệm pháp dung nạp glucose",
+CRIT_DTD_GLUCOSE_BAT_KY,DTD,GLUCOSE_BAT_KY,>=,11.1,,mmol/L,co_trieu_chung_kinh_dien,MOH-3280-2011,"mức glucose huyết tương ở thời điểm bất kỳ ≥ 11,1 mmol/l (200 mg/dl)",Chỉ áp dụng khi có triệu chứng lâm sàng
+CRIT_DTD_HBA1C,DTD,HBA1C,>,6.5,,%,,VMC-0002,"HbA1C (định lượng bằng phương pháp sắc kí lỏng) >6,5%","Nguồn ghi '>'; ADA dùng '≥'. QĐ 3280/2011 không có tiêu chí HbA1c"
+CRIT_TIEN_DTD_OGTT_2H,TIEN_DTD,OGTT_2H,between,7.8,11.0,mmol/L,,MOH-3280-2011,"từ 7,8 mmol/l (140 mg/dl) đến 11,0 mmol/l (200 mg/dl)",Rối loạn dung nạp glucose (IGT)
+CRIT_TIEN_DTD_GLUCOSE_DOI,TIEN_DTD,GLUCOSE_DOI,between,6.1,6.9,mmol/L,,MOH-3280-2011,"6,1 mmol/l (110 mg/dl) đến 6,9 mmol/l (125 mg/dl)",Suy giảm glucose lúc đói (IFG) theo WHO-1999
+CRIT_DTD_THAI_KY_DOI,DTD_THAI_KY,GLUCOSE_DOI,>=,5.1,,mmol/L,dang_mang_thai,VMC-0003,"Đường máu lúc đói ≥ 92 mg/dL (5,1mmol/l)",OGTT 75 g tuần 24-28; một giá trị đạt là đủ
+CRIT_DTD_THAI_KY_1H,DTD_THAI_KY,OGTT_1H,>=,10.0,,mmol/L,dang_mang_thai,VMC-0003,"Đường máu sau 1 giờ uống nước đường ≥180 mg/dL (10 mmol/l)",
+CRIT_DTD_THAI_KY_2H,DTD_THAI_KY,OGTT_2H,>=,8.5,,mmol/L,dang_mang_thai,VMC-0003,"Đường máu sau 2 giờ uống nước đường ≥153 mg/dL (8,5 mmol/l)",
