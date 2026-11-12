@@ -329,6 +329,7 @@ Trước khi trả lời, hệ **đi thư viện tra cứu**: tìm trong sổ ta
 | Sau khi sinh | Kiểm tra mọi `[n]` có trong context không (`normalize_citations` chuẩn hóa `(1)`, `[3, 2]`). Không đạt thì dùng **câu trả lời trích xuất** nguyên văn |
 | Kiểm giải thích chẩn đoán | `explain_ok`: câu phải chứa đúng tên kết luận và xác suất. Ví dụ đã chặn: Qwen bỏ chữ "Không" làm đảo ngược kết luận |
 | AG-08 Safety | Chặn kê đơn, khẳng định chẩn đoán, câu thiếu nguồn hoặc thiếu disclaimer |
+| NLU: luật trước, LLM sau | Con số y khoa (HbA1c, glucose, cân nặng, chiều cao) do **luật** đọc trước. LLM **không được ghi đè** slot luật đã điền. Câu ngắn mà luật đã hiểu đủ thì **bỏ qua LLM** (`llm_skipped`, `nlu.py`) |
 
 **Kết quả (88 câu):**
 - R@5 = 1,00, từ chối đúng 0,909, từ chối nhầm 0,030.
