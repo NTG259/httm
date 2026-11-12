@@ -327,7 +327,7 @@ Trước khi trả lời, hệ **đi thư viện tra cứu**: tìm trong sổ ta
 | Trước khi sinh | Không đủ căn cứ thì **không gọi LLM**, từ chối luôn |
 | Trong prompt | Chỉ dùng context đánh số, bắt buộc trích `[n]` |
 | Sau khi sinh | Kiểm tra mọi `[n]` có trong context không (`normalize_citations` chuẩn hóa `(1)`, `[3, 2]`). Không đạt thì dùng **câu trả lời trích xuất** nguyên văn |
-| Kiểm giải thích chẩn đoán | `explain_ok`: câu phải chứa đúng tên kết luận và xác suất. Ví dụ đã chặn: Qwen bỏ chữ "Không" làm đảo ngược kết luận |
+| Kiểm giải thích chẩn đoán | `explain_ok`: câu phải chứa đúng tên kết luận và xác suất. Ví dụ đã chặn: Qwen bỏ chữ "Không" làm đảo ngược kết luận. **Phát hiện khi chạy thử demo:** Qwen viết "HbA1c 7,4%" trong khi người dùng nói 7,1, nên bổ sung bước kiểm **mọi con số** phải khớp hồ sơ hoặc ngưỡng luật; sai thì dùng câu mẫu |
 | AG-08 Safety | Chặn kê đơn, khẳng định chẩn đoán, câu thiếu nguồn hoặc thiếu disclaimer |
 | NLU: luật trước, LLM sau | Con số y khoa (HbA1c, glucose, cân nặng, chiều cao) do **luật** đọc trước. LLM **không được ghi đè** slot luật đã điền. Câu ngắn mà luật đã hiểu đủ thì **bỏ qua LLM** (`llm_skipped`, `nlu.py`) |
 
