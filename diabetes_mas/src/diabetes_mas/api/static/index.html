@@ -3,127 +3,622 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diabetes MAS — Demo</title>
+<meta name="theme-color" content="#f4f8fb">
+<title>Diabetes MAS — Trợ lý sức khỏe</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23087f8c'/%3E%3Cpath d='M16 7v18M7 16h18' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
-  :root { --bg:#f6f7f9; --panel:#fff; --ink:#1d2330; --muted:#647089; --line:#e2e6ee; --accent:#2f6fde;
-          --user:#2f6fde; --warn:#b42318; --ok:#1a7f4b; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#12151b; --panel:#1a1f28; --ink:#e7ebf3; --muted:#98a2b8;
-          --line:#2a3140; --accent:#6c9cff; --user:#3d6fd6; --warn:#ff7a6b; --ok:#4cc38a; } }
-  * { box-sizing: border-box; }
-  body { margin:0; font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); }
-  header { padding:12px 16px; border-bottom:1px solid var(--line); background:var(--panel); display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-  header h1 { font-size:16px; margin:0; }
-  header .health { font-size:12px; color:var(--muted); }
-  header label { font-size:13px; color:var(--muted); margin-left:auto; }
-  button { font:inherit; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:8px; padding:6px 12px; cursor:pointer; }
-  button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
-  main { display:grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap:16px; padding:16px; max-width:1300px; margin:0 auto; }
-  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; min-width:0; }
-  #chat { height:62vh; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
-  .msg { max-width:88%; padding:9px 12px; border-radius:12px; white-space:pre-wrap; overflow-wrap:anywhere; }
-  .msg.user { align-self:flex-end; background:var(--user); color:#fff; }
-  .msg.bot { align-self:flex-start; background:var(--bg); border:1px solid var(--line); }
-  .msg.bot.emergency { border-color:var(--warn); color:var(--warn); font-weight:600; }
-  .meta { font-size:12px; color:var(--muted); margin-top:4px; }
-  form { display:flex; gap:8px; margin-top:12px; }
-  input[type=text] { flex:1; min-width:0; font:inherit; padding:9px 12px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); }
-  h2 { font-size:14px; margin:0 0 8px; }
-  .bar { display:grid; grid-template-columns: 120px 1fr 48px; gap:8px; align-items:center; font-size:13px; margin:4px 0; }
-  .bar .track { height:10px; background:var(--bg); border-radius:6px; overflow:hidden; border:1px solid var(--line); }
-  .bar .fill { height:100%; background:var(--accent); }
-  .kv { font-size:13px; color:var(--muted); }
-  .kv b { color:var(--ink); font-weight:600; }
-  table { width:100%; border-collapse:collapse; font-size:12px; }
-  td, th { border-bottom:1px solid var(--line); padding:4px 6px; text-align:left; vertical-align:top; overflow-wrap:anywhere; }
-  .bad { color:var(--warn); }
-  .chips span { display:inline-block; font-size:12px; border:1px solid var(--line); border-radius:999px; padding:1px 8px; margin:2px; }
-  .side { display:flex; flex-direction:column; gap:16px; }
-  details summary { cursor:pointer; font-size:13px; color:var(--muted); }
+  :root {
+    color-scheme: light;
+    --page:#f4f8fb; --surface:#fff; --soft:#f7fafc; --ink:#172a3a; --muted:#647787;
+    --line:#dce6ec; --line-strong:#c8d7e0; --primary:#087f8c; --primary-dark:#056772;
+    --primary-soft:#e8f6f6; --blue:#2867c7; --blue-soft:#edf4ff; --danger:#b42318;
+    --danger-soft:#fff1f0; --success:#157f5b; --shadow:0 12px 32px rgba(35,69,87,.08);
+  }
+  * { box-sizing:border-box; }
+  html { min-width:320px; }
+  body {
+    margin:0; min-height:100vh; color:var(--ink);
+    font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:radial-gradient(circle at 12% 0%,rgba(8,127,140,.07),transparent 26rem),var(--page);
+  }
+  button,input { font:inherit; }
+  button,input,summary { -webkit-tap-highlight-color:transparent; }
+  button:focus-visible,input:focus-visible,summary:focus-visible {
+    outline:3px solid rgba(40,103,199,.2); outline-offset:2px;
+  }
+  .app-header {
+    position:sticky; top:0; z-index:10; border-bottom:1px solid rgba(200,215,224,.85);
+    background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+  }
+  .header-inner {
+    width:min(1440px,100%); min-height:76px; margin:0 auto; padding:12px 24px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .brand-mark {
+    width:44px; height:44px; display:grid; flex:0 0 auto; place-items:center; border-radius:13px;
+    color:#fff; background:var(--primary); box-shadow:0 8px 18px rgba(8,127,140,.2);
+  }
+  .brand-mark svg { width:24px; height:24px; }
+  .brand-copy { min-width:0; }
+  h1 { margin:0; font-size:18px; line-height:1.25; letter-spacing:-.01em; }
+  .brand-copy p { margin:3px 0 0; color:var(--muted); font-size:12px; }
+  .header-actions { margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .health-pill {
+    min-height:34px; padding:0 10px; display:inline-flex; align-items:center; gap:7px;
+    border:1px solid var(--line); border-radius:999px; color:var(--muted); font-size:12px;
+    white-space:nowrap;
+  }
+  .health-dot { width:7px; height:7px; border-radius:50%; background:#d49b22; }
+  .health-pill.ready .health-dot { background:var(--success); }
+  .health-pill.degraded .health-dot { background:var(--danger); }
+  .toggle {
+    min-height:44px; padding:0 12px; display:inline-flex; align-items:center; gap:9px;
+    border:1px solid var(--line); border-radius:10px; background:var(--soft);
+    color:#425968; font-size:13px; cursor:pointer;
+  }
+  .toggle input { width:16px; height:16px; margin:0; accent-color:var(--primary); }
+  button {
+    min-height:44px; padding:0 14px; border:1px solid var(--line-strong); border-radius:10px;
+    background:var(--surface); color:var(--ink); font-weight:650; cursor:pointer;
+    transition:border-color .16s ease,background-color .16s ease,transform .16s ease;
+  }
+  button:hover { border-color:#a9c0cc; background:var(--soft); }
+  button:active { transform:translateY(1px); }
+  button:disabled { cursor:wait; opacity:.7; }
+  .secondary-button { display:inline-flex; align-items:center; gap:8px; }
+  .secondary-button svg { width:16px; height:16px; }
+  main {
+    width:min(1440px,100%); margin:0 auto; padding:22px 24px 28px;
+    display:grid; grid-template-columns:minmax(0,1.55fr) minmax(360px,.85fr);
+    gap:20px; align-items:start;
+  }
+  .card {
+    min-width:0; border:1px solid var(--line); border-radius:16px;
+    background:var(--surface); box-shadow:var(--shadow);
+  }
+  .chat-card { overflow:hidden; }
+  .panel-header {
+    min-height:64px; padding:14px 18px; display:flex; align-items:center; gap:12px;
+    border-bottom:1px solid var(--line);
+  }
+  .assistant-avatar,.message-avatar {
+    display:grid; place-items:center; flex:0 0 auto; border-radius:50%;
+    color:var(--primary); background:var(--primary-soft);
+  }
+  .assistant-avatar { width:38px; height:38px; }
+  .assistant-avatar svg { width:19px; height:19px; }
+  .panel-title { min-width:0; }
+  h2 { margin:0; font-size:15px; line-height:1.3; letter-spacing:-.005em; }
+  .presence { margin:3px 0 0; color:var(--muted); font-size:12px; }
+  .presence::before {
+    content:""; width:7px; height:7px; display:inline-block; margin-right:6px;
+    border-radius:50%; background:var(--success); box-shadow:0 0 0 3px rgba(21,127,91,.1);
+  }
+  .privacy-pill {
+    margin-left:auto; padding:5px 9px; display:inline-flex; align-items:center; gap:5px;
+    border-radius:999px; background:var(--soft); color:var(--muted); font-size:11px; white-space:nowrap;
+  }
+  .privacy-pill svg { width:13px; height:13px; }
+  #chat {
+    height:clamp(430px,60vh,650px); padding:20px; overflow-y:auto;
+    display:flex; flex-direction:column; gap:16px;
+    background:linear-gradient(180deg,#fbfdfe 0%,#fff 100%); scroll-behavior:smooth;
+  }
+  #chat::-webkit-scrollbar { width:8px; }
+  #chat::-webkit-scrollbar-thumb { border:2px solid #fff; border-radius:999px; background:#ccdbe3; }
+  .message-row { max-width:min(86%,680px); display:flex; align-items:flex-end; gap:9px; }
+  .message-row.user { align-self:flex-end; flex-direction:row-reverse; }
+  .message-row.bot { align-self:flex-start; }
+  .message-avatar { width:30px; height:30px; font-size:11px; font-weight:750; }
+  .message-row.user .message-avatar { color:var(--blue); background:var(--blue-soft); }
+  .msg {
+    padding:11px 14px; border:1px solid var(--line); border-radius:14px 14px 14px 4px;
+    background:var(--surface); white-space:pre-wrap; overflow-wrap:anywhere;
+    box-shadow:0 3px 10px rgba(35,69,87,.05);
+  }
+  .message-row.user .msg {
+    border-color:var(--blue); border-radius:14px 14px 4px 14px; background:var(--blue);
+    color:#fff; box-shadow:0 5px 14px rgba(40,103,199,.16);
+  }
+  .msg.emergency { border-color:#efb4ae; background:var(--danger-soft); color:var(--danger); font-weight:600; }
+  .meta { margin-top:6px; color:var(--muted); font-size:11px; }
+  .message-row.user .meta { color:rgba(255,255,255,.78); }
+  .composer-wrap { padding:14px 18px 16px; border-top:1px solid var(--line); background:var(--surface); }
+  form {
+    min-height:50px; padding:5px 5px 5px 14px; display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line-strong); border-radius:13px; background:var(--soft);
+    transition:border-color .16s ease,box-shadow .16s ease;
+  }
+  form:focus-within { border-color:var(--primary); box-shadow:0 0 0 3px rgba(8,127,140,.1); }
+  input[type="text"] {
+    min-width:0; flex:1; padding:7px 0; border:0; outline:0; background:transparent; color:var(--ink);
+  }
+  input[type="text"]::placeholder { color:#8495a2; }
+  .send-button {
+    width:44px; min-height:44px; padding:0; display:grid; place-items:center;
+    border-color:var(--primary); border-radius:9px; background:var(--primary); color:#fff;
+  }
+  .send-button:hover { border-color:var(--primary-dark); background:var(--primary-dark); }
+  .send-button svg { width:18px; height:18px; }
+  .send-button[aria-busy="true"] svg { display:none; }
+  .send-button[aria-busy="true"]::after {
+    content:""; width:15px; height:15px; border:2px solid rgba(255,255,255,.45);
+    border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .composer-meta {
+    margin:9px 2px 0; display:flex; align-items:flex-start; justify-content:space-between;
+    gap:12px; color:var(--muted); font-size:11px;
+  }
+  .composer-meta p { margin:0; }
+  #composerStatus { color:var(--primary-dark); font-weight:650; white-space:nowrap; }
+  .disclaimer { text-align:right; }
+  .side { display:flex; flex-direction:column; gap:18px; }
+  .side-card { padding:18px; }
+  .section-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .section-heading p { margin:4px 0 0; color:var(--muted); font-size:12px; }
+  .section-icon {
+    width:34px; height:34px; display:grid; place-items:center; flex:0 0 auto;
+    border-radius:10px; color:var(--primary); background:var(--primary-soft);
+  }
+  .section-icon svg { width:17px; height:17px; }
+  .empty-state {
+    margin-top:16px; padding:22px 14px; border:1px dashed var(--line-strong);
+    border-radius:12px; background:var(--soft); color:var(--muted); font-size:13px; text-align:center;
+  }
+  .empty-compact { width:100%; margin-top:4px; padding:12px; }
+  .bar { margin-top:14px; }
+  .bar-label {
+    margin-bottom:6px; display:flex; align-items:baseline; justify-content:space-between;
+    gap:10px; font-size:12px;
+  }
+  .bar-label span:first-child { color:#405564; font-weight:600; }
+  .bar-label strong { color:var(--ink); font-size:13px; }
+  .track { height:8px; overflow:hidden; border-radius:999px; background:#eaf0f4; }
+  .fill { height:100%; border-radius:inherit; background:var(--primary); }
+  .metrics {
+    margin-top:16px; padding-top:16px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px; border-top:1px solid var(--line);
+  }
+  .metric { min-width:0; padding:10px; border-radius:10px; background:var(--soft); }
+  .metric-label {
+    display:block; color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.04em;
+  }
+  .metric-value {
+    margin-top:3px; display:block; color:var(--ink); font-size:13px; font-weight:700; overflow-wrap:anywhere;
+  }
+  .bad { color:var(--danger)!important; }
+  .slot-list {
+    margin:14px 0 0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;
+  }
+  .slot-item { min-width:0; margin:0; padding:10px; border:1px solid var(--line); border-radius:10px; }
+  .slot-item dt { color:var(--muted); font-size:10px; line-height:1.3; }
+  .slot-item dd { margin:3px 0 0; color:var(--ink); font-size:12px; font-weight:700; overflow-wrap:anywhere; }
+  .flow { margin-top:16px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .flow-label {
+    width:100%; margin-bottom:2px; color:var(--muted); font-size:11px;
+    font-weight:650; text-transform:uppercase; letter-spacing:.04em;
+  }
+  .flow-chip {
+    padding:4px 8px; border:1px solid #cce4e6; border-radius:7px;
+    background:var(--primary-soft); color:var(--primary-dark); font-size:11px; font-weight:650;
+  }
+  .flow-arrow { color:#91a5b2; font-size:12px; }
+  .table-wrap { margin-top:14px; overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:11px; }
+  th {
+    padding:8px 7px; border-bottom:1px solid var(--line-strong); color:var(--muted);
+    font-size:10px; text-align:left; text-transform:uppercase; letter-spacing:.04em;
+  }
+  td { padding:9px 7px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; overflow-wrap:anywhere; }
+  tbody tr:last-child td { border-bottom:0; }
+  td:last-child,th:last-child { text-align:right; white-space:nowrap; }
+  .table-empty { color:var(--muted); text-align:center!important; }
+  details { margin-top:14px; padding-top:13px; border-top:1px solid var(--line); }
+  summary { color:#405564; font-size:12px; font-weight:650; cursor:pointer; }
+  #sources { color:var(--muted); font-size:12px; }
+  #sources p { margin:10px 0 0; }
+  #sources a { color:var(--blue); font-weight:650; }
+  .sr-only {
+    position:absolute; width:1px; height:1px; padding:0; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  @media (max-width:980px) {
+    main { grid-template-columns:1fr; }
+    .side { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .activity-card { grid-column:1/-1; }
+  }
+  @media (max-width:720px) {
+    .header-inner { min-height:68px; padding:10px 14px; }
+    .brand-mark { width:40px; height:40px; border-radius:11px; }
+    .brand-copy p,.toggle span,.health-label { display:none; }
+    .health-pill { min-width:34px; padding:0; justify-content:center; }
+    .toggle { min-width:40px; padding:0; justify-content:center; }
+    .secondary-button span { display:none; }
+    .secondary-button { width:40px; padding:0; justify-content:center; }
+    main { padding:14px; gap:14px; }
+    .side { display:flex; }
+    #chat { height:56vh; min-height:390px; padding:16px 12px; }
+    .message-row { max-width:94%; }
+    .message-avatar,.privacy-pill { display:none; }
+    .side-card { padding:16px; }
+    .composer-meta { display:block; }
+    #composerStatus { margin-bottom:4px; }
+    .disclaimer { text-align:left; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Hệ đa tác tử KG + RAG — Tiểu đường</h1>
-  <span class="health" id="health">đang kiểm tra dịch vụ…</span>
-  <label><input type="checkbox" id="useLlm" checked> Dùng LLM (Qwen)</label>
-  <button id="newBtn">Phiên mới</button>
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-4.35 7-11a7 7 0 0 0-14 0c0 6.65 7 11 7 11Z"/><path d="M9 11h6M12 8v6"/></svg>
+    </div>
+    <div class="brand-copy">
+      <h1>Diabetes MAS</h1>
+      <p>Trợ lý thông tin sức khỏe tiểu đường</p>
+    </div>
+    <div class="header-actions">
+      <span class="health-pill" id="health" role="status" title="Đang kiểm tra dịch vụ">
+        <span class="health-dot" aria-hidden="true"></span>
+        <span class="health-label">Đang kiểm tra</span>
+      </span>
+      <label class="toggle" title="Bật hoặc tắt mô hình ngôn ngữ">
+        <input type="checkbox" id="useLlm" aria-label="Dùng LLM" checked>
+        <span>Dùng LLM</span>
+      </label>
+      <button class="secondary-button" id="newBtn" type="button" aria-label="Phiên mới">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Phiên mới</span>
+      </button>
+    </div>
+  </div>
 </header>
 <main>
-  <section class="card">
-    <div id="chat"></div>
-    <form id="form">
-      <input type="text" id="text" placeholder="Ví dụ: Tôi khát nước nhiều, tiểu đêm 3-4 lần" autocomplete="off">
-      <button class="primary" type="submit">Gửi</button>
-    </form>
-    <div class="meta">Thông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.</div>
+  <section class="card chat-card" aria-labelledby="chat-title">
+    <div class="panel-header">
+      <div class="assistant-avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8Z"/><path d="M9 10h.01M15 10h.01"/></svg>
+      </div>
+      <div class="panel-title">
+        <h2 id="chat-title">Trợ lý tư vấn</h2>
+        <p class="presence">Sẵn sàng hỗ trợ</p>
+      </div>
+      <span class="privacy-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Phiên riêng tư
+      </span>
+    </div>
+    <div id="chat" role="log" aria-live="polite" aria-label="Nội dung trò chuyện" aria-busy="false"></div>
+    <div class="composer-wrap">
+      <form id="form">
+        <label class="sr-only" for="text">Nhập câu hỏi hoặc triệu chứng</label>
+        <input type="text" id="text" name="message" placeholder="Mô tả triệu chứng hoặc nhập chỉ số xét nghiệm…" autocomplete="off" maxlength="2000">
+        <button class="send-button" id="sendBtn" type="submit" aria-label="Gửi tin nhắn" aria-busy="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </button>
+      </form>
+      <div class="composer-meta">
+        <p id="composerStatus" role="status" aria-live="polite">Sẵn sàng</p>
+        <p class="disclaimer">Thông tin chỉ mang tính tham khảo, không thay thế chẩn đoán và điều trị của bác sĩ.</p>
+      </div>
+    </div>
   </section>
-  <aside class="side">
-    <section class="card">
-      <h2>Trạng thái chẩn đoán</h2>
-      <div id="probs" class="kv">Chưa có.</div>
-      <div id="kv" class="kv" style="margin-top:8px"></div>
+  <aside class="side" aria-label="Thông tin phân tích">
+    <section class="card side-card" aria-labelledby="diagnosis-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="diagnosis-title">Chỉ số đánh giá</h2>
+          <p>Cập nhật theo nội dung trao đổi</p>
+        </div>
+        <span class="section-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+        </span>
+      </div>
+      <div id="probs" class="empty-state">Chưa có dữ liệu đánh giá.<br>Hãy bắt đầu bằng cách mô tả triệu chứng.</div>
+      <div id="kv" class="metrics" hidden></div>
     </section>
-    <section class="card">
-      <h2>Lượt vừa rồi</h2>
-      <div id="path" class="chips kv"></div>
-      <table><thead><tr><th>Agent</th><th>Tool</th><th>Kết quả</th><th>ms</th></tr></thead><tbody id="tools"></tbody></table>
-      <details style="margin-top:8px"><summary>Nguồn trích dẫn</summary><div id="sources" class="kv"></div></details>
+    <section class="card side-card" aria-labelledby="slots-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="slots-title">Thông tin đã ghi nhận</h2>
+          <p>Dữ liệu được trích xuất từ hội thoại</p>
+        </div>
+        <span class="section-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m17 11 2 2 4-4"/></svg>
+        </span>
+      </div>
+      <div id="slots" class="empty-state">Chưa ghi nhận thông tin nào.</div>
+    </section>
+    <section class="card side-card activity-card" aria-labelledby="activity-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="activity-title">Phân tích lượt vừa rồi</h2>
+          <p>Tiến trình và công cụ đã sử dụng</p>
+        </div>
+        <span class="section-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v6h6M20 20v-6h-6"/><path d="M20 9a8 8 0 0 0-14.9-3M4 15a8 8 0 0 0 14.9 3"/></svg>
+        </span>
+      </div>
+      <div id="path" class="flow">
+        <span class="flow-label">Luồng xử lý</span>
+        <span class="empty-state empty-compact">Chưa có hoạt động</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Agent</th><th>Công cụ</th><th>Kết quả</th><th>Thời gian</th></tr></thead>
+          <tbody id="tools"><tr><td class="table-empty" colspan="4">Chưa có dữ liệu</td></tr></tbody>
+        </table>
+      </div>
+      <details>
+        <summary>Nguồn trích dẫn</summary>
+        <div id="sources">Chưa có nguồn trích dẫn.</div>
+      </details>
     </section>
   </aside>
 </main>
 <script>
-const NAMES = {KHONG_DTD:"Không ĐTĐ", TIEN_DTD:"Tiền ĐTĐ", DTD_TIP_1:"ĐTĐ típ 1", DTD_TIP_2:"ĐTĐ típ 2", DTD_THAI_KY:"ĐTĐ thai kỳ"};
+const NAMES = {KHONG_DTD:"Không ĐTĐ",TIEN_DTD:"Tiền ĐTĐ",DTD_TIP_1:"ĐTĐ típ 1",DTD_TIP_2:"ĐTĐ típ 2",DTD_THAI_KY:"ĐTĐ thai kỳ"};
+const SLOT_NAMES = {
+  tuoi:"Tuổi",bmi:"BMI",gioi_tinh:"Giới tính",hut_thuoc:"Hút thuốc",benh_tim:"Bệnh tim",
+  dang_mang_thai:"Mang thai",uong_nhieu:"Khát / uống nhiều",tieu_nhieu:"Tiểu nhiều",sut_can:"Sụt cân",
+  met_moi:"Mệt mỏi",GLUCOSE_DOI:"Đường huyết đói",GLUCOSE_BAT_KY:"Đường huyết bất kỳ",
+  OGTT_1H:"OGTT 1 giờ",OGTT_2H:"OGTT 2 giờ",HBA1C:"HbA1c"
+};
+const SLOT_UNITS = {tuoi:"tuổi",bmi:"kg/m²",GLUCOSE_DOI:"mmol/L",GLUCOSE_BAT_KY:"mmol/L",OGTT_1H:"mmol/L",OGTT_2H:"mmol/L",HBA1C:"%"};
 let sid = null;
+let activeRequest = null;
+let creatingSession = false;
 const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g,(c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function setBusy(busy,status) {
+  $("chat").setAttribute("aria-busy",String(busy));
+  $("sendBtn").disabled = busy;
+  $("sendBtn").setAttribute("aria-busy",String(busy));
+  $("text").disabled = busy;
+  $("composerStatus").textContent = status || (busy ? "Đang xử lý…" : "Sẵn sàng");
+}
+
+function resetDiagnostics() {
+  $("probs").className = "empty-state";
+  $("probs").innerHTML = "Chưa có dữ liệu đánh giá.<br>Hãy bắt đầu bằng cách mô tả triệu chứng.";
+  $("kv").innerHTML = "";
+  $("kv").hidden = true;
+  $("slots").className = "empty-state";
+  $("slots").textContent = "Chưa ghi nhận thông tin nào.";
+  $("tools").innerHTML = '<tr><td class="table-empty" colspan="4">Chưa có dữ liệu</td></tr>';
+  $("path").innerHTML = '<span class="flow-label">Luồng xử lý</span><span class="empty-state empty-compact">Chưa có hoạt động</span>';
+  $("sources").textContent = "Chưa có nguồn trích dẫn.";
+}
 
 async function newSession() {
-  const r = await fetch("/v1/sessions", {method: "POST"});
-  sid = (await r.json()).session_id;
-  $("chat").innerHTML = ""; $("probs").textContent = "Chưa có."; $("kv").innerHTML = "";
-  $("tools").innerHTML = ""; $("path").innerHTML = ""; $("sources").innerHTML = "";
-  bot("Xin chào! Anh/chị có thể mô tả triệu chứng, chỉ số xét nghiệm của mình, hoặc hỏi kiến thức về bệnh tiểu đường.", "");
-}
-function add(cls, text, meta) {
-  const d = document.createElement("div");
-  d.className = "msg " + cls; d.textContent = text;
-  if (meta) { const m = document.createElement("div"); m.className = "meta"; m.textContent = meta; d.appendChild(m); }
-  $("chat").appendChild(d); $("chat").scrollTop = $("chat").scrollHeight;
-}
-const bot = (t, m, extra="") => add("bot " + extra, t, m);
-
-function render(r) {
-  const s = r.state;
-  if (s.probs && Object.keys(s.probs).length) {
-    $("probs").innerHTML = Object.entries(s.probs).sort((a,b) => b[1]-a[1]).map(([k,v]) =>
-      `<div class="bar"><span>${esc(NAMES[k]||k)}</span><div class="track"><div class="fill" style="width:${(v*100).toFixed(1)}%"></div></div><span>${(v*100).toFixed(0)}%</span></div>`).join("");
+  if (creatingSession) return;
+  creatingSession = true;
+  $("newBtn").disabled = true;
+  if (activeRequest) {
+    activeRequest.abort();
+    activeRequest = null;
   }
-  $("kv").innerHTML = `Lượt hỏi: <b>${s.turn}/${s.T_max}</b> · Entropy: <b>${s.entropy}</b>` +
-    (s.risk_dl != null ? ` · Nguy cơ DL (tham khảo): <b>${(s.risk_dl*100).toFixed(0)}%</b>${s.dl_conflict ? ' <span class="bad">(mâu thuẫn luật)</span>' : ''}` : "") +
-    ` · Policy: <b>${esc(r.policy)}</b>`;
-  $("path").innerHTML = "Đồ thị: " + r.path.map(p => `<span>${esc(p)}</span>`).join("→") +
-    (r.notes && r.notes.router ? ` <span>router: ${esc(r.notes.router.method)}</span>` : "");
-  $("tools").innerHTML = r.tool_calls.map(t => `<tr><td>${esc(t.agent)}</td><td>${esc(t.tool)} ${esc(t.name)}</td><td class="${t.ok?'':'bad'}">${esc(t.summary)}</td><td>${t.latency_ms}</td></tr>`).join("");
-  $("sources").innerHTML = (r.sources||[]).map(x => `<p>[${x.n}] <b>${esc(x.source_id)}</b> ${esc(x.title||"")} — ${esc((x.text||"").slice(0,220))}${x.url ? ` <a href="${esc(x.url)}" target="_blank" rel="noopener">link</a>` : ""}</p>`).join("") || "Không có.";
+  setBusy(true,"Đang tạo phiên mới…");
+  try {
+    const response = await fetch("/v1/sessions",{method:"POST"});
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    sid = (await response.json()).session_id;
+    $("chat").innerHTML = "";
+    resetDiagnostics();
+    bot("Xin chào! Anh/chị có thể mô tả triệu chứng, chỉ số xét nghiệm hoặc đặt câu hỏi về bệnh tiểu đường.","Trợ lý sức khỏe");
+  } finally {
+    creatingSession = false;
+    $("newBtn").disabled = false;
+    setBusy(false);
+    $("text").focus();
+  }
 }
 
-$("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const text = $("text").value.trim(); if (!text) return;
-  $("text").value = ""; add("user", text);
+function add(cls,text,meta) {
+  const row = document.createElement("div");
+  row.className = "message-row " + cls;
+  const avatar = document.createElement("div");
+  avatar.className = "message-avatar";
+  avatar.setAttribute("aria-hidden","true");
+  avatar.textContent = cls.includes("user") ? "Bạn" : "AI";
+  const bubble = document.createElement("div");
+  bubble.className = "msg" + (cls.includes("emergency") ? " emergency" : "");
+  bubble.textContent = text;
+  if (meta) {
+    const detail = document.createElement("div");
+    detail.className = "meta";
+    detail.textContent = meta;
+    bubble.appendChild(detail);
+  }
+  row.append(avatar,bubble);
+  $("chat").appendChild(row);
+  $("chat").scrollTop = $("chat").scrollHeight;
+}
+const bot = (text,meta,extra) => add("bot " + (extra || ""),text,meta);
+
+function formatSlotValue(key,slot) {
+  if (slot.value !== null && slot.value !== undefined && slot.value !== "") {
+    return String(slot.value) + (SLOT_UNITS[key] ? " " + SLOT_UNITS[key] : "");
+  }
+  if (slot.status === "yes") return "Có";
+  if (slot.status === "no") return "Không";
+  return String(slot.status || "Đã ghi nhận").replaceAll("_"," ");
+}
+
+function renderSlots(slots) {
+  const derived = /^(tuoi_tu_|tuoi_duoi_|bmi_tu_)/;
+  const entries = Object.entries(slots || {}).filter(([key]) => !derived.test(key));
+  if (!entries.length) {
+    $("slots").className = "empty-state";
+    $("slots").textContent = "Chưa ghi nhận thông tin nào.";
+    return;
+  }
+  $("slots").className = "slot-list";
+  $("slots").innerHTML = entries.map(([key,slot]) =>
+    '<div class="slot-item"><dt>' + esc(SLOT_NAMES[key] || key.replaceAll("_"," ")) +
+    '</dt><dd>' + esc(formatSlotValue(key,slot)) + '</dd></div>'
+  ).join("");
+}
+
+function safeUrl(raw) {
   try {
-    const r = await (await fetch(`/v1/sessions/${sid}/messages`, {method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({text, use_llm: $("useLlm").checked})})).json();
-    bot(r.reply, `${r.intent || ""} · ${r.stage}`, r.stage === "emergency" ? "emergency" : "");
-    render(r);
-  } catch (err) { bot("Lỗi kết nối tới máy chủ: " + err, "", "emergency"); }
+    const url = new URL(raw,window.location.origin);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.href : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function renderSources(sources) {
+  const container = $("sources");
+  container.innerHTML = "";
+  if (!sources || !sources.length) {
+    container.textContent = "Không có nguồn trích dẫn.";
+    return;
+  }
+  sources.forEach((source) => {
+    const paragraph = document.createElement("p");
+    paragraph.append(document.createTextNode("[" + (source.n ?? "–") + "] "));
+    const id = document.createElement("b");
+    id.textContent = source.source_id || "Nguồn";
+    paragraph.append(id,document.createTextNode(" " + (source.title || "") + " — " + (source.text || "").slice(0,220)));
+    const url = safeUrl(source.url);
+    if (url) {
+      const link = document.createElement("a");
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "Xem nguồn";
+      paragraph.append(" ",link);
+    }
+    container.appendChild(paragraph);
+  });
+}
+
+function render(result) {
+  const state = result.state || {};
+  if (state.probs && Object.keys(state.probs).length) {
+    $("probs").className = "";
+    $("probs").innerHTML = Object.entries(state.probs).sort((a,b) => b[1]-a[1]).map(([key,rawValue]) => {
+      const value = Math.max(0,Math.min(1,Number(rawValue) || 0));
+      return (
+      '<div class="bar"><div class="bar-label"><span>' + esc(NAMES[key] || key) + '</span><strong>' +
+      (value*100).toFixed(0) + '%</strong></div><div class="track"><div class="fill" style="width:' +
+      (value*100).toFixed(1) + '%"></div></div></div>'
+      );
+    }).join("");
+  }
+  const metrics = [
+    ["Lượt hỏi",state.turn + "/" + state.T_max],
+    ["Entropy",state.entropy],
+    ["Policy",result.policy]
+  ];
+  if (state.risk_dl != null) {
+    metrics.splice(2,0,["Nguy cơ DL",(state.risk_dl*100).toFixed(0) + "%" + (state.dl_conflict ? " · Mâu thuẫn luật" : ""),state.dl_conflict]);
+  }
+  $("kv").innerHTML = metrics.map(([label,value,bad]) =>
+    '<div class="metric"><span class="metric-label">' + esc(label) + '</span><strong class="metric-value' +
+    (bad ? " bad" : "") + '">' + esc(value) + '</strong></div>'
+  ).join("");
+  $("kv").hidden = false;
+  renderSlots(state.slots);
+  const path = (result.path || []).map((item,index) =>
+    (index ? '<span class="flow-arrow">→</span>' : "") + '<span class="flow-chip">' + esc(item) + '</span>'
+  ).join("");
+  const router = result.notes && result.notes.router
+    ? '<span class="flow-arrow">→</span><span class="flow-chip">Router: ' + esc(result.notes.router.method) + '</span>'
+    : "";
+  $("path").innerHTML = '<span class="flow-label">Luồng xử lý</span>' + path + router;
+  $("tools").innerHTML = (result.tool_calls || []).map((tool) =>
+    '<tr><td>' + esc(tool.agent) + '</td><td>' + esc(tool.tool) + ' ' + esc(tool.name) +
+    '</td><td class="' + (tool.ok ? "" : "bad") + '">' + esc(tool.summary) +
+    '</td><td>' + esc(tool.latency_ms) + ' ms</td></tr>'
+  ).join("") || '<tr><td class="table-empty" colspan="4">Không dùng công cụ</td></tr>';
+  renderSources(result.sources || []);
+}
+
+async function apiError(response) {
+  try {
+    const body = await response.json();
+    return body.detail || ("HTTP " + response.status);
+  } catch (_) {
+    return "HTTP " + response.status;
+  }
+}
+
+$("form").addEventListener("submit",async (event) => {
+  event.preventDefault();
+  const text = $("text").value.trim();
+  if (!text || !sid) return;
+  const controller = new AbortController();
+  activeRequest = controller;
+  let timedOut = false;
+  const timeout = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  },240000);
+  $("text").value = "";
+  add("user",text);
+  setBusy(true,$("useLlm").checked ? "Đang phân tích với LLM…" : "Đang phân tích…");
+  try {
+    const response = await fetch("/v1/sessions/" + sid + "/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({text:text,use_llm:$("useLlm").checked}),
+      signal:controller.signal
+    });
+    if (!response.ok) throw new Error(await apiError(response));
+    const result = await response.json();
+    bot(result.reply,(result.intent || "Phản hồi") + " · " + result.stage,result.stage === "emergency" ? "emergency" : "");
+    render(result);
+  } catch (error) {
+    if (error.name === "AbortError" && !timedOut) return;
+    const message = timedOut
+      ? "Phản hồi mất quá nhiều thời gian. Hãy thử tắt LLM hoặc gửi lại câu hỏi."
+      : "Không thể xử lý yêu cầu: " + error.message;
+    bot(message,"Lỗi kết nối","emergency");
+  } finally {
+    window.clearTimeout(timeout);
+    if (activeRequest === controller) {
+      activeRequest = null;
+      setBusy(false);
+      $("text").focus();
+    }
+  }
 });
-$("newBtn").addEventListener("click", newSession);
-fetch("/v1/health").then(r => r.json()).then(h => {
-  $("health").textContent = `Neo4j ${h.neo4j?"✓":"✗"} · Ollama ${h.ollama?"✓":"✗"} (${h.llm_model}) · classifier ${h.models.classifier?"✓":"✗"} · HRL ${h.models.hrl?"✓":"✗"} · DL ${h.models.dl?"✓":"✗"}`;
-}).catch(() => $("health").textContent = "không lấy được trạng thái dịch vụ");
-newSession();
+
+$("newBtn").addEventListener("click",() => {
+  newSession().catch(() => bot("Không thể tạo phiên mới. Vui lòng thử lại.","Lỗi kết nối","emergency"));
+});
+
+async function loadHealth() {
+  const response = await fetch("/v1/health");
+  if (!response.ok) throw new Error("HTTP " + response.status);
+  const health = await response.json();
+  const coreReady = ["classifier","hrl","dl"].every((name) => health.models && health.models[name]);
+  const allReady = coreReady && health.neo4j && health.ollama;
+  const label = allReady ? "Sẵn sàng" : (coreReady ? "Chế độ dự phòng" : "Cần kiểm tra");
+  $("health").classList.toggle("ready",allReady);
+  $("health").classList.toggle("degraded",!coreReady);
+  $("health").querySelector(".health-label").textContent = label;
+  $("health").setAttribute("aria-label","Trạng thái hệ thống: " + label);
+  $("health").title = "Neo4j " + (health.neo4j ? "sẵn sàng" : "không kết nối") +
+    " · Ollama " + (health.ollama ? "sẵn sàng" : "không kết nối") +
+    " · Mô hình " + (coreReady ? "đã nạp" : "chưa đủ");
+}
+
+loadHealth().catch(() => {
+  $("health").classList.add("degraded");
+  $("health").querySelector(".health-label").textContent = "Mất kết nối";
+  $("health").setAttribute("aria-label","Trạng thái hệ thống: Mất kết nối");
+  $("health").title = "Không lấy được trạng thái dịch vụ";
+});
+newSession().catch(() => bot("Không thể kết nối tới máy chủ. Vui lòng thử lại.","Lỗi kết nối","emergency"));
 </script>
 </body>
 </html>
