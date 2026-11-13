@@ -240,82 +240,9 @@ Nguyên tắc xuyên suốt:
 
 Hệ là **MAS phân cấp có điều phối tập trung**, mức tự chủ giới hạn: chỉ việc chọn Worker, chọn slot và quyết định CLASSIFY là policy học được; các bước cấp cứu, T_max, gọi DL và Safety là code cố định.
 
-> 🖼 **Mô tả ảnh — Hình 2.2. Sơ đồ đa tác tử phân cấp của Diabetes MAS** (lưu `docs/assets/agents_hierarchy.png`)
-> - **Cách tạo:** xuất khối Mermaid `flowchart TB` ở `docs/02_AGENT_DESIGN.md` §1b. Có thể dùng mermaid-cli (`mmdc -i agents.mmd -o docs/assets/agents_hierarchy.png -w 1800 -b white`) hoặc `python -m diabetes_mas.devtools.render_diagrams --doc 02_AGENT_DESIGN.md --prefix agents` (cần mermaid-cli, xem `docs/HANDOFF.md`). Nền trắng, rộng khoảng 1800 px.
-> - **Năm vùng (subgraph) phải thấy:**
->   - "Lớp giao tiếp ngôn ngữ": AG-00 Router, AG-06 NLU, AG-09 NLG, AG-08 Safety, AG-07 Consult, AG-12 Research.
->   - "Khối 1 — Main Agent điều phối": AG-01 Main Agent; nhóm "Work-Agents 1..4" (W1 Triệu chứng kinh điển · 4, W2 Xét nghiệm · 5, W3 Tiền sử, nguy cơ, hồ sơ · 13, W4 Biến chứng · 6); nhóm "Disease Classifiers" (AG-02 Main Classifier, AG-03-h Sub-Classifiers 1..4); AG-13 Prediction MLP.
->   - "Khối 2 — Patient Simulator": AG-10 Patient Action, AG-05 State Tracker.
->   - "Khối 3 — AG-11 Reward Generator".
->   - Hình trụ "Neo4j KB + vector index".
-> - **Mũi tên có nhãn phải thấy:**
->   - Người dùng → Router; Router → NLU (diagnose) → State Tracker; Router → Consult (consult); Router → Safety (emergency).
->   - State Tracker → Main Classifier (T-08); State Tracker → Safety (T-09); State Tracker → Main (s_t).
->   - Main → W1..W4 (giao quyền); Main → AG-13 (kích hoạt khi đủ đặc trưng); AG-13 → State Tracker (risk_dl, cờ mâu thuẫn).
->   - W1..W4 → NLG (T-07 hỏi 1 slot) → Safety → Người dùng.
->   - Main Classifier → Reward (p_t, H); Patient Action → Reward (loại trả lời); Reward → Main và Workers (r_t).
->   - Main → Consult (CLASSIFY); Consult ↔ KB; Consult → Research (enough = false); Main Classifier → KB (T-03); AG-13 → KB (T-03).
-> - **Chú thích dưới hình:** "Hình 2.2. Kiến trúc đa tác tử phân cấp: Main Agent điều phối 4 Work-Agent, bộ phân loại chính/phụ, Patient Simulator và Reward Generator (yêu cầu R-T11–R-T13)."
+![Sơ đồ đa tác tử phân cấp](assets/agents_hierarchy.png)
 
-Mã Mermaid gốc của Hình 2.2 (chép nguyên văn từ `docs/02_AGENT_DESIGN.md` §1b) — dùng để vẽ hình nếu chưa có ảnh:
-
-```mermaid
-flowchart TB
-  U([Người dùng / Patient Simulator])
-
-  subgraph IO[Lớp giao tiếp ngôn ngữ]
-    R[AG-00 Router]
-    N[AG-06 NLU]
-    G[AG-09 NLG]
-    S[AG-08 Safety]
-    C[AG-07 Consult]
-    RS[AG-12 Research]
-  end
-
-  subgraph CORE[Khối 1 — Main Agent điều phối]
-    M[AG-01 Main Agent<br/>policy π_M + điều phối cố định]
-    subgraph WK[Work-Agents 1..4]
-      W1[AG-W1 Triệu chứng kinh điển · 4]
-      W2[AG-W2 Xét nghiệm · 5]
-      W3[AG-W3 Tiền sử, nguy cơ, hồ sơ · 13]
-      W4[AG-W4 Biến chứng · 6]
-    end
-    subgraph DC[Disease Classifiers]
-      MC[AG-02 Main Classifier]
-      SC[AG-03-h Sub-Classifiers 1..4]
-    end
-    PR[AG-13 Prediction<br/>MLP Deep Learning]
-  end
-
-  subgraph SIM[Khối 2 — Patient Simulator]
-    PA[AG-10 Patient Action]
-    ST[AG-05 State Tracker]
-  end
-  RG[Khối 3 — AG-11 Reward Generator]
-  KB[(Neo4j KB + vector index)]
-
-  U --> R
-  R -- diagnose --> N --> ST
-  R -- consult --> C
-  R -- emergency --> S
-  ST -- T-08 sau mỗi cập nhật --> MC
-  SC --> MC
-  ST -- T-09 --> S
-  ST -- s_t --> M
-  M -- giao quyền --> W1 & W2 & W3 & W4
-  M -- kích hoạt khi đủ đặc trưng --> PR
-  PR -- risk_dl, cờ mâu thuẫn --> ST
-  W1 & W2 & W3 & W4 -- T-07 hỏi 1 slot --> G --> S --> U
-  U -- trả lời --> PA --> ST
-  MC -- p_t, H --> RG
-  PA -- loại trả lời --> RG
-  RG -- r_t --> M & WK
-  M -- CLASSIFY --> C
-  C <--> KB
-  C -- enough = false --> RS
-  MC -- T-03 --> KB
-  PR -- T-03 --> KB
-```
+Hình 2.2. Kiến trúc đa tác tử phân cấp: Main Agent điều phối 4 Work-Agent, bộ phân loại chính/phụ, Patient Simulator và Reward Generator (yêu cầu R-T11–R-T13). Sơ đồ xuất từ khối Mermaid ở `docs/02_AGENT_DESIGN.md` §1b bằng `devtools/render_diagrams`.
 
 **Nguồn:** `docs/02_AGENT_DESIGN.md` §1b, §2.
 
@@ -1993,7 +1920,7 @@ Chú thích: tập `allowed` gồm giá trị slot đã thu thập, số ngườ
 | Quét ngưỡng `min_score` | `docs/assets/min_score_sweep.png` | §4.11 |
 | Đường học HRL / classifier | `docs/assets/curve_hrl.png`, `curve_classifier.png` | §3.7 |
 | Demo Story 1 / chi tiết / tư vấn / cấp cứu | `docs/assets/demo_story1.png`, `demo_story1_chitiet.png`, `demo_tuvan.png`, `demo_capcuu.png` | Chương 6 |
-| 🖼 Hình 2.2 Sơ đồ agent phân cấp (chưa có — mô tả ở §2.2) | `docs/assets/agents_hierarchy.png` | §2.2 |
+| Hình 2.2 Sơ đồ agent phân cấp | `docs/assets/agents_hierarchy.png` | §2.2 |
 | 🖼 Hình 3.3 Entropy theo lượt (chưa có — mô tả ở §3.7) | `docs/assets/entropy_by_turn.png` | §3.7 |
 | 🖼 Hình 4.3, 4.4 Neo4j Browser (chưa có — mô tả ở §4.6) | `docs/assets/neo4j_browser_dtd_tip2.png`, `neo4j_browser_criteria.png` | §4.6 |
 | 🖼 Hình 5.1 Kết quả pytest (chưa có — mô tả ở §5.3) | `docs/assets/pytest_run.png` | §5.3 |
@@ -2028,7 +1955,7 @@ Chú thích: tập `allowed` gồm giá trị slot đã thu thập, số ngườ
 | 4 | Pytest | ✅ Chạy lại 13/11 08:12: 180 passed, 10 skipped (§5.3). Test tích hợp cần bật Neo4j/Ollama |
 | 5 | Output thật (JSON lượt kết luận, log tool, TC-22) | ✅ §2.7, §5.5, §10.2 |
 | 6 | E2E Qwen sau sửa `nlu.DURATION` | ✍️ Chưa chạy lại; đã ghi rõ điều kiện đo (§1.3, §11.6) |
-| 7 | Ảnh chưa có (Hình 2.2, 3.3, 4.3, 4.4, 5.1, 10.1, 12.1) | 🖼 Đã có khối mô tả chi tiết; cần chụp/sinh (Phụ lục B) |
+| 7 | Ảnh chưa có (Hình 3.3, 4.3, 4.4, 5.1, 10.1, 12.1) | 🖼 Đã có khối mô tả chi tiết; cần chụp/sinh (Phụ lục B) |
 | 8 | Video dự phòng | ✍️ Chưa quay |
 | 9 | Code Phụ lục A | ✅ Chép nguyên văn, có file:dòng |
 | 10 | Tài liệu cũ không khớp code: `01` §8 (📐 cho mục đã làm), `06` §2 (RAG cũ: fulltext, 0,55), `09_DEMO_SCRIPT` §4 (baseline cũ: Random 0,716 / 12), "Vinmec 302 bài" ở `09_*` | Báo cáo này dùng số mới; các tài liệu gốc chưa sửa |
