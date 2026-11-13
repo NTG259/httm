@@ -365,6 +365,10 @@ Mô hình nhỏ (3.137 tham số) có chủ đích: dữ liệu bảng 8 cột k
 
 Ma trận nhầm lẫn (che slot + luật, acc 0,764):
 
+![Ma trận nhầm lẫn classifier](assets/confusion_classifier.png)
+
+Hình 2.1 — Ma trận nhầm lẫn của bộ phân loại 5 lớp trên tập test (225 ca, che slot + luật KB; số liệu `experiments/best/classifier_metrics.json` → `test_masked_rules.confusion`).
+
 | Thật \ Dự đoán | Không ĐTĐ | Tiền ĐTĐ | Típ 1 | Típ 2 | Thai kỳ |
 |---|---|---|---|---|---|
 | Không ĐTĐ | 40 | 12 | 0 | 3 | 3 |
@@ -1076,7 +1080,9 @@ Ngoại lệ đã biết: ngưỡng tư vấn `min_score_no_entity` chọn trên
 
 Đầu vào AG-02 = 109 chiều slot + 4 × 5 xác suất của sub-classifier; **không** gồm `p_t` vì `p_t` chính là đầu ra của AG-02.
 
-Hình 9.1 — đường đi của một bản ghi qua AG-13: xem mô tả ảnh ở Phụ lục C (Hình C.1).
+![Đường đi của một bản ghi qua AG-13](assets/dl_pipeline.png)
+
+Hình 9.1 — Đường đi của một bản ghi hội thoại qua mô hình dự đoán nguy cơ AG-13.
 
 ### 9.2 Mục tiêu tối ưu và chọn checkpoint
 
@@ -1308,7 +1314,7 @@ python -m diabetes_mas.devtools.plot_eval              # biểu đồ → docs/a
 
 Các đoạn dưới chép nguyên văn từ repo (đường dẫn tính từ `diabetes_mas/src/diabetes_mas/`).
 
-### B.1 Hàm thưởng — `rl/reward.py:23-62`
+### B.1 Hàm thưởng — `rl/reward.py:22-56`
 
 ```python
 @dataclass(frozen=True)
@@ -1441,7 +1447,7 @@ def decide_enough(n_entities: int, n_facts: int, max_cos: float) -> tuple[bool, 
     return True, f"{n_entities} thực thể, {n_facts} fact, cosine tốt nhất {max_cos:.3f}"
 ```
 
-### B.6 Kiểm câu giải thích của Qwen — `agents/consult.py:152-197`
+### B.6 Kiểm câu giải thích của Qwen — `agents/consult.py:152-159, 191-197`
 
 ```python
 def explain_ok(text: str, top1_name: str, prob_txt: str) -> bool:
@@ -1465,6 +1471,8 @@ def numbers_ok(text: str, allowed: set[float]) -> bool:
 ```
 
 ## Phụ lục C. Mô tả ảnh cần chụp/sinh
+
+> Trạng thái 13/11: **cả hai hình đã vẽ xong** và đã chèn vào thân bài — C.1 → `assets/dl_pipeline.png` (§9.1), C.2 → `assets/confusion_classifier.png` (§2.4.1). Mô tả bên dưới giữ lại để vẽ lại khi cần; khi xuất Word có thể bỏ phụ lục này.
 
 Các ảnh chưa có trong `docs/assets/`. Mỗi khối mô tả đủ để agent khác tự chụp hoặc tự vẽ.
 

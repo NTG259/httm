@@ -43,7 +43,7 @@
 10. Kiểm chứng nguồn tri thức và chỉ mục truy xuất
 11. Hội thoại, LLM cục bộ và kiểm soát câu trả lời
 12. Tái lập và trình diễn theo từng tình huống
-- Phụ lục A. Mã nguồn chính (chỉ mục để chép code)
+- Phụ lục A. Mã nguồn chính
 - Phụ lục B. Danh mục hình
 - Phụ lục C. Tài liệu tham khảo
 - Phụ lục D. Việc cần kiểm tra trước khi nộp
@@ -256,6 +256,66 @@ Hệ là **MAS phân cấp có điều phối tập trung**, mức tự chủ gi
 >   - Main Classifier → Reward (p_t, H); Patient Action → Reward (loại trả lời); Reward → Main và Workers (r_t).
 >   - Main → Consult (CLASSIFY); Consult ↔ KB; Consult → Research (enough = false); Main Classifier → KB (T-03); AG-13 → KB (T-03).
 > - **Chú thích dưới hình:** "Hình 2.2. Kiến trúc đa tác tử phân cấp: Main Agent điều phối 4 Work-Agent, bộ phân loại chính/phụ, Patient Simulator và Reward Generator (yêu cầu R-T11–R-T13)."
+
+Mã Mermaid gốc của Hình 2.2 (chép nguyên văn từ `docs/02_AGENT_DESIGN.md` §1b) — dùng để vẽ hình nếu chưa có ảnh:
+
+```mermaid
+flowchart TB
+  U([Người dùng / Patient Simulator])
+
+  subgraph IO[Lớp giao tiếp ngôn ngữ]
+    R[AG-00 Router]
+    N[AG-06 NLU]
+    G[AG-09 NLG]
+    S[AG-08 Safety]
+    C[AG-07 Consult]
+    RS[AG-12 Research]
+  end
+
+  subgraph CORE[Khối 1 — Main Agent điều phối]
+    M[AG-01 Main Agent<br/>policy π_M + điều phối cố định]
+    subgraph WK[Work-Agents 1..4]
+      W1[AG-W1 Triệu chứng kinh điển · 4]
+      W2[AG-W2 Xét nghiệm · 5]
+      W3[AG-W3 Tiền sử, nguy cơ, hồ sơ · 13]
+      W4[AG-W4 Biến chứng · 6]
+    end
+    subgraph DC[Disease Classifiers]
+      MC[AG-02 Main Classifier]
+      SC[AG-03-h Sub-Classifiers 1..4]
+    end
+    PR[AG-13 Prediction<br/>MLP Deep Learning]
+  end
+
+  subgraph SIM[Khối 2 — Patient Simulator]
+    PA[AG-10 Patient Action]
+    ST[AG-05 State Tracker]
+  end
+  RG[Khối 3 — AG-11 Reward Generator]
+  KB[(Neo4j KB + vector index)]
+
+  U --> R
+  R -- diagnose --> N --> ST
+  R -- consult --> C
+  R -- emergency --> S
+  ST -- T-08 sau mỗi cập nhật --> MC
+  SC --> MC
+  ST -- T-09 --> S
+  ST -- s_t --> M
+  M -- giao quyền --> W1 & W2 & W3 & W4
+  M -- kích hoạt khi đủ đặc trưng --> PR
+  PR -- risk_dl, cờ mâu thuẫn --> ST
+  W1 & W2 & W3 & W4 -- T-07 hỏi 1 slot --> G --> S --> U
+  U -- trả lời --> PA --> ST
+  MC -- p_t, H --> RG
+  PA -- loại trả lời --> RG
+  RG -- r_t --> M & WK
+  M -- CLASSIFY --> C
+  C <--> KB
+  C -- enough = false --> RS
+  MC -- T-03 --> KB
+  PR -- T-03 --> KB
+```
 
 **Nguồn:** `docs/02_AGENT_DESIGN.md` §1b, §2.
 
@@ -1602,7 +1662,7 @@ python scripts/rehearse_demo.py [--no-llm]                     # chạy thử de
 
 ---
 
-# Phụ lục A. Mã nguồn chính (chỉ mục để chép code)
+# Phụ lục A. Mã nguồn chính
 
 Đường dẫn tính từ `diabetes_mas/src/diabetes_mas/`. Code chép nguyên văn tại commit `d93741b`; số dòng ghi ở tiêu đề mỗi mục.
 
@@ -1684,7 +1744,7 @@ class Graph:
 
 Chú thích: `ctx.path` chính là trường `path` trong phản hồi API. Giới hạn `max_steps` chặn vòng lặp vô hạn (ADR-003).
 
-### A.3 Luật điều phối bao quanh policy — `agents/state.py:122-167`
+### A.3 Luật điều phối bao quanh policy — `agents/state.py:122-137, 144-167`
 
 ```python
 def worker_mask(state: DialogState, worker: str) -> list[bool]:
@@ -1732,7 +1792,7 @@ def main_mask(state: DialogState) -> list[bool]:
     return workers_ok + [classify_ok]
 ```
 
-### A.4 Hàm thưởng — `rl/reward.py:23-62`
+### A.4 Hàm thưởng — `rl/reward.py:22-56`
 
 ```python
 @dataclass(frozen=True)
@@ -1792,7 +1852,7 @@ def promote_if_better(env: DiagnosisEnv, val: list[dict], new_val: dict, out, fo
     return True, reason
 ```
 
-### A.6 Luật KB trong phân loại — `kb/criteria.py:52-94`
+### A.6 Luật KB trong phân loại — `kb/criteria.py:52-72, 79-94`
 
 ```python
 def check(measurements: dict[str, float], context: dict[str, bool], criteria: list[Criterion]) -> list[Criterion]:
@@ -1876,7 +1936,7 @@ def decide_enough(n_entities: int, n_facts: int, max_cos: float) -> tuple[bool, 
     return True, f"{n_entities} thực thể, {n_facts} fact, cosine tốt nhất {max_cos:.3f}"
 ```
 
-### A.9 Kiểm câu giải thích của LLM — `agents/consult.py:152-197`
+### A.9 Kiểm câu giải thích của LLM — `agents/consult.py:152-159, 191-197`
 
 ```python
 def explain_ok(text: str, top1_name: str, prob_txt: str) -> bool:

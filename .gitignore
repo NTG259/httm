@@ -16,3 +16,5 @@ backups/
 diabetes_mas/.ui_check.py
 diabetes_mas/.ui-*.png
 diabetes_mas/.pytest-ui-*/
+
+GOI_CLAUDE_CHAT/
