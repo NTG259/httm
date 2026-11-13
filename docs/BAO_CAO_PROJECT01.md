@@ -376,7 +376,7 @@ Phản hồi thật của lượt kết luận Story 1. Nguồn: `diabetes_mas/l
 Đọc phản hồi:
 - `probs` của Không ĐTĐ, Tiền ĐTĐ và Thai kỳ bằng 0 vì luật KB (HbA1c > 6,5 %) đã loại ba lớp này (`apply_rules`).
 - `tool_s` = 6,5 s gần như toàn bộ là T-04 truy xuất căn cứ cho câu giải thích.
-- Câu kết luận dùng **template**: Qwen viết sai số HbA1c nên bị `numbers_ok` chặn (lỗi #15, §5.4).
+- Câu kết luận trùng nguyên văn **template**. Tức là bản Qwen viết đã bị một trong các bộ kiểm loại (kiểm trích dẫn / `explain_ok` / `numbers_ok`, §11.3); log không ghi bộ nào. Sự cố "Qwen viết HbA1c 7,4 %" (lỗi #15) được ghi ở lần chạy 20:10, không phải lần 22:14 này.
 
 Lưu ý: `curl` trong Git Bash làm hỏng tiếng Việt trong body JSON; gọi API bằng `scripts/rehearse_demo.py` hoặc Python `requests`.
 
@@ -575,7 +575,7 @@ D3 **không** vượt D1 về F1: D1 chính là ngưỡng sinh nhãn của datas
 - HRL: ε giảm tuyến tính tới epoch 20 nên reward train tăng dần rồi ổn định; val success dao động 0,70–0,85, chọn epoch 39 (val 0,844 ở lần train đó).
 - Classifier: loss train cao hơn val vì lúc train che slot ngẫu nhiên, còn val đánh giá trên trạng thái cố định.
 
-`⚠` Điều kiện đo: val 0,844 là số ghi trong lúc train run `20261112-142402` (luật `labs_ready`, chưa có luật W2). Val 0,862 ở bảng chính là cùng checkpoint, đánh giá lại với luật W2 và `confident_stop` (`experiments/eval/diag_final.json`, 17:05). Hai số đo cùng một mạng ở hai bộ luật điều phối khác nhau.
+`⚠` Điều kiện đo: val 0,844 là số ghi trong lúc train run `20261112-142402` (luật `labs_ready`, chưa có luật W2); `experiments/runs/20261112-142402_hrl/curve.csv`, dòng epoch 39: `val_success 0.8444`, `val_avg_turns 3.511`. Val 0,862 ở bảng chính là cùng checkpoint, đánh giá lại với luật W2 và `confident_stop` (`experiments/eval/diag_final.json`, 17:05). Hai số đo cùng một mạng ở hai bộ luật điều phối khác nhau.
 
 > 🖼 **Mô tả ảnh — Hình 3.3. Entropy trung bình của Main Classifier theo lượt hỏi** (chưa có; lưu `docs/assets/entropy_by_turn.png`)
 > - **Cách tạo:**

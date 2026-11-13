@@ -1104,7 +1104,7 @@ Hình 9.2 — Đường học classifier (`docs/assets/curve_classifier.png`): l
 | Típ 2 | 0,839 | 0,800 | 0,819 | 65 |
 | Thai kỳ | 0,722 | 0,963 | 0,825 | 27 |
 
-Tiền ĐTĐ là lớp yếu nhất: khi che xét nghiệm, Tiền ĐTĐ và Không ĐTĐ gần như chỉ khác nhau ở chỉ số. Thai kỳ có recall cao nhưng precision thấp hơn (9 ca không phải thai kỳ bị xếp vào thai kỳ).
+Tiền ĐTĐ là lớp yếu nhất: khi che xét nghiệm, Tiền ĐTĐ và Không ĐTĐ gần như chỉ khác nhau ở chỉ số. Thai kỳ có recall cao nhưng precision thấp hơn (10 ca không phải thai kỳ bị xếp vào thai kỳ).
 
 #### 9.3.1 Theo dõi mẫu đổi trạng thái giữa các cấu hình
 
